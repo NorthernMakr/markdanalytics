@@ -166,7 +166,7 @@ export interface Order { id: string; cart: CartLine[]; tier: ShippingTier; payme
 
 export function createOrder(tier: ShippingTier, paymentType: string): Order {
   const cart = getCart();
-  const id = 'DW-' + Date.now().toString(36).toUpperCase() + '-' + Math.floor(Math.random() * 900 + 100);
+  const id = 'TG-' + Date.now().toString(36).toUpperCase() + '-' + Math.floor(Math.random() * 900 + 100);
   return { id, cart, tier, paymentType, totals: totals(cart, tier) };
 }
 

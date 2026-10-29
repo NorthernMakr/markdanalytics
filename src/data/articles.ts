@@ -1,4 +1,4 @@
-// Demo articles for The Tidewater Daily. Every person, place detail and quote is invented.
+// Demo articles for Balsam Daily. Every person, place detail and quote is invented.
 export interface Article {
   slug: string;
   section: string;

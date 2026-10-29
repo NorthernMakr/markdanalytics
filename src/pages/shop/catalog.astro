@@ -36,7 +36,7 @@ import { products, categories } from '../../data/products';
       list.dataset.listId = `catalog_${known.slug}`;
       list.dataset.listName = `Catalog: ${known.name}`;
       document.querySelector('[data-title]')!.textContent = known.name;
-      document.title = `${known.name} | Driftwood Supply Co. (demo)`;
+      document.title = `${known.name} | Taiga Supply Co. (demo)`;
       ga4({ event: 'filter_applied', filter_type: 'category', filter_value: known.slug });
       adobe({ event: 'search filtered', search: { filterType: 'category', filterValue: known.slug } });
     }

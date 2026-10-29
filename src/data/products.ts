@@ -1,4 +1,4 @@
-// Demo catalog for Driftwood Supply Co. Everything here is invented.
+// Demo catalog for Taiga Supply Co. Everything here is invented.
 export type ArtKind = 'pack' | 'jacket' | 'bottle' | 'tent' | 'mug' | 'beanie' | 'lantern' | 'drybag';
 
 export interface Product {
@@ -24,7 +24,7 @@ export const categories = [
 
 export const products: Product[] = [
   {
-    sku: 'DW-PK-101', slug: 'tidepool-daypack', name: 'Tidepool daypack', brand: 'Driftwood',
+    sku: 'TG-PK-101', slug: 'tidepool-daypack', name: 'Tidepool daypack', brand: 'Taiga',
     category: 'packs', subcategory: 'daypacks', price: 129,
     colours: [{ name: 'Kelp', hex: '#2F5D46' }, { name: 'Buoy', hex: '#E0682B' }, { name: 'Fog', hex: '#9AA9A2' }],
     art: 'pack', badge: 'Best seller',
@@ -32,7 +32,7 @@ export const products: Product[] = [
     details: ['22 L capacity', 'Recycled 420D nylon', 'Padded laptop sleeve fits 15"', 'Weight 640 g'],
   },
   {
-    sku: 'DW-PK-102', slug: 'breakwater-dry-bag', name: 'Breakwater dry bag', brand: 'Driftwood',
+    sku: 'TG-PK-102', slug: 'breakwater-dry-bag', name: 'Breakwater dry bag', brand: 'Taiga',
     category: 'packs', subcategory: 'dry bags', price: 42,
     colours: [{ name: 'Buoy', hex: '#E0682B' }, { name: 'Sound', hex: '#2E5E7E' }],
     art: 'drybag',
@@ -40,7 +40,7 @@ export const products: Product[] = [
     details: ['15 L capacity', 'Welded TPU seams', 'Roll-top closure with buckle', 'Weight 210 g'],
   },
   {
-    sku: 'DW-AP-201', slug: 'squall-rain-shell', name: 'Squall rain shell', brand: 'Driftwood',
+    sku: 'TG-AP-201', slug: 'squall-rain-shell', name: 'Squall rain shell', brand: 'Taiga',
     category: 'apparel', subcategory: 'jackets', price: 245,
     colours: [{ name: 'Sound', hex: '#2E5E7E' }, { name: 'Kelp', hex: '#2F5D46' }, { name: 'Buoy', hex: '#E0682B' }],
     art: 'jacket', badge: 'New',
@@ -48,7 +48,7 @@ export const products: Product[] = [
     details: ['3-layer waterproof membrane', 'Pit zips', 'Helmet-compatible hood', 'Packs into its own pocket'],
   },
   {
-    sku: 'DW-AP-202', slug: 'harbour-wool-beanie', name: 'Harbour wool beanie', brand: 'Driftwood',
+    sku: 'TG-AP-202', slug: 'harbour-wool-beanie', name: 'Harbour wool beanie', brand: 'Taiga',
     category: 'apparel', subcategory: 'accessories', price: 34,
     colours: [{ name: 'Buoy', hex: '#E0682B' }, { name: 'Fog', hex: '#9AA9A2' }, { name: 'Sound', hex: '#2E5E7E' }],
     art: 'beanie',
@@ -56,7 +56,7 @@ export const products: Product[] = [
     details: ['100% merino wool', 'One size', 'Knit in Canada'],
   },
   {
-    sku: 'DW-CP-301', slug: 'cove-two-person-tent', name: 'Cove two-person tent', brand: 'Driftwood',
+    sku: 'TG-CP-301', slug: 'cove-two-person-tent', name: 'Cove two-person tent', brand: 'Taiga',
     category: 'camp', subcategory: 'shelters', price: 389,
     colours: [{ name: 'Kelp', hex: '#2F5D46' }, { name: 'Sand', hex: '#C9A86A' }],
     art: 'tent',
@@ -64,7 +64,7 @@ export const products: Product[] = [
     details: ['Sleeps 2', 'Packed weight 1.9 kg', 'Two doors, two vestibules', 'Colour-coded poles'],
   },
   {
-    sku: 'DW-CP-302', slug: 'lighthouse-lantern', name: 'Lighthouse lantern', brand: 'Driftwood',
+    sku: 'TG-CP-302', slug: 'lighthouse-lantern', name: 'Lighthouse lantern', brand: 'Taiga',
     category: 'camp', subcategory: 'lighting', price: 58,
     colours: [{ name: 'Sand', hex: '#C9A86A' }, { name: 'Sound', hex: '#2E5E7E' }],
     art: 'lantern',
@@ -72,7 +72,7 @@ export const products: Product[] = [
     details: ['300 lumens max', 'Up to 40 hours on low', 'USB-C charging', 'Water-resistant'],
   },
   {
-    sku: 'DW-CP-303', slug: 'galley-enamel-mug', name: 'Galley enamel mug', brand: 'Driftwood',
+    sku: 'TG-CP-303', slug: 'galley-enamel-mug', name: 'Galley enamel mug', brand: 'Taiga',
     category: 'camp', subcategory: 'kitchen', price: 22,
     colours: [{ name: 'Fog', hex: '#9AA9A2' }, { name: 'Buoy', hex: '#E0682B' }],
     art: 'mug',
@@ -80,7 +80,7 @@ export const products: Product[] = [
     details: ['350 ml', 'Enamel-coated steel', 'Stove-safe'],
   },
   {
-    sku: 'DW-CP-304', slug: 'current-insulated-bottle', name: 'Current insulated bottle', brand: 'Driftwood',
+    sku: 'TG-CP-304', slug: 'current-insulated-bottle', name: 'Current insulated bottle', brand: 'Taiga',
     category: 'camp', subcategory: 'hydration', price: 39,
     colours: [{ name: 'Sound', hex: '#2E5E7E' }, { name: 'Kelp', hex: '#2F5D46' }, { name: 'Sand', hex: '#C9A86A' }],
     art: 'bottle', badge: 'Best seller',

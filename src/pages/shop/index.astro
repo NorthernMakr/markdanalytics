@@ -70,7 +70,7 @@ const promo = { id: 'P-FALL-SHIP', name: 'Free shipping on fall orders', creativ
     viewPromotion(heroPromo);
     document.querySelector('[data-promo-hero]')!.addEventListener('click', () => {
       selectPromotion(heroPromo);
-      const p = bySku('DW-AP-201');
+      const p = bySku('TG-AP-201');
       if (p) selectItem({ listId: 'home_hero', listName: 'Home: hero' }, p, 0);
     });
   </script>

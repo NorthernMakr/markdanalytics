@@ -12,18 +12,18 @@ interface Props {
 }
 const { title, pageType, pageName, extra = {}, checkoutStep } = Astro.props;
 const pageData = {
-  page: { name: pageName, type: pageType, section: 'shop', siteName: 'Driftwood Supply Co. (demo)' },
+  page: { name: pageName, type: pageType, section: 'shop', siteName: 'Taiga Supply Co. (demo)' },
   ...extra,
 };
 const steps = ['Cart', 'Shipping', 'Payment', 'Done'];
 ---
-<Base title={`${title} | Driftwood Supply Co. (demo)`} pageData={pageData} bodyClass="shop"
+<Base title={`${title} | Taiga Supply Co. (demo)`} pageData={pageData} bodyClass="shop"
   demoBanner="Demo store for analytics testing. Nothing is for sale and no details are collected.">
   <header class="shop-head">
     <div class="shop-wrap shop-head-row">
       <a class="shop-logo" href="/shop/">
         <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M2 16 q9-12 18 0 t18 0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></svg>
-        Driftwood <span>Supply Co.</span>
+        Taiga <span>Supply Co.</span>
       </a>
       {checkoutStep === undefined ? (
         <nav aria-label="Shop">
@@ -47,7 +47,7 @@ const steps = ['Cart', 'Shipping', 'Payment', 'Done'];
 
   <footer class="shop-foot">
     <div class="shop-wrap">
-      <p>Driftwood Supply Co. is a fictional store. Prices in CAD. Built for testing analytics tags.</p>
+      <p>Taiga Supply Co. is a fictional store. Prices in CAD. Built for testing analytics tags.</p>
     </div>
   </footer>
 

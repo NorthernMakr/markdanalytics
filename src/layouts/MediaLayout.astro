@@ -5,18 +5,18 @@ import '../styles/media.css';
 interface Props { title: string; pageType: string; pageName: string; extra?: Record<string, unknown>; }
 const { title, pageType, pageName, extra = {} } = Astro.props;
 const pageData = {
-  page: { name: pageName, type: pageType, section: 'media', siteName: 'The Tidewater Daily (demo)' },
+  page: { name: pageName, type: pageType, section: 'media', siteName: 'Balsam Daily (demo)' },
   ...extra,
 };
 const sections = ['Local', 'Transportation', 'Weather', 'Food', 'Sports'];
 const today = new Date().toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 ---
-<Base title={`${title} | The Tidewater Daily (demo)`} pageData={pageData} bodyClass="media"
+<Base title={`${title} | Balsam Daily (demo)`} pageData={pageData} bodyClass="media"
   demoBanner="Demo news site for analytics testing. The stories, people and video are made up.">
   <header class="masthead">
     <div class="media-wrap">
       <p class="masthead-date">{today}</p>
-      <a class="masthead-name" href="/media/">The Tidewater Daily</a>
+      <a class="masthead-name" href="/media/">Balsam Daily</a>
       <svg class="tideline" viewBox="0 0 600 14" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0 7 Q 25 0 50 7 T 100 7 T 150 7 T 200 7 T 250 7 T 300 7 T 350 7 T 400 7 T 450 7 T 500 7 T 550 7 T 600 7" fill="none" stroke="currentColor" stroke-width="2.5" />
       </svg>
@@ -31,7 +31,7 @@ const today = new Date().toLocaleDateString('en-CA', { weekday: 'long', month: '
     <slot />
   </main>
   <footer class="media-foot">
-    <div class="media-wrap">The Tidewater Daily is a fictional publication built for testing analytics tags.</div>
+    <div class="media-wrap">Balsam Daily is a fictional publication built for testing analytics tags.</div>
   </footer>
 
   <script>

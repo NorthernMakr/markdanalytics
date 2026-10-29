@@ -6,8 +6,8 @@ Adobe and Google tags against a realistic data layer:
 | Section | Pages | What it's for |
 |---|---|---|
 | Blog | `/`, `/blog/`, `/blog/<post>/` | Your implementation advice |
-| Demo store (Driftwood Supply Co.) | `/shop/`, `/shop/catalog/`, `/shop/product/<item>/`, `/shop/cart/`, `/shop/checkout/`, `/shop/checkout/payment/`, `/shop/checkout/confirmation/` | Full ecommerce funnel. Nothing is sold and no details are collected. |
-| Demo media site (The Tidewater Daily) | `/media/`, `/media/article/<story>/` | Article tracking and HTML5 video tracking |
+| Demo store (Taiga Supply Co.) | `/shop/`, `/shop/catalog/`, `/shop/product/<item>/`, `/shop/cart/`, `/shop/checkout/`, `/shop/checkout/payment/`, `/shop/checkout/confirmation/` | Full ecommerce funnel. Nothing is sold and no details are collected. |
+| Demo media site (Balsam Daily) | `/media/`, `/media/article/<story>/` | Article tracking and HTML5 video tracking |
 
 Every page has an **Event log** button (bottom right) that mirrors
 `window.dataLayer` and `window.adobeDataLayer` as they fill.
@@ -97,7 +97,7 @@ So both tag managers start with page data already waiting. See
 ```json
 {
   "page": { "name": "shop:product:tidepool-daypack", "type": "product detail", "section": "shop",
-            "siteName": "Driftwood Supply Co. (demo)", "path": "/shop/product/tidepool-daypack/",
+            "siteName": "Taiga Supply Co. (demo)", "path": "/shop/product/tidepool-daypack/",
             "language": "en-CA", "environment": "production" },
   "user": { "loginStatus": "guest" }
 }
