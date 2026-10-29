@@ -1,0 +1,69 @@
+---
+// Analytics practice section. index.md renders at /practice/, other files at
+// /practice/<file-name>/. Same layout as blog posts, plus a section menu.
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import { siteMeta } from '../../config/tags';
+import { formatDate, isoDate, wordCount } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('practice', ({ data }) => import.meta.env.DEV || !data.draft);
+  return pages.map((entry) => ({
+    params: { slug: entry.id === 'index' ? undefined : entry.id },
+    props: { entry, pages },
+  }));
+}
+
+const { entry, pages } = Astro.props as { entry: CollectionEntry<'practice'>; pages: CollectionEntry<'practice'>[] };
+const { Content } = await render(entry);
+const d = entry.data;
+const isIndex = entry.id === 'index';
+const others = pages.filter((p) => p.id !== 'index').sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+
+const pageData = {
+  page: {
+    name: isIndex ? 'practice:index' : `practice:${entry.id}`,
+    type: isIndex ? 'section front' : 'article',
+    section: 'practice',
+    siteName: siteMeta.blogName,
+  },
+  content: {
+    id: entry.id,
+    title: d.title,
+    category: d.category,
+    tags: d.tags,
+    platform: d.platform,
+    publishDate: isoDate(d.pubDate),
+    author: siteMeta.owner,
+    wordCount: wordCount(entry.body),
+  },
+};
+---
+<BlogLayout title={`${d.title} — ${siteMeta.blogName}`} description={d.description} pageData={pageData}>
+  <article class="post">
+    <div class="blog-wrap">
+      <header class="post-head">
+        {!isIndex && <p class="crumbs"><a href="/practice/">Analytics practice</a></p>}
+        <h1>{d.title}</h1>
+        <div class="post-meta">
+          <time datetime={isoDate(d.pubDate)}>{d.updatedDate ? `Updated ${formatDate(d.updatedDate)}` : formatDate(d.pubDate)}</time>
+          <span>{d.category}</span>
+        </div>
+      </header>
+      <div class="post-body">
+        <Content />
+      </div>
+      {isIndex && others.length > 0 && (
+        <nav class="practice-pages" aria-label="Pages in this section">
+          <h2>In this section</h2>
+          <ul>{others.map((p) => <li><a href={`/practice/${p.id}/`}>{p.data.title}</a></li>)}</ul>
+        </nav>
+      )}
+    </div>
+  </article>
+
+  <script>
+    import { trackScrollDepth } from '../../scripts/scroll';
+    trackScrollDepth(document.querySelector('.post-body'));
+  </script>
+</BlogLayout>
