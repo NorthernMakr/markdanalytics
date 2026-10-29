@@ -12,7 +12,7 @@
 
 export const tags = {
   /** Google Tag Manager container ID, e.g. "GTM-ABC1234" */
-  gtmId: import.meta.env.PUBLIC_GTM_ID ?? '',
+  gtmId: import.meta.env.PUBLIC_GTM_ID || 'GTM-NM7SRRNT',
 
   /**
    * Adobe Experience Platform Tags (Launch) embed URL for this environment,
