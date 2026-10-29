@@ -1,0 +1,9 @@
+// Cloudflare deployment settings. Cloudflare runs `npm run build`, then
+// `npx wrangler deploy`, which publishes the static site built into ./dist.
+{
+  "name": "markdanalytics",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}
