@@ -131,3 +131,11 @@
 .sitemap h2 { font-size: 22px; margin-top: 1.6em; }
 .sitemap p { color: var(--muted); font: 16px/1.5 var(--sans); margin: -0.3em 0 0.6em; }
 .sitemap ul { font: 17px/1.5 var(--sans); }
+
+/* Links to other websites (added by src/lib/rehype-external-links.mjs) */
+.post-body a.ext .ext-icon { font-size: 0.8em; margin-left: 2px; text-decoration: none; display: inline-block; }
+.post-body a.ext-listed .ext-domain {
+  margin-left: 8px; font: 13px/1 var(--sans); color: var(--muted);
+  text-decoration: none; display: inline-block; white-space: nowrap;
+}
+.post-body a.ext-listed .ext-icon { color: var(--muted); }
