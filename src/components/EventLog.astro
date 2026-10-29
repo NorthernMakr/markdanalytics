@@ -13,23 +13,25 @@
       <div class="evlog-tabs" role="tablist">
         <button role="tab" aria-selected="true" data-layer="dataLayer">dataLayer <span data-n="dataLayer">0</span></button>
         <button role="tab" aria-selected="false" data-layer="adobeDataLayer">adobeDataLayer <span data-n="adobeDataLayer">0</span></button>
+        <button role="tab" aria-selected="false" data-layer="labEdgeLog" title="Requests built by the Adobe Web SDK">Web SDK <span data-n="labEdgeLog">0</span></button>
       </div>
       <button class="evlog-copy" type="button">Copy JSON</button>
     </header>
     <ol class="evlog-list" reversed></ol>
-    <p class="evlog-hint">Newest first. Mirrors pushes on this page only.</p>
+    <p class="evlog-hint">Newest first, this page only. Web SDK shows each request the SDK built and where it went.</p>
   </section>
 </div>
 
 <script>
-  type Layer = 'dataLayer' | 'adobeDataLayer';
+  type Layer = 'dataLayer' | 'adobeDataLayer' | 'labEdgeLog';
+  const LAYERS: Layer[] = ['dataLayer', 'adobeDataLayer', 'labEdgeLog'];
   const root = document.querySelector<HTMLElement>('.evlog')!;
   const toggle = root.querySelector<HTMLButtonElement>('.evlog-toggle')!;
   const panel = root.querySelector<HTMLElement>('.evlog-panel')!;
   const list = root.querySelector<HTMLOListElement>('.evlog-list')!;
   const count = root.querySelector<HTMLElement>('.evlog-count')!;
   const tabs = root.querySelectorAll<HTMLButtonElement>('[role="tab"]');
-  const seen: Record<Layer, unknown[]> = { dataLayer: [], adobeDataLayer: [] };
+  const seen: Record<Layer, unknown[]> = { dataLayer: [], adobeDataLayer: [], labEdgeLog: [] };
   let active: Layer = 'dataLayer';
 
   const OPEN_KEY = 'evlog-open';
@@ -38,7 +40,7 @@
 
   function label(item: any): string {
     if (item && typeof item === 'object') {
-      if ('event' in item) return String(item.event);
+      if ('event' in item) return String(item.event) + (item.sent ? ' → ' + item.sent : '');
       if (Array.isArray(item) || typeof item.length === 'number') return 'gtag(' + (item[0] ?? '') + ')';
       if ('ecommerce' in item && item.ecommerce === null) return '(ecommerce cleared)';
     }
@@ -73,7 +75,7 @@
 
   function poll() {
     let changed = false;
-    (['dataLayer', 'adobeDataLayer'] as Layer[]).forEach((name) => {
+    LAYERS.forEach((name) => {
       const arr = (window as any)[name];
       if (!Array.isArray(arr)) return;
       if (arr.length > seen[name].length) {
@@ -82,7 +84,7 @@
       }
       root.querySelector(`[data-n="${name}"]`)!.textContent = String(seen[name].length);
     });
-    count.textContent = String(seen.dataLayer.length + seen.adobeDataLayer.length);
+    count.textContent = String(LAYERS.reduce((n, l) => n + seen[l].length, 0));
     if (changed && !panel.hidden) render();
   }
 
@@ -140,7 +142,7 @@
   .evlog[data-open="true"] { display: flex; flex-direction: column-reverse; align-items: flex-end; }
   .evlog-panel[hidden] { display: none; }
   .evlog-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px; background: #14213D; }
-  .evlog-tabs { display: flex; gap: 4px; }
+  .evlog-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
   .evlog-tabs button, .evlog-copy {
     background: transparent; color: #AEB8C8; border: 1px solid #2E4068; border-radius: 6px;
     padding: 5px 9px; cursor: pointer; font: inherit;

@@ -63,8 +63,10 @@ HTTPS certificates are issued automatically.
 
 ## 5. Add your tags
 
-Nothing loads until you add IDs. In Cloudflare: **your Pages project >
-Settings > Environment variables** (Production), then redeploy:
+Nothing loads until you add IDs. These are read when the site is *built*, so
+in Cloudflare open **Workers & Pages > markdanalytics > Settings > Build >
+Variables and secrets** (build variables, not the runtime ones), add them, then
+redeploy (or push any commit):
 
 | Variable | Example | Loads |
 |---|---|---|
@@ -77,6 +79,36 @@ Locally, copy `.env.example` to `.env` and fill in the same values.
 
 Tip: use a **Preview** environment in Cloudflare with your Adobe *development*
 embed and a GTM environment snippet, and **Production** with the live ones.
+
+### Adobe Web SDK without an Adobe account
+
+The site loads Adobe's real Web SDK (`alloy.js`, self-hosted in `public/vendor/`)
+and turns every `adobeDataLayer` event into a `sendEvent` call with an XDM
+payload, the way an Adobe Tags rule would (`public/lab/websdk-bridge.js`).
+
+By default (**mock** mode) the SDK sends to `/ee/…` on this site instead of
+Adobe's Edge Network. A small Worker (`src/worker.ts`) answers like the edge
+would, including a fake ECID, so the SDK behaves normally. Nothing reaches Adobe.
+
+Where to look:
+- **Event log → Web SDK tab:** each request the SDK built (XDM and data), and where it went
+- **DevTools → Network, filter `interact`:** the real requests; the response echoes what was received
+- **Adobe Experience Platform Debugger** extension also picks up the calls
+
+| `PUBLIC_WEBSDK_MODE` | What happens |
+|---|---|
+| `mock` (default) | Real SDK, requests go to this site's stand-in edge |
+| `cancel` | Real SDK builds each request, logs it, then cancels it (`onBeforeEventSend` returns `false`) |
+| `live` | Sends to Adobe; also set `PUBLIC_WEBSDK_DATASTREAM_ID` and `PUBLIC_WEBSDK_ORG_ID` |
+| `off` | Web SDK not loaded |
+
+XDM mapping: `page loaded` → `web.webpagedetails.pageViews`; `product viewed` →
+`commerce.productViews`; `cart add` → `commerce.productListAdds`; `cart remove` →
+`commerce.productListRemovals`; `cart viewed` → `commerce.productListViews`;
+`checkout started` → `commerce.checkouts`; `purchase` → `commerce.purchases` +
+`commerce.order`; `wishlist add` → `commerce.saveForLaters`; everything else →
+`web.webinteraction.linkClicks` named after the event. Page views also set
+`data.__adobe.analytics` (prop1/eVar1 = page type, prop2 = section) as an example.
 
 ### Load order (in every page's `<head>`)
 

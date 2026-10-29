@@ -58,6 +58,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     {demoBanner && <meta name="robots" content="noindex" />}
 
+    <!-- 0. Adobe Web SDK + bridge from adobeDataLayer events to sendEvent -->
+    {tags.webSdk.mode !== 'off' && (
+      <>
+        <script is:inline set:html={`window.labWebSdkConfig = ${JSON.stringify(tags.webSdk)};`} />
+        <script is:inline src="/lab/websdk-bridge.js"></script>
+      </>
+    )}
+
     <!-- 1. Data layers + page data (must come before any tag manager) -->
     <script is:inline set:html={`
       window.dataLayer = window.dataLayer || [];
@@ -70,10 +78,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
           window.dataLayer.push(evt);
         },
         /* Adobe Client Data Layer */
-        adobe: function (evt) { window.adobeDataLayer.push(evt); }
+        /* Adobe Client Data Layer, also forwarded to the Web SDK bridge when it's on */
+        adobe: function (evt) {
+          window.adobeDataLayer.push(evt);
+          if (window.labWebSdk) window.labWebSdk(evt);
+        }
       };
       window.dataLayer.push(Object.assign({ event: 'page_data_ready' }, window.labPage));
-      window.adobeDataLayer.push(Object.assign({ event: 'page loaded' }, window.labPage));
+      window.lab.adobe(Object.assign({ event: 'page loaded' }, window.labPage));
     `} />
 
     <!-- 2. Adobe Experience Platform Tags (Launch) -->

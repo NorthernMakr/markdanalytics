@@ -26,6 +26,21 @@ export const tags = {
    */
   ga4Id: import.meta.env.PUBLIC_GA4_ID ?? '',
 
+  /**
+   * Adobe Web SDK (alloy.js). Modes:
+   *   "mock"   (default) real SDK, requests go to this site's /ee/ stand-in, nothing reaches Adobe
+   *   "cancel" real SDK builds each request, logs it, then cancels it (no network calls)
+   *   "live"   real datastream + org IDs below; data goes to Adobe
+   *   "off"    don't load the Web SDK
+   */
+  webSdk: {
+    mode: (import.meta.env.PUBLIC_WEBSDK_MODE ?? 'mock') as 'mock' | 'cancel' | 'live' | 'off',
+    datastreamId: import.meta.env.PUBLIC_WEBSDK_DATASTREAM_ID || 'lab-mock-datastream-0000',
+    orgId: import.meta.env.PUBLIC_WEBSDK_ORG_ID || 'MARKDLAB000000000000000@AdobeOrg',
+    edgeDomain: import.meta.env.PUBLIC_WEBSDK_EDGE_DOMAIN ?? '', // live mode only; blank = Adobe default
+    src: '/vendor/alloy-2.36.1.min.js', // self-hosted copy of Adobe's Web SDK
+  },
+
   /** Show the floating event log that mirrors dataLayer and adobeDataLayer. */
   showEventLog: (import.meta.env.PUBLIC_SHOW_EVENT_LOG ?? 'true') !== 'false',
 };
