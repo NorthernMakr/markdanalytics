@@ -47,6 +47,31 @@ def const(name, value):
     return "{{" + name + "}}"
 
 
+def lookup(name, input_var, rows, default=None):
+    """Lookup table variable: turns raw values into labels analysts can read."""
+    params = [
+        tmpl("input", input_var),
+        {"type": "LIST", "key": "map", "list": [
+            {"type": "MAP", "map": [tmpl("key", k), tmpl("value", v)]} for k, v in rows
+        ]},
+    ]
+    if default is not None:
+        params += [{"type": "BOOLEAN", "key": "setDefaultValue", "value": "true"}, tmpl("defaultValue", default)]
+    variables.append({
+        "accountId": "0", "containerId": "0", "variableId": str(next(ids)),
+        "name": name, "type": "smm", "parameter": params,
+    })
+    return "{{" + name + "}}"
+
+
+def custom_js(name, code):
+    variables.append({
+        "accountId": "0", "containerId": "0", "variableId": str(next(ids)),
+        "name": name, "type": "jsm", "parameter": [tmpl("javascript", code)],
+    })
+    return "{{" + name + "}}"
+
+
 def event_trigger(name, regex):
     tid = str(next(ids))
     triggers.append({
@@ -86,6 +111,20 @@ page_section = dlv("page.section")
 site_name = dlv("page.siteName")
 environment = dlv("page.environment")
 login = dlv("user.loginStatus")
+# Language: the page's language (built into the page) and the visitor's browser
+# language (read as the page loads). Every other value is English in both
+# languages, so analysts segment on these rather than seeing pages split in two.
+page_language = dlv("page.language")
+browser_language = dlv("user.browserLanguage")
+# GA4 collects page_location and page_title from the browser, which would be the
+# /fr/ address and the French tab title. Both are overridden with English values:
+# the English URL (page.path is the English path) and the page name.
+page_path = dlv("page.path")
+english_url = custom_js("JS - English page URL",
+    "function () {\n  // Same URL for both language versions; page_language tells them apart.\n"
+    "  return location.origin + ({{DLV - page.path}} || location.pathname) + location.search;\n}")
+language_match = lookup("Lookup - Language match", dlv("user.languageMatch"),
+                        [("true", "match"), ("false", "mismatch")], default="unknown")
 content_category = dlv("content.category")
 content_section = dlv("content.section")
 content_author = dlv("content.author")
@@ -99,12 +138,17 @@ tags.append({
         tmpl("tagId", MID),
         # Shared parameters: sent with every GA4 event from this container
         params_table("configSettingsTable", [
+            ("page_location", english_url),
+            ("page_title", page_name),
             ("page_name", page_name),
             ("page_type", page_type),
             ("site_section", page_section),
             ("site_name", site_name),
             ("site_environment", environment),
             ("login_status", login),
+            ("page_language", page_language),
+            ("browser_language", browser_language),
+            ("language_match", language_match),
             ("content_category", content_category),
             ("content_section", content_section),
             ("content_author", content_author),
@@ -164,6 +208,13 @@ ga4_event("GA4 - Event - Forms", form_trigger, params=[
     ("form_name", dlv("form_name")),
     ("form_topic", dlv("form_topic")),
     ("error_field", dlv("error_field")),
+])
+
+# --- Language switch (EN | FR link at the top of every page) -----------------------------
+lang_trigger = event_trigger("CE - language_switch", "^language_switch$")
+ga4_event("GA4 - Event - Language switch", lang_trigger, params=[
+    ("language_from", dlv("language_from")),
+    ("language_to", dlv("language_to")),
 ])
 
 container = {

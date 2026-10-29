@@ -5,16 +5,21 @@ import BlogLayout from '../layouts/BlogLayout.astro';
 import { siteMeta } from '../config/tags';
 import { formatDate, isoDate, wordCount } from '../lib/blog';
 import { graph, article, breadcrumbs } from '../lib/seo';
-import { Content, frontmatter as fm, rawContent } from '../writing/site-notes.md';
+import * as EN from '../writing/site-notes.md';
+import * as FR from '../writing/site-notes.fr.md';
+import { LOCALE, langFromPath, localize, tr } from '../i18n';
+
+const lang = langFromPath(Astro.url.pathname);
+const { Content, frontmatter: fm, rawContent } = lang === 'fr' ? FR : EN;
 
 const published = new Date(fm.pubDate);
 const updated = fm.updatedDate ? new Date(fm.updatedDate) : undefined;
-const path = '/site-notes/';
+const path = localize('/site-notes/', lang);
 
 const pageData = {
   page: { name: 'site:development-notes', type: 'article', section: 'site', siteName: siteMeta.blogName },
   content: {
-    id: 'site-notes', title: fm.title, category: 'Site', author: siteMeta.owner,
+    id: 'site-notes', title: EN.frontmatter.title, // English in both languages category: 'Site', author: siteMeta.owner,
     publishDate: isoDate(published), updatedDate: updated ? isoDate(updated) : undefined,
     wordCount: wordCount(rawContent()),
   },
@@ -23,16 +28,16 @@ const pageData = {
 <BlogLayout title={`${fm.title} — ${siteMeta.blogName}`} description={fm.description} pageData={pageData}
   ogType="article" published={published} modified={updated}
   jsonLd={graph(
-    article({ path, title: fm.title, description: fm.description, published, modified: updated, section: 'Site', wordCount: wordCount(rawContent()) }),
-    breadcrumbs([{ name: 'Home', path: '/' }, { name: fm.title, path }]),
+    article({ path, title: fm.title, description: fm.description, published, modified: updated, section: 'Site', wordCount: wordCount(rawContent()), inLanguage: LOCALE[lang] }),
+    breadcrumbs([{ name: tr(lang, 'Home', 'Accueil'), path: localize('/', lang) }, { name: fm.title, path }]),
   )}>
   <article class="post">
     <div class="blog-wrap">
       <header class="post-head">
         <h1>{fm.title}</h1>
         <div class="post-meta">
-          <time datetime={isoDate(updated ?? published)}>{updated && updated > published ? `Updated ${formatDate(updated)}` : formatDate(published)}</time>
-          <span>About this site</span>
+          <time datetime={isoDate(updated ?? published)}>{updated && updated > published ? `${tr(lang, 'Updated', 'Mis à jour le')} ${formatDate(updated, lang)}` : formatDate(published, lang)}</time>
+          <span>{tr(lang, 'About this site', 'À propos du site')}</span>
         </div>
       </header>
       <div class="post-body">

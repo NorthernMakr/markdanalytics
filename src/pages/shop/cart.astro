@@ -2,26 +2,31 @@
 import ShopLayout from '../../layouts/ShopLayout.astro';
 import ProductArt from '../../components/ProductArt.astro';
 import { products } from '../../data/products';
+import { langFromPath, localize, tr } from '../../i18n';
+
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
+const heading = tr(lang, 'Your cart', 'Votre panier');
 ---
-<ShopLayout title="Your cart" pageType="cart" pageName="shop:cart" checkoutStep={0}>
+<ShopLayout title={heading} pageType="cart" pageName="shop:cart" checkoutStep={0}>
   <div class="shop-wrap">
-    <h1 class="page-title">Your cart</h1>
+    <h1 class="page-title">{heading}</h1>
 
     <div class="empty" data-empty hidden>
-      <p>Your cart is empty.</p>
+      <p>{tr(lang, 'Your cart is empty.', 'Votre panier est vide.')}</p>
       <div class="actions">
-        <a class="btn" href="/shop/catalog/">Browse the catalog</a>
-        <button class="btn btn-ghost" type="button" data-sample>Add sample items</button>
+        <a class="btn" href={l('/shop/catalog/')}>{tr(lang, 'Browse the catalog', 'Parcourir le catalogue')}</a>
+        <button class="btn btn-ghost" type="button" data-sample>{tr(lang, 'Add sample items', 'Ajouter des articles d’exemple')}</button>
       </div>
     </div>
 
     <div class="cart-layout" data-full hidden>
       <ul class="cart-lines"></ul>
-      <aside class="summary" aria-label="Order summary">
-        <h2>Order summary</h2>
+      <aside class="summary" aria-label={tr(lang, 'Order summary', 'Résumé de la commande')}>
+        <h2>{tr(lang, 'Order summary', 'Résumé de la commande')}</h2>
         <dl data-totals></dl>
-        <a class="btn btn-go" href="/shop/checkout/">Go to checkout</a>
-        <p style="margin:12px 0 0;font-size:14px;color:var(--slate)">Taxes estimated at 12% (GST + PST).</p>
+        <a class="btn btn-go" href={l('/shop/checkout/')}>{tr(lang, 'Go to checkout', 'Passer à la caisse')}</a>
+        <p style="margin:12px 0 0;font-size:14px;color:var(--slate)">{tr(lang, 'Taxes estimated at 12% (GST + PST).', 'Taxes estimées à 12 % (TPS + TVP).')}</p>
       </aside>
     </div>
   </div>
@@ -33,8 +38,12 @@ import { products } from '../../data/products';
 
   <script>
     import { getCart, bySku, totals, viewCart, removeFromCart, addToCart } from '../../scripts/commerce';
-    import { money, products } from '../../data/products';
+    import { products, productText, colourLabel } from '../../data/products';
+    import { money } from '../../i18n';
+    import { t, lp, pageLang } from '../../scripts/lab';
 
+    const lang = pageLang();
+    const fmt = (n: number) => money(n, lang);
     const lines = document.querySelector<HTMLUListElement>('.cart-lines')!;
     const empty = document.querySelector<HTMLElement>('[data-empty]')!;
     const full = document.querySelector<HTMLElement>('[data-full]')!;
@@ -58,13 +67,13 @@ import { products } from '../../data/products';
           if (hex) thumb.querySelectorAll('.fill').forEach((el) => el.setAttribute('fill', hex));
         }
         const info = document.createElement('div');
-        info.innerHTML = `<h3><a href="/shop/product/${p.slug}/"></a></h3><p></p>
+        info.innerHTML = `<h3><a href="${lp(`/shop/product/${p.slug}/`)}"></a></h3><p></p>
           <div class="line-actions">
-            <select aria-label="Quantity">${[1,2,3,4,5,6,7,8,9,10].map((n) => `<option ${n === l.qty ? 'selected' : ''}>${n}</option>`).join('')}</select>
-            <button class="btn-link" type="button">Remove</button>
+            <select aria-label="${t('Quantity', 'Quantité')}">${[1,2,3,4,5,6,7,8,9,10].map((n) => `<option ${n === l.qty ? 'selected' : ''}>${n}</option>`).join('')}</select>
+            <button class="btn-link" type="button">${t('Remove', 'Retirer')}</button>
           </div>`;
-        info.querySelector('a')!.textContent = p.name;
-        info.querySelector('p')!.textContent = `${l.colour}, ${money(p.price)} each`;
+        info.querySelector('a')!.textContent = productText(p, lang).name;
+        info.querySelector('p')!.textContent = t(`${colourLabel(l.colour, lang)}, ${fmt(p.price)} each`, `${colourLabel(l.colour, lang)}, ${fmt(p.price)} chacun`);
         const sel = info.querySelector('select')!;
         sel.addEventListener('change', () => {
           const next = Number(sel.value);
@@ -75,15 +84,15 @@ import { products } from '../../data/products';
         info.querySelector('button')!.addEventListener('click', () => { removeFromCart(p.sku, l.colour, l.qty); render(); });
         const total = document.createElement('div');
         total.className = 'line-total';
-        total.textContent = money(p.price * l.qty);
+        total.textContent = fmt(p.price * l.qty);
         li.append(thumb, info, total);
         lines.append(li);
       }
-      const t = totals(cart);
-      dl.innerHTML = `<dt>Subtotal</dt><dd>${money(t.subtotal)}</dd>
-        <dt>Shipping</dt><dd>Calculated at checkout</dd>
-        <dt>Estimated tax</dt><dd>${money(t.tax)}</dd>
-        <dt class="grand">Estimated total</dt><dd class="grand">${money(t.subtotal + t.tax)}</dd>`;
+      const tt = totals(cart);
+      dl.innerHTML = `<dt>${t('Subtotal', 'Sous-total')}</dt><dd>${fmt(tt.subtotal)}</dd>
+        <dt>${t('Shipping', 'Livraison')}</dt><dd>${t('Calculated at checkout', 'Calculée à la caisse')}</dd>
+        <dt>${t('Estimated tax', 'Taxes estimées')}</dt><dd>${fmt(tt.tax)}</dd>
+        <dt class="grand">${t('Estimated total', 'Total estimé')}</dt><dd class="grand">${fmt(tt.subtotal + tt.tax)}</dd>`;
     }
 
     // One-click way to get items into the cart while testing

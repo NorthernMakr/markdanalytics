@@ -1,6 +1,8 @@
 ---
 import Base, { type PageData } from './Base.astro';
+import LangSwitch from '../components/LangSwitch.astro';
 import { siteMeta } from '../config/tags';
+import { langFromPath, basePath, localize, tr } from '../i18n';
 import '../styles/blog.css';
 
 interface Props {
@@ -9,31 +11,36 @@ interface Props {
   jsonLd?: object; published?: Date; modified?: Date;
 }
 const { title, description, pageData, ...seo } = Astro.props;
-const path = Astro.url.pathname;
+const lang = langFromPath(Astro.url.pathname);
+const base = basePath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
 const nav = [
-  { href: '/', label: 'Home' },
-  { href: '/blog/', label: 'Notes' },
-  { href: '/practice/', label: 'Practice' },
-  { href: '/shop/', label: 'Demo store' },
-  { href: '/media/', label: 'Demo media site' },
-  { href: '/contact/', label: 'Contact' },
+  { href: '/', label: tr(lang, 'Home', 'Accueil') },
+  { href: '/blog/', label: tr(lang, 'Notes', 'Notes') },
+  { href: '/practice/', label: tr(lang, 'Practice', 'Pratique') },
+  { href: '/shop/', label: tr(lang, 'Demo store', 'Boutique démo') },
+  { href: '/media/', label: tr(lang, 'Demo media site', 'Site média démo') },
+  { href: '/contact/', label: tr(lang, 'Contact', 'Contact') },
 ];
-const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const isCurrent = (href: string) => (href === '/' ? base === '/' : base.startsWith(href));
 ---
 <Base title={title} description={description} pageData={pageData} bodyClass="blog" {...seo}>
   <header class="blog-nav">
     <div class="blog-wrap">
-      <a class="blog-logo" href="/">
+      <a class="blog-logo" href={l('/')}>
         <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#14213D"/><rect x="7" y="18" width="4" height="7" rx="1" fill="#E9A23B"/><rect x="14" y="12" width="4" height="13" rx="1" fill="#E8ECF2"/><rect x="21" y="7" width="4" height="18" rx="1" fill="#E8ECF2"/></svg>
         {siteMeta.blogName}
       </a>
-      <nav aria-label="Main">
-        <ul>
-          {nav.map((n) => (
-            <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined} data-nav-link={n.label}>{n.label}</a></li>
-          ))}
-        </ul>
-      </nav>
+      <div class="blog-nav-right">
+        <nav aria-label={tr(lang, 'Main', 'Principal')}>
+          <ul>
+            {nav.map((n) => (
+              <li><a href={l(n.href)} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+        <LangSwitch class="blog-lang" />
+      </div>
     </div>
   </header>
   <main>
@@ -41,12 +48,12 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
   </main>
   <footer class="blog-footer">
     <div class="blog-wrap">
-      <p>© {new Date().getFullYear()} {siteMeta.owner}. Independent notes, not affiliated with Adobe or Google.</p>
-      <nav aria-label="Footer">
+      <p>© {new Date().getFullYear()} {siteMeta.owner}. {tr(lang, 'Independent notes, not affiliated with Adobe or Google.', 'Notes indépendantes, sans lien avec Adobe ni Google.')}</p>
+      <nav aria-label={tr(lang, 'Footer', 'Pied de page')}>
         <ul class="footer-links">
-          <li><a href="/site-notes/">How this site was built</a></li>
-          <li><a href="/sitemap/">Sitemap</a></li>
-          <li><a href="/rss.xml">RSS</a></li>
+          <li><a href={l('/site-notes/')}>{tr(lang, 'How this site was built', 'Comment ce site a été construit')}</a></li>
+          <li><a href={l('/sitemap/')}>{tr(lang, 'Sitemap', 'Plan du site')}</a></li>
+          <li><a href={l('/rss.xml')}>RSS</a></li>
         </ul>
       </nav>
     </div>

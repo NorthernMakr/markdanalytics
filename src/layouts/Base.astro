@@ -9,7 +9,9 @@
 import { tags, siteMeta } from '../config/tags';
 import { checkPage, GA4_EVENTS, ADOBE_EVENTS, FORBIDDEN_KEYS } from '../config/analytics';
 import { DEFAULT_IMAGE } from '../lib/seo';
+import { LOCALE, OG_LOCALE, langFromPath, basePath, localize, otherLang, tr } from '../i18n';
 import EventLog from '../components/EventLog.astro';
+import LangSwitch from '../components/LangSwitch.astro';
 import '../styles/base.css';
 
 export interface PageData {
@@ -44,9 +46,14 @@ interface Props {
 }
 
 const {
-  title, description = siteMeta.blogTagline, pageData, bodyClass = '', demoBanner,
+  title, description: descProp, pageData, bodyClass = '', demoBanner,
   noindex = !!demoBanner, robots, ogType = 'website', jsonLd, published, modified,
 } = Astro.props;
+// Language comes from the URL: /fr/... is French, everything else English.
+const lang = langFromPath(Astro.url.pathname);
+const description = descProp ?? (lang === 'fr' ? siteMeta.blogTaglineFr : siteMeta.blogTagline);
+const enPath = basePath(Astro.url.pathname);
+const frPath = localize(enPath, 'fr');
 const robotsContent = robots ?? (noindex ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-image-preview:large');
 const ogImage = new URL(DEFAULT_IMAGE.url, Astro.site).toString();
 const ldJson = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : '';
@@ -55,8 +62,10 @@ const fullData = {
   ...pageData,
   page: {
     ...pageData.page,
-    path: Astro.url.pathname,
-    language: siteMeta.language,
+    // English path for both versions (/fr/shop/ reports as /shop/), so a page is
+    // one row in reports; language says which version was read.
+    path: enPath,
+    language: LOCALE[lang], // language of the page itself
     environment: import.meta.env.PROD ? 'production' : 'development',
   },
   user: { loginStatus: 'guest' },
@@ -71,17 +80,21 @@ const pageJson = JSON.stringify(fullData).replace(/</g, '\\u003c');
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 <!doctype html>
-<html lang="en-CA">
+<html lang={LOCALE[lang]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <!-- The same page in each language, for search engines -->
+    <link rel="alternate" hreflang="en-CA" href={new URL(enPath, Astro.site).toString()} />
+    <link rel="alternate" hreflang="fr-CA" href={new URL(frPath, Astro.site).toString()} />
+    <link rel="alternate" hreflang="x-default" href={new URL(enPath, Astro.site).toString()} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="robots" content={robotsContent} />
     <meta name="author" content={siteMeta.owner} />
-    <link rel="alternate" type="application/rss+xml" title={`${siteMeta.blogName} (RSS)`} href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${siteMeta.blogName} (RSS)`} href={localize('/rss.xml', lang)} />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 
     <!-- Sharing previews (Open Graph, also read by LinkedIn, Slack, X) -->
@@ -90,7 +103,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:locale" content="en_CA" />
+    <meta property="og:locale" content={OG_LOCALE[lang]} />
+    <meta property="og:locale:alternate" content={OG_LOCALE[otherLang(lang)]} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content={String(DEFAULT_IMAGE.width)} />
     <meta property="og:image:height" content={String(DEFAULT_IMAGE.height)} />
@@ -116,6 +130,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
       window.dataLayer = window.dataLayer || [];
       window.adobeDataLayer = window.adobeDataLayer || [];
       window.labPage = ${pageJson};
+      /* The visitor's browser language, read at run time (the page language is fixed at build time) */
+      (function (u) {
+        var bl = (navigator.languages && navigator.languages[0]) || navigator.language || '';
+        u.browserLanguage = bl;
+        u.languageMatch = !!bl && bl.slice(0, 2).toLowerCase() === window.labPage.page.language.slice(0, 2);
+      })(window.labPage.user);
       /* Outside production, warn when a push breaks the conventions in src/config/analytics.ts */
       var labRules = ${conventions};
       var labCheck = function (layer, list, evt) {
@@ -171,12 +191,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     {demoBanner && (
       <div class="lab-ribbon" role="note">
         <span>{demoBanner}</span>
-        <a href="/">Back to {siteMeta.blogName}</a>
+        <span class="lab-ribbon-links">
+          <a href={localize('/', lang)}>{tr(lang, 'Back to', 'Retour à')} {siteMeta.blogName}</a>
+          <LangSwitch />
+        </span>
       </div>
     )}
 
     <slot />
 
-    {tags.showEventLog && <EventLog />}
+    {tags.showEventLog && <EventLog lang={lang} />}
   </body>
 </html>

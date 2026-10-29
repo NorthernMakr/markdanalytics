@@ -1,0 +1,43 @@
+---
+// EN | FR switch shown at the top of every page. Links to the same page in the
+// other language, and pushes a language_switch event when used.
+import { LANGS, LANG_LABEL, langFromPath, basePath, localize } from '../i18n';
+
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+const current = langFromPath(Astro.url.pathname);
+const base = basePath(Astro.url.pathname);
+---
+<nav class={`lang-switch ${cls}`} aria-label={current === 'fr' ? 'Langue' : 'Language'}>
+  {LANGS.map((l, i) => (
+    <>
+      {i > 0 && <span class="lang-sep" aria-hidden="true">|</span>}
+      {l === current
+        ? <span class="lang-current" aria-current="true" lang={l} title={LANG_LABEL[l].long}>{LANG_LABEL[l].short}</span>
+        : <a href={localize(base, l)} hreflang={l} lang={l} title={LANG_LABEL[l].long} data-lang-to={l}>
+            {LANG_LABEL[l].short}<span class="visually-hidden"> ({LANG_LABEL[l].long})</span>
+          </a>}
+    </>
+  ))}
+</nav>
+
+<script>
+  import { ga4, adobe } from '../scripts/lab';
+  document.querySelectorAll<HTMLAnchorElement>('.lang-switch a[data-lang-to]').forEach((a) => {
+    a.addEventListener('click', () => {
+      const from = (window.labPage?.page?.language as string) ?? '';
+      const to = a.dataset.langTo === 'fr' ? 'fr-CA' : 'en-CA';
+      ga4({ event: 'language_switch', language_from: from, language_to: to });
+      adobe({ event: 'language switched', language: { from, to } });
+    });
+  });
+</script>
+
+<style>
+  .lang-switch { display: inline-flex; align-items: center; gap: 6px; font: 600 14px/1 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .lang-switch a, .lang-current { display: inline-flex; align-items: center; justify-content: center; min-width: 36px; min-height: 36px; padding: 0 6px; }
+  .lang-switch a { color: inherit; opacity: .75; text-decoration: underline; text-underline-offset: 3px; }
+  .lang-switch a:hover { opacity: 1; }
+  .lang-current { text-decoration: none; }
+  .lang-sep { opacity: .45; }
+</style>

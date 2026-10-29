@@ -131,9 +131,13 @@ So both tag managers start with page data already waiting. See
   "page": { "name": "shop:product:tidepool-daypack", "type": "product detail", "section": "shop",
             "siteName": "Taiga Supply Co. (demo)", "path": "/shop/product/tidepool-daypack/",
             "language": "en-CA", "environment": "production" },
-  "user": { "loginStatus": "guest" }
+  "user": { "loginStatus": "guest", "browserLanguage": "fr-CA", "languageMatch": false }
 }
 ```
+
+`page.language` is the language of the page (set at build time);
+`user.browserLanguage` and `user.languageMatch` are filled in by the browser as
+the page loads. `page.path` is always the English path, even on `/fr/` pages.
 
 Blog posts and media articles add a `content` object (title, category or
 section, author, publish date, word count; media articles also `hasVideo` and
@@ -211,6 +215,42 @@ One-time setup in Cloudflare:
    (runtime, not build): add a **Secret** named `CONTACT_TO` with that address.
 3. Redeploy. Until then the form politely says it isn't switched on yet.
 
+## English and French
+
+Every page exists in English (at the root) and French (under `/fr/`, same
+addresses). French route files in `src/pages/fr/` render the English page
+component, which reads its language from the URL; strings are picked with
+`tr(lang, 'English', 'Français')` from `src/i18n/index.ts`.
+
+**Analytics values are always English**, on both versions: page names and
+paths, content titles, product, list and promo names, video titles, link text.
+Analysts usually work in one language, and a page should be one row in a
+top-pages report. The language variables are how you split them:
+
+| Data layer | GA4 parameter | Adobe (Web SDK) |
+|---|---|---|
+| `page.language` | `page_language` | `prop3`, `eVar2` |
+| `user.browserLanguage` | `browser_language` | `prop4`, `eVar3` |
+| `user.languageMatch` | `language_match` (`match` / `mismatch`) | `prop5` |
+| language switch click | `language_switch` (`language_from`, `language_to`) | `language switched` |
+
+The GTM container also overrides GA4's `page_location` (English URL) and
+`page_title` (page name), which GA4 would otherwise read from the browser.
+
+**In GA4**, register these as event-scoped custom dimensions (Admin > Custom
+definitions) so they appear in reports: `page_language`, `browser_language`,
+`language_match`, `language_from`, `language_to`.
+
+To check both languages, run the site locally (`npm run build`, then
+`npx wrangler dev`) and `npm run test:languages`. It needs Playwright
+(`npm install --no-save playwright && npx playwright install chromium`). It crawls every page and fails
+if a link is broken, a switch is missing, or a French page sends a different
+page name, path or title from its English twin.
+
+To add a language (say `zh-CN` under `/zh/`): add it to `LANGS` and `LOCALE`
+in `src/i18n/index.ts` and `PAGE_LANGUAGES` in `src/config/analytics.ts`, then
+add the translated text. Nothing in the analytics changes.
+
 ## Writing a blog post
 
 1. Copy `src/content/blog/_post-template.md` and rename it. The file name
@@ -219,6 +259,9 @@ One-time setup in Cloudflare:
 3. Commit and push. Cloudflare publishes it automatically.
 
 Files starting with `_` and posts with `draft: true` are never published.
+
+For the French version, put a file with the **same name** in `src/content/blog/fr/`.
+Practice pages work the same way (`src/content/practice/fr/`).
 
 ## Where things live
 
@@ -229,7 +272,10 @@ src/scripts/commerce.ts    Store events and cart
 src/scripts/video.ts       Video events
 src/scripts/scroll.ts      Scroll-depth events
 src/data/products.ts       Demo store catalog
-src/data/articles.ts       Demo news stories
-src/content/blog/          Your blog posts (Markdown)
+src/data/articles.ts       Demo news stories (with French text)
+src/i18n/index.ts          Languages and translation helpers
+src/pages/fr/              French routes
+tests/check-languages.cjs  Both-language crawl test
+src/content/blog/          Your blog posts (Markdown); French in fr/
 public/media/              Demo video and poster
 ```

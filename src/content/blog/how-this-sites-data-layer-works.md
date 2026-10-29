@@ -2,6 +2,7 @@
 title: How this site's data layer works
 description: One page object, two data layers. A tour of the dataLayer and adobeDataLayer setup behind every page here, and why it's built that way.
 pubDate: 2026-10-29
+updatedDate: 2026-10-29
 category: Data layer design
 tags: [dataLayer, ACDL, GA4, GTM, Adobe Tags]
 platform: Both
@@ -31,11 +32,20 @@ When the site is built, each page gets a small object describing it:
     "publishDate": "2026-10-29",
     "wordCount": 540
   },
-  "user": { "loginStatus": "guest" }
+  "user": { "loginStatus": "guest", "browserLanguage": "fr-CA", "languageMatch": false }
 }
 ```
 
 Because it's generated from the post's frontmatter, adding a post never means touching analytics code.
+
+## Two languages, two variables
+
+The site is in English and French, and the page object records two different things:
+
+- `page.language` is the language of the page (`en-CA` or `fr-CA`), set when the page is built.
+- `user.browserLanguage` is the visitor's preferred browser language, read from `navigator.languages` as the page loads. `user.languageMatch` says whether the two agree.
+
+A French-speaking visitor reading the English page shows up as `languageMatch: false`, which is the audience a language switch prompt would be for. Everything else stays in English in both versions: page names and paths, content titles, product and list names, video titles, link text. An analyst working in one language can read everything they see, and a page is one row in reports. For GA4, `page_location` and `page_title` are overridden with the English address and the page name too, since GA4 would otherwise read them from the browser. The EN | FR switch at the top of every page pushes `language_switch` / `language switched` when someone changes language.
 
 ## Pushed to both layers, before any tag manager loads
 

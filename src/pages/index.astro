@@ -1,49 +1,58 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
 import { siteMeta } from '../config/tags';
-import { getPosts, formatDate, isoDate } from '../lib/blog';
+import { getPosts, formatDate, isoDate, slugOf } from '../lib/blog';
 import { graph } from '../lib/seo';
+import { LOCALE, langFromPath, localize, tr } from '../i18n';
 
-const posts = (await getPosts()).slice(0, 5);
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
+const posts = (await getPosts(lang)).slice(0, 5);
 
 const pageData = {
   page: { name: 'home', type: 'home', section: 'home', siteName: siteMeta.blogName },
 };
 
 // The hero shows this page's own data object, as the tag managers receive it.
+// browserLanguage is filled in by the browser, so the example shows a placeholder
+// and the script below swaps in the visitor's real value.
 const specimen = {
   event: 'page_data_ready',
-  page: { ...pageData.page, path: '/', language: siteMeta.language },
-  user: { loginStatus: 'guest' },
+  page: { ...pageData.page, path: l('/'), language: LOCALE[lang] },
+  user: { loginStatus: 'guest', browserLanguage: '…', languageMatch: true },
 };
 const highlighted = JSON.stringify(specimen, null, 2)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;')
   .replace(/("[^"]+")(\s*:)/g, '<span class="k">$1</span>$2')
-  .replace(/(:\s*)("[^"]*")/g, '$1<span class="s">$2</span>');
+  .replace(/(:\s*)("[^"]*")/g, '$1<span class="s">$2</span>')
+  .replace('<span class="s">"…"</span>', '<span class="s" data-bl>"…"</span>')
+  .replace(/("languageMatch"<\/span>: )true/, '$1<span data-lm>true</span>');
 ---
-<BlogLayout title={`${siteMeta.blogName} — analytics implementation notes`} pageData={pageData} jsonLd={graph()}>
+<BlogLayout title={`${siteMeta.blogName} — ${tr(lang, 'analytics implementation notes', 'notes d’implémentation en analytique')}`} pageData={pageData} jsonLd={graph()}>
   <section class="hub-hero">
     <div class="blog-wrap">
       <div>
-        <h1>Analytics implementation, worked out in public.</h1>
-        <p>{siteMeta.blogTagline}</p>
+        <h1>{tr(lang, 'Analytics implementation, worked out in public.', 'L’implémentation en analytique, travaillée au grand jour.')}</h1>
+        <p>{tr(lang, siteMeta.blogTagline, siteMeta.blogTaglineFr)}</p>
       </div>
       <figure style="margin:0">
-        <pre class="specimen" aria-label="This page's data layer object"><code set:html={highlighted} /></pre>
-        <figcaption class="specimen-caption">This page, as GTM and Adobe Tags see it. Open the event log (bottom right) to watch it live.</figcaption>
+        <pre class="specimen" aria-label={tr(lang, 'This page’s data layer object', 'L’objet de couche de données de cette page')}><code set:html={highlighted} /></pre>
+        <figcaption class="specimen-caption">{tr(lang,
+          'This page, as GTM and Adobe Tags see it, including your browser’s language. Open the event log (bottom right) to watch it live.',
+          'Cette page telle que la voient GTM et Adobe Tags, y compris la langue de votre navigateur. Ouvrez le journal (en bas à droite) pour la voir en direct.')}</figcaption>
       </figure>
     </div>
   </section>
 
   <section class="hub-section">
     <div class="blog-wrap">
-      <h2>Latest notes</h2>
+      <h2>{tr(lang, 'Latest notes', 'Dernières notes')}</h2>
       <ul class="post-list">
         {posts.map((p) => (
           <li>
-            <time datetime={isoDate(p.data.pubDate)}>{formatDate(p.data.pubDate)}</time>
+            <time datetime={isoDate(p.data.pubDate)}>{formatDate(p.data.pubDate, lang)}</time>
             <div>
-              <h3><a href={`/blog/${p.id}/`}>{p.data.title}</a></h3>
+              <h3><a href={l(`/blog/${slugOf(p.id)}/`)}>{p.data.title}</a></h3>
               <p>{p.data.description}</p>
             </div>
           </li>
@@ -54,34 +63,49 @@ const highlighted = JSON.stringify(specimen, null, 2)
 
   <section class="hub-section">
     <div class="blog-wrap">
-      <h2>Test sites</h2>
+      <h2>{tr(lang, 'Test sites', 'Sites de test')}</h2>
       <div class="hub-cols">
         <article class="lab-card">
-          <h3>Taiga Supply Co. (demo store)</h3>
-          <p>A pretend outdoor-gear shop with a full purchase path. Nothing is sold and no details are collected.</p>
+          <h3>Taiga Supply Co. ({tr(lang, 'demo store', 'boutique démo')})</h3>
+          <p>{tr(lang,
+            'A pretend outdoor-gear shop with a full purchase path. Nothing is sold and no details are collected.',
+            'Une fausse boutique de plein air avec un parcours d’achat complet. Rien n’est vendu et aucune donnée n’est recueillie.')}</p>
           <ol>
-            <li><a href="/shop/">Store home</a></li>
-            <li><a href="/shop/catalog/">Catalog</a></li>
-            <li><a href="/shop/product/tidepool-daypack/">Product detail</a></li>
-            <li><a href="/shop/cart/">Cart</a></li>
-            <li><a href="/shop/checkout/">Checkout: shipping</a></li>
-            <li><a href="/shop/checkout/payment/">Checkout: payment</a></li>
-            <li><a href="/shop/checkout/confirmation/">Order confirmation</a></li>
+            <li><a href={l('/shop/')}>{tr(lang, 'Store home', 'Accueil de la boutique')}</a></li>
+            <li><a href={l('/shop/catalog/')}>{tr(lang, 'Catalog', 'Catalogue')}</a></li>
+            <li><a href={l('/shop/product/tidepool-daypack/')}>{tr(lang, 'Product detail', 'Fiche produit')}</a></li>
+            <li><a href={l('/shop/cart/')}>{tr(lang, 'Cart', 'Panier')}</a></li>
+            <li><a href={l('/shop/checkout/')}>{tr(lang, 'Checkout: shipping', 'Caisse : livraison')}</a></li>
+            <li><a href={l('/shop/checkout/payment/')}>{tr(lang, 'Checkout: payment', 'Caisse : paiement')}</a></li>
+            <li><a href={l('/shop/checkout/confirmation/')}>{tr(lang, 'Order confirmation', 'Confirmation de commande')}</a></li>
           </ol>
           <p class="events">view_item_list · select_item · view_item · add_to_cart · remove_from_cart · view_cart · begin_checkout · add_shipping_info · add_payment_info · purchase · view_promotion · select_promotion</p>
         </article>
         <article class="lab-card">
-          <h3>Balsam Daily (demo media site)</h3>
-          <p>A pretend local news site with a self-hosted video player wired for media tracking.</p>
+          <h3>Balsam Daily ({tr(lang, 'demo media site', 'site média démo')})</h3>
+          <p>{tr(lang,
+            'A pretend local news site with a self-hosted video player wired for media tracking.',
+            'Un faux site de nouvelles locales avec un lecteur vidéo hébergé ici, branché pour le suivi des médias.')}</p>
           <ol>
-            <li><a href="/media/">Media home</a></li>
-            <li><a href="/media/article/ferry-schedule-shakeup/">Article with video</a></li>
-            <li><a href="/media/article/night-market-returns/">Article, text only</a></li>
+            <li><a href={l('/media/')}>{tr(lang, 'Media home', 'Accueil du site média')}</a></li>
+            <li><a href={l('/media/article/ferry-schedule-shakeup/')}>{tr(lang, 'Article with video', 'Article avec vidéo')}</a></li>
+            <li><a href={l('/media/article/night-market-returns/')}>{tr(lang, 'Article, text only', 'Article, texte seulement')}</a></li>
           </ol>
-          <p class="events">video_start · video_progress · video_complete · video_pause · article scroll depth · teaser clicks</p>
+          <p class="events">video_start · video_progress · video_complete · video_pause · {tr(lang, 'article scroll depth', 'profondeur de défilement')} · {tr(lang, 'teaser clicks', 'clics sur les accroches')} · language_switch</p>
         </article>
       </div>
-      <p class="lab-note">Both sites also run Adobe's Web SDK against a stand-in Edge Network on this domain. <a href="/blog/testing-adobe-web-sdk-without-an-adobe-account/">How the mock Web SDK setup works</a>.</p>
+      <p class="lab-note">{tr(lang,
+        'Both sites also run Adobe’s Web SDK against a stand-in Edge Network on this domain.',
+        'Les deux sites font aussi tourner le Web SDK d’Adobe contre une doublure de l’Edge Network sur ce domaine.')} <a href={l('/blog/testing-adobe-web-sdk-without-an-adobe-account/')}>{tr(lang, 'How the mock Web SDK setup works', 'Comment fonctionne le Web SDK simulé')}</a>.</p>
     </div>
   </section>
+
+  <script>
+    // Show the visitor's real browser language in the specimen.
+    const u = (window as any).labPage?.user;
+    const bl = document.querySelector('[data-bl]');
+    const lm = document.querySelector('[data-lm]');
+    if (u && bl) bl.textContent = JSON.stringify(u.browserLanguage);
+    if (u && lm) lm.textContent = String(u.languageMatch);
+  </script>
 </BlogLayout>

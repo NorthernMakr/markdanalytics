@@ -2,6 +2,7 @@
 title: Running an enterprise digital analytics practice
 description: What to document when running an enterprise analytics practice, from QA standards and variable records to developer specs and a base Adobe and GA4 setup.
 pubDate: 2026-10-29
+updatedDate: 2026-10-29
 category: Analytics practice
 tags: [governance, QA, documentation, data layer, Adobe Analytics, GA4]
 platform: Both
@@ -75,6 +76,8 @@ Agree these once and enforce them in review:
 - **Adobe classifications and values:** lowercase, colon-separated hierarchies for page names (`shop:product:tidepool-daypack`).
 - **Display names:** sentence case, no abbreviations a new hire wouldn't know.
 
+On a multilingual site, everything sent to analytics is in one language (English here), whatever language the page is in: page names and paths, titles, products, lists, promotions, videos, link text. Analysts usually work in one language, and the data in Workspace or GA4 has to make sense to them; it also keeps each page as one row in a top-pages report. To split by language, segment on `page.language` and `user.browserLanguage`. [Measuring a multilingual site](/practice/multilingual-sites/) covers this in full.
+
 ## Adding or changing a variable
 
 Slots are finite. A standard GA4 property allows [50 event-scoped and 25 user-scoped custom dimensions](https://support.google.com/analytics/answer/12229528?hl=en) and [10 item-scoped ones](https://support.google.com/analytics/answer/14239695?hl=en). Adobe allows [up to 250 eVars](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/evar), [75 props](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/prop) and [1,000 success events](https://experienceleague.adobe.com/en/docs/analytics/admin/admin-tools/manage-report-suites/edit-report-suite/conversion-variables/success-event), depending on contract. A change process protects those slots and the trust in the data.
@@ -126,7 +129,7 @@ One page object, built server-side and pushed before any tag manager loads:
             "section": "shop", "siteName": "Taiga Supply Co.",
             "path": "/shop/product/tidepool-daypack/", "language": "en-CA",
             "environment": "production" },
-  "user": { "loginStatus": "guest" },
+  "user": { "loginStatus": "guest", "browserLanguage": "fr-CA", "languageMatch": false },
   "content": { },
   "product": { }
 }
@@ -146,7 +149,7 @@ It's pushed to both `dataLayer` (for Google Tag Manager) and `adobeDataLayer` (t
 
 ### The base variables
 
-These are collected on every property from day one:
+These are collected on every property from day one. The two language variables answer different questions: `page.language` is the version of the page that was read, and `user.browserLanguage` is the language the visitor's browser asks for. Together they show who is reading a page in a language other than their own.
 
 | Data layer | Adobe Analytics | GA4 |
 |---|---|---|
@@ -155,6 +158,9 @@ These are collected on every property from day one:
 | `page.section` | `prop2`, channel | `site_section` |
 | `page.siteName` | report suite or `eVar` | `site_name` |
 | `page.environment` | `eVar` | `site_environment` |
+| `page.language` | `prop3`, `eVar2` | `page_language` |
+| `user.browserLanguage` | `prop4`, `eVar3` | `browser_language` |
+| `user.languageMatch` | `prop5` (`match` / `mismatch`) | `language_match` |
 | `user.loginStatus` | `eVar` (visit expiry) | `login_status` (user-scoped) |
 | `content.*` | `eVar`s per content field | `content_*` parameters |
 
@@ -178,7 +184,7 @@ Some standards apply at every level:
 
 ### Automate the conventions
 
-Standards that rely on memory drift. On this site the conventions live in one file of allowed values (page types, sections, page-name format, and every registered event name), and the build checks every page against it. A page with an unregistered page type, or a page name that isn't lowercase and colon-separated, fails the build and never reaches production. Outside production, every data layer push is also checked in the browser, with a console warning for an unregistered event or a key like `email` or `phone` that suggests personal data has slipped in. Adding a page type or event means adding it to that file first, which is the change process in miniature.
+Standards that rely on memory drift. On this site the conventions live in one file of allowed values (page types, sections, page-name format, languages, and every registered event name), and the build checks every page against it. A page with an unregistered page type, or a page name that isn't lowercase and colon-separated, fails the build and never reaches production. Outside production, every data layer push is also checked in the browser, with a console warning for an unregistered event or a key like `email` or `phone` that suggests personal data has slipped in. Adding a page type or event means adding it to that file first, which is the change process in miniature.
 
 This site's [store](/shop/) is set up to practise these cases. The Event log on every page shows both data layers live, and the confirmation page deliberately doesn't re-send `purchase` on reload.
 

@@ -1,43 +1,48 @@
 ---
 import Base from './Base.astro';
-import { categories } from '../data/products';
+import { categories, categoryLabel } from '../data/products';
+import { langFromPath, localize, tr } from '../i18n';
 import '../styles/shop.css';
 
 interface Props {
   title: string;
   pageType: string;          // e.g. "product detail", "checkout"
-  pageName: string;          // e.g. "shop:product:tidepool-daypack"
+  pageName: string;          // e.g. "shop:product:tidepool-daypack" (same in both languages)
   extra?: Record<string, unknown>;
   checkoutStep?: number;     // hides the main nav during checkout, like real stores
 }
 const { title, pageType, pageName, extra = {}, checkoutStep } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
 const pageData = {
   page: { name: pageName, type: pageType, section: 'shop', siteName: 'Taiga Supply Co. (demo)' },
   ...extra,
 };
-const steps = ['Cart', 'Shipping', 'Payment', 'Done'];
+const steps = tr(lang, ['Cart', 'Shipping', 'Payment', 'Done'], ['Panier', 'Livraison', 'Paiement', 'Terminé']);
 ---
-<Base title={`${title} | Taiga Supply Co. (demo)`} pageData={pageData} bodyClass="shop"
-  demoBanner="Demo store for analytics testing. Nothing is for sale and no details are collected.">
+<Base title={`${title} | Taiga Supply Co. (${tr(lang, 'demo', 'démo')})`} pageData={pageData} bodyClass="shop"
+  demoBanner={tr(lang,
+    'Demo store for analytics testing. Nothing is for sale and no details are collected.',
+    'Boutique démo pour tester l’analytique. Rien n’est à vendre et aucune donnée n’est recueillie.')}>
   <header class="shop-head">
     <div class="shop-wrap shop-head-row">
-      <a class="shop-logo" href="/shop/">
+      <a class="shop-logo" href={l('/shop/')}>
         <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M2 16 q9-12 18 0 t18 0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></svg>
         Taiga <span>Supply Co.</span>
       </a>
       {checkoutStep === undefined ? (
-        <nav aria-label="Shop">
+        <nav aria-label={tr(lang, 'Shop', 'Boutique')}>
           <ul class="shop-nav">
-            <li><a href="/shop/catalog/">Shop all</a></li>
-            {categories.map((c) => <li><a href={`/shop/catalog/?category=${c.slug}`}>{c.name}</a></li>)}
+            <li><a href={l('/shop/catalog/')}>{tr(lang, 'Shop all', 'Tout voir')}</a></li>
+            {categories.map((c) => <li><a href={l(`/shop/catalog/?category=${c.slug}`)}>{categoryLabel(c.slug, lang)}</a></li>)}
           </ul>
         </nav>
       ) : (
-        <ol class="checkout-steps" aria-label="Checkout progress">
+        <ol class="checkout-steps" aria-label={tr(lang, 'Checkout progress', 'Étapes du paiement')}>
           {steps.map((s, i) => <li aria-current={i === checkoutStep ? 'step' : undefined} class={i < checkoutStep ? 'done' : ''}>{s}</li>)}
         </ol>
       )}
-      <a class="shop-cart" href="/shop/cart/">Cart <span class="cart-count" aria-label="items in cart">0</span></a>
+      <a class="shop-cart" href={l('/shop/cart/')}>{tr(lang, 'Cart', 'Panier')} <span class="cart-count" aria-label={tr(lang, 'items in cart', 'articles dans le panier')}>0</span></a>
     </div>
   </header>
 
@@ -47,7 +52,10 @@ const steps = ['Cart', 'Shipping', 'Payment', 'Done'];
 
   <footer class="shop-foot">
     <div class="shop-wrap">
-      <p>Taiga Supply Co. is a fictional store. Prices in CAD. Built for testing analytics tags. <a href="/site-notes/">How this site was built</a> · <a href="/sitemap/">Sitemap</a></p>
+      <p>{tr(lang,
+        'Taiga Supply Co. is a fictional store. Prices in CAD. Built for testing analytics tags.',
+        'Taiga Supply Co. est une boutique fictive. Prix en dollars canadiens. Conçue pour tester des balises analytiques.')}
+        <a href={l('/site-notes/')}>{tr(lang, 'How this site was built', 'Comment ce site a été construit')}</a> · <a href={l('/sitemap/')}>{tr(lang, 'Sitemap', 'Plan du site')}</a></p>
     </div>
   </footer>
 

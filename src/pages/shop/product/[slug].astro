@@ -2,64 +2,68 @@
 import ShopLayout from '../../../layouts/ShopLayout.astro';
 import ProductArt from '../../../components/ProductArt.astro';
 import ProductCard from '../../../components/ProductCard.astro';
-import { products, categoryName, money, type Product } from '../../../data/products';
+import { products, categoryLabel, productText, colourLabel, type Product } from '../../../data/products';
+import { langFromPath, localize, money, tr } from '../../../i18n';
 
 export function getStaticPaths() {
   return products.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
 }
 const { product: p } = Astro.props as { product: Product };
+const lang = langFromPath(Astro.url.pathname);
+const l = (path: string) => localize(path, lang);
+const text = productText(p, lang);
 const related = products.filter((x) => x.category === p.category && x.sku !== p.sku).slice(0, 4);
 const fill = related.length < 4 ? products.filter((x) => x.sku !== p.sku && !related.includes(x)).slice(0, 4 - related.length) : [];
 const alsoLike = [...related, ...fill];
 
 // Product data goes into the page-level object too, so tags that only read
-// page data (no event listener) can still pick it up.
+// page data (no event listener) can still pick it up. Always the English name.
 const extra = {
   product: { sku: p.sku, name: p.name, category: p.category, subcategory: p.subcategory, price: p.price, currency: 'CAD' },
 };
 ---
-<ShopLayout title={p.name} pageType="product detail" pageName={`shop:product:${p.slug}`} extra={extra}>
+<ShopLayout title={text.name} pageType="product detail" pageName={`shop:product:${p.slug}`} extra={extra}>
   <div class="shop-wrap">
-    <div class="pdp" data-sku={p.sku}>
+    <div class="pdp" data-sku={p.sku} data-display-name={text.name}>
       <div class="pdp-art">
-        <ProductArt kind={p.art} colour={p.colours[0].hex} label={p.name} />
+        <ProductArt kind={p.art} colour={p.colours[0].hex} label={text.name} />
       </div>
       <div>
-        <p class="crumbs"><a href="/shop/catalog/">Shop all</a> / <a href={`/shop/catalog/?category=${p.category}`}>{categoryName(p.category)}</a></p>
-        <h1>{p.name}</h1>
-        <p class="pdp-price">{money(p.price)}</p>
-        <p class="pdp-blurb">{p.blurb}</p>
+        <p class="crumbs"><a href={l('/shop/catalog/')}>{tr(lang, 'Shop all', 'Tout voir')}</a> / <a href={l(`/shop/catalog/?category=${p.category}`)}>{categoryLabel(p.category, lang)}</a></p>
+        <h1>{text.name}</h1>
+        <p class="pdp-price">{money(p.price, lang)}</p>
+        <p class="pdp-blurb">{text.blurb}</p>
 
         <form class="add-form" novalidate>
           <fieldset class="swatch-picker">
-            <legend class="field-label">Colour: <span data-colour-name>{p.colours[0].name}</span></legend>
+            <legend class="field-label">{tr(lang, 'Colour', 'Couleur')}{lang === 'fr' ? ' ' : ''}: <span data-colour-name>{colourLabel(p.colours[0].name, lang)}</span></legend>
             {p.colours.map((c, i) => (
               <label>
-                <input type="radio" name="colour" value={c.name} data-hex={c.hex} checked={i === 0} />
+                <input type="radio" name="colour" value={c.name} data-hex={c.hex} data-label={colourLabel(c.name, lang)} checked={i === 0} />
                 <span class="dot" style={`background:${c.hex}`}></span>
-                {c.name}
+                {colourLabel(c.name, lang)}
               </label>
             ))}
           </fieldset>
           <div class="qty-row">
-            <label class="visually-hidden" for="qty">Quantity</label>
+            <label class="visually-hidden" for="qty">{tr(lang, 'Quantity', 'Quantité')}</label>
             <select id="qty" name="qty">
-              {[1, 2, 3, 4, 5].map((n) => <option value={n}>Qty {n}</option>)}
+              {[1, 2, 3, 4, 5].map((n) => <option value={n}>{tr(lang, 'Qty', 'Qté')} {n}</option>)}
             </select>
-            <button class="btn btn-go" type="submit">Add to cart</button>
-            <button class="btn btn-ghost" type="button" data-wishlist>Save to wishlist</button>
+            <button class="btn btn-go" type="submit">{tr(lang, 'Add to cart', 'Ajouter au panier')}</button>
+            <button class="btn btn-ghost" type="button" data-wishlist>{tr(lang, 'Save to wishlist', 'Ajouter aux favoris')}</button>
           </div>
           <p class="added-msg" role="status" hidden></p>
         </form>
 
         <ul class="pdp-details">
-          {p.details.map((d) => <li>{d}</li>)}
+          {text.details.map((d) => <li>{d}</li>)}
         </ul>
       </div>
     </div>
 
     <section class="shop-section">
-      <h2>You might also like</h2>
+      <h2>{tr(lang, 'You might also like', 'Vous aimerez peut-être aussi')}</h2>
       <div class="grid" data-list-id="pdp_related" data-list-name="Product page: related">
         {alsoLike.map((x, i) => <ProductCard product={x} index={i} />)}
       </div>
@@ -68,12 +72,16 @@ const extra = {
 
   <script>
     import { bySku, viewItem, addToCart, addToWishlist, viewItemList, visibleProducts, trackListClicks } from '../../../scripts/commerce';
+    import { t, lp } from '../../../scripts/lab';
 
     const root = document.querySelector<HTMLElement>('.pdp')!;
     const product = bySku(root.dataset.sku!)!;
+    const displayName = root.dataset.displayName!;
     const form = root.querySelector<HTMLFormElement>('.add-form')!;
     const msg = root.querySelector<HTMLElement>('.added-msg')!;
-    const colour = () => (form.querySelector<HTMLInputElement>('input[name="colour"]:checked')?.value ?? product.colours[0].name);
+    const picked = () => form.querySelector<HTMLInputElement>('input[name="colour"]:checked')!;
+    // The colour sent to analytics is the English value; the label shown is translated.
+    const colour = () => picked()?.value ?? product.colours[0].name;
 
     viewItem(product);
 
@@ -81,7 +89,7 @@ const extra = {
     form.addEventListener('change', (e) => {
       const input = e.target as HTMLInputElement;
       if (input.name !== 'colour') return;
-      root.querySelector('[data-colour-name]')!.textContent = input.value;
+      root.querySelector('[data-colour-name]')!.textContent = input.dataset.label!;
       root.querySelectorAll<SVGElement>('.pdp-art .fill').forEach((el) => el.setAttribute('fill', input.dataset.hex!));
       root.querySelectorAll<SVGElement>('.pdp-art .stroke').forEach((el) => el.setAttribute('stroke', input.dataset.hex!));
     });
@@ -91,15 +99,16 @@ const extra = {
       const qty = Number((form.querySelector('#qty') as HTMLSelectElement).value);
       addToCart(product, colour(), qty);
       msg.innerHTML = '';
-      msg.append(`Added ${qty} × ${product.name} (${colour()}) to your cart. `);
-      const link = Object.assign(document.createElement('a'), { href: '/shop/cart/', textContent: 'View cart' });
+      msg.append(t(`Added ${qty} × ${displayName} (${picked().dataset.label}) to your cart. `,
+                   `${qty} × ${displayName} (${picked().dataset.label}) ajouté au panier. `));
+      const link = Object.assign(document.createElement('a'), { href: lp('/shop/cart/'), textContent: t('View cart', 'Voir le panier') });
       msg.append(link);
       msg.hidden = false;
     });
 
     form.querySelector('[data-wishlist]')!.addEventListener('click', (e) => {
       addToWishlist(product, colour());
-      (e.currentTarget as HTMLButtonElement).textContent = 'Saved to wishlist';
+      (e.currentTarget as HTMLButtonElement).textContent = t('Saved to wishlist', 'Ajouté aux favoris');
     });
 
     const list = document.querySelector<HTMLElement>('[data-list-id]')!;

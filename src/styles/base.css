@@ -29,3 +29,5 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .lab-ribbon a { display: inline-block; padding: 8px 0; }
 .lab-ribbon { padding-top: 0; padding-bottom: 0; }
 .lab-ribbon span { padding: 7px 0; }
+.lab-ribbon-links { display: inline-flex; align-items: center; gap: 16px; }
+.lab-ribbon .lang-switch a { color: #E9A23B; }

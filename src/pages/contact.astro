@@ -1,40 +1,54 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
 import { siteMeta } from '../config/tags';
+import { langFromPath, tr } from '../i18n';
+
+const lang = langFromPath(Astro.url.pathname);
 
 const pageData = {
   page: { name: 'contact', type: 'contact', section: 'contact', siteName: siteMeta.blogName },
 };
-const topics = ['Analytics implementation work', 'Speaking or writing', 'Feedback on a post', 'Something else'];
+// value = what analytics and the email receive (English in both languages); label = what's shown
+const topics = [
+  { value: 'Analytics implementation work', label: tr(lang, 'Analytics implementation work', 'Mandat d’implémentation en analytique') },
+  { value: 'Speaking or writing', label: tr(lang, 'Speaking or writing', 'Conférence ou rédaction') },
+  { value: 'Feedback on a post', label: tr(lang, 'Feedback on a post', 'Commentaire sur un billet') },
+  { value: 'Something else', label: tr(lang, 'Something else', 'Autre chose') },
+];
 ---
-<BlogLayout title={`Contact — ${siteMeta.blogName}`} description="Send me a message about analytics implementation, a post, or anything else." pageData={pageData}
+<BlogLayout title={`Contact — ${siteMeta.blogName}`} description={tr(lang, 'Send me a message about analytics implementation, a post, or anything else.', 'Écrivez-moi au sujet d’implémentation en analytique, d’un billet ou de toute autre chose.')} pageData={pageData}
   robots="noindex, nofollow">
   <section class="contact">
     <div class="blog-wrap contact-grid">
       <div class="contact-intro">
-        <h1>Get in touch</h1>
-        <p>Questions about a post, an implementation you're wrestling with, or work you'd like to talk about: send a message and I'll reply by email.</p>
-        <h2>What happens to your message</h2>
+        <h1>{tr(lang, 'Get in touch', 'Me joindre')}</h1>
+        <p>{tr(lang,
+          'Questions about a post, an implementation you’re wrestling with, or work you’d like to talk about: send a message and I’ll reply by email.',
+          'Une question sur un billet, une implémentation qui vous donne du fil à retordre ou un mandat à discuter : envoyez un message et je répondrai par courriel.')}</p>
+        <p>{tr(lang,
+          'I work in English and French, and can review content, specifications and reports in either language. Write in whichever you prefer.',
+          'Je travaille en anglais et en français, et je peux réviser du contenu, des spécifications et des rapports dans l’une ou l’autre langue. Écrivez dans celle que vous préférez.')}</p>
+        <h2>{tr(lang, 'What happens to your message', 'Ce qu’il advient de votre message')}</h2>
         <ul>
-          <li>It goes straight to my inbox. It isn't stored on this site or passed to a form service.</li>
-          <li>Your email address is used only so I can reply.</li>
-          <li>This site's analytics record that the form was sent and the topic you picked, never your name, email or message.</li>
+          <li>{tr(lang, 'It goes straight to my inbox. It isn’t stored on this site or passed to a form service.', 'Il arrive directement dans ma boîte de réception. Il n’est ni conservé sur ce site ni transmis à un service de formulaires.')}</li>
+          <li>{tr(lang, 'Your email address is used only so I can reply.', 'Votre adresse courriel sert uniquement à vous répondre.')}</li>
+          <li>{tr(lang, 'This site’s analytics record that the form was sent and the topic you picked, never your name, email or message.', 'L’analytique de ce site enregistre que le formulaire a été envoyé et le sujet choisi, jamais votre nom, votre courriel ni votre message.')}</li>
         </ul>
       </div>
 
       <form class="contact-form" novalidate>
         <div class="field">
-          <label for="c-name">Name</label>
+          <label for="c-name">{tr(lang, 'Name', 'Nom')}</label>
           <input id="c-name" name="name" autocomplete="name" maxlength="100" required />
         </div>
         <div class="field">
-          <label for="c-email">Email</label>
+          <label for="c-email">{tr(lang, 'Email', 'Courriel')}</label>
           <input id="c-email" name="email" type="email" autocomplete="email" maxlength="200" required />
         </div>
         <div class="field">
-          <label for="c-topic">Topic</label>
+          <label for="c-topic">{tr(lang, 'Topic', 'Sujet')}</label>
           <select id="c-topic" name="topic">
-            {topics.map((t) => <option>{t}</option>)}
+            {topics.map((t) => <option value={t.value}>{t.label}</option>)}
           </select>
         </div>
         <div class="field">
@@ -43,17 +57,17 @@ const topics = ['Analytics implementation work', 'Speaking or writing', 'Feedbac
         </div>
         <!-- Left empty by people; bots tend to fill it in. -->
         <div class="hp" aria-hidden="true">
-          <label for="c-website">Website</label>
+          <label for="c-website">{tr(lang, 'Website', 'Site web')}</label>
           <input id="c-website" name="website" tabindex="-1" autocomplete="off" />
         </div>
-        <button class="contact-send" type="submit">Send message</button>
+        <button class="contact-send" type="submit">{tr(lang, 'Send message', 'Envoyer le message')}</button>
         <p class="form-status" role="status" aria-live="polite"></p>
       </form>
     </div>
   </section>
 
   <script>
-    import { ga4, adobe } from '../scripts/lab';
+    import { ga4, adobe, pageLang, t } from '../scripts/lab';
 
     const form = document.querySelector<HTMLFormElement>('.contact-form')!;
     const status = form.querySelector<HTMLElement>('.form-status')!;
@@ -80,21 +94,21 @@ const topics = ['Analytics implementation work', 'Speaking or writing', 'Feedbac
       const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
 
       button.disabled = true;
-      button.textContent = 'Sending…';
+      button.textContent = t('Sending…', 'Envoi…');
       setStatus('', '');
       try {
         const res = await fetch('/api/contact', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ ...data, startedAt }),
+          body: JSON.stringify({ ...data, startedAt, lang: pageLang() }),
         });
-        const out = await res.json().catch(() => ({ ok: false, error: 'The message couldn\'t be sent. Please try again.' }));
+        const out = await res.json().catch(() => ({ ok: false, error: t('The message couldn’t be sent. Please try again.', 'Le message n’a pas pu être envoyé. Réessayez.') }));
         if (out.ok) {
           form.reset();
-          setStatus('Message sent. I\'ll reply by email, usually within a few days.', 'ok');
+          setStatus(t('Message sent. I’ll reply by email, usually within a few days.', 'Message envoyé. Je répondrai par courriel, habituellement d’ici quelques jours.'), 'ok');
           ga4({ event: 'generate_lead', form_name: 'contact', form_topic: data.topic });
           adobe({ event: 'form submitted', form: { name: 'contact', topic: data.topic } });
-          button.textContent = 'Message sent';
+          button.textContent = t('Message sent', 'Message envoyé');
           return;
         }
         if (out.field) {
@@ -102,14 +116,14 @@ const topics = ['Analytics implementation work', 'Speaking or writing', 'Feedbac
           el?.setAttribute('aria-invalid', 'true');
           el?.focus();
         }
-        setStatus(out.error ?? 'The message couldn\'t be sent. Please try again.', 'error');
+        setStatus(out.error ?? t('The message couldn’t be sent. Please try again.', 'Le message n’a pas pu être envoyé. Réessayez.'), 'error');
         ga4({ event: 'form_error', form_name: 'contact', error_field: out.field ?? 'server' });
         adobe({ event: 'form error', form: { name: 'contact', errorField: out.field ?? 'server' } });
       } catch {
-        setStatus('The message couldn\'t be sent. Check your connection and try again.', 'error');
+        setStatus(t('The message couldn’t be sent. Check your connection and try again.', 'Le message n’a pas pu être envoyé. Vérifiez votre connexion et réessayez.'), 'error');
       }
       button.disabled = false;
-      button.textContent = 'Send message';
+      button.textContent = t('Send message', 'Envoyer le message');
     });
   </script>
 </BlogLayout>

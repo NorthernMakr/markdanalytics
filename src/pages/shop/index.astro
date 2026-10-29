@@ -2,40 +2,47 @@
 import ShopLayout from '../../layouts/ShopLayout.astro';
 import ProductArt from '../../components/ProductArt.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { products, categories, getProduct } from '../../data/products';
+import { products, categories, getProduct, categoryLabel, productText } from '../../data/products';
+import { langFromPath, localize, tr } from '../../i18n';
 
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
 const hero = getProduct('squall-rain-shell')!;
+const heroName = productText(hero, lang).name;
 const featured = products.filter((p) => p.badge);
 const tileArt: Record<string, typeof products[number]> = {
   packs: getProduct('tidepool-daypack')!,
   apparel: getProduct('harbour-wool-beanie')!,
   camp: getProduct('lighthouse-lantern')!,
 };
+// Promotion names stay in English so reports don't split by language.
 const promo = { id: 'P-FALL-SHIP', name: 'Free shipping on fall orders', creative: 'home_strip_text', slot: 'home_top' };
 ---
-<ShopLayout title="Gear for the wet coast" pageType="home" pageName="shop:home">
+<ShopLayout title={tr(lang, 'Gear for the wet coast', 'Équipement pour la côte pluvieuse')} pageType="home" pageName="shop:home">
   <section class="shop-hero">
     <div class="shop-wrap">
       <div>
-        <h1>Built for sideways rain.</h1>
-        <p>The {hero.name} is three layers of waterproof for ferry decks, forest trails and everything in between.</p>
-        <a class="btn btn-go" href={`/shop/product/${hero.slug}/`} data-promo-hero>Shop the rain shell</a>
+        <h1>{tr(lang, 'Built for sideways rain.', 'Fait pour la pluie à l’horizontale.')}</h1>
+        <p>{tr(lang,
+          `The ${hero.name} is three layers of waterproof for ferry decks, forest trails and everything in between.`,
+          `La ${heroName} offre trois couches imperméables pour le pont du traversier, les sentiers en forêt et tout ce qu’il y a entre les deux.`)}</p>
+        <a class="btn btn-go" href={l(`/shop/product/${hero.slug}/`)} data-promo-hero>{tr(lang, 'Shop the rain shell', 'Voir la coquille')}</a>
       </div>
-      <ProductArt kind={hero.art} colour={hero.colours[0].hex} label={hero.name} />
+      <ProductArt kind={hero.art} colour={hero.colours[0].hex} label={heroName} />
     </div>
   </section>
 
   <aside class="promo-strip" data-promo={JSON.stringify(promo)}>
-    <a href="/shop/catalog/"><span>Free standard shipping on every order this fall.</span> Shop all gear</a>
+    <a href={l('/shop/catalog/')}><span>{tr(lang, 'Free standard shipping on every order this fall.', 'Livraison standard gratuite sur toutes les commandes cet automne.')}</span> {tr(lang, 'Shop all gear', 'Voir tout l’équipement')}</a>
   </aside>
 
   <section class="shop-section">
     <div class="shop-wrap">
-      <h2>Shop by category</h2>
+      <h2>{tr(lang, 'Shop by category', 'Magasiner par catégorie')}</h2>
       <div class="cat-tiles">
         {categories.map((c) => (
-          <a class="cat-tile" href={`/shop/catalog/?category=${c.slug}`}>
-            <strong>{c.name}</strong>
+          <a class="cat-tile" href={l(`/shop/catalog/?category=${c.slug}`)}>
+            <strong>{categoryLabel(c.slug, lang)}</strong>
             <ProductArt kind={tileArt[c.slug].art} colour={tileArt[c.slug].colours[0].hex} />
           </a>
         ))}
@@ -45,7 +52,7 @@ const promo = { id: 'P-FALL-SHIP', name: 'Free shipping on fall orders', creativ
 
   <section class="shop-section">
     <div class="shop-wrap">
-      <h2>Best sellers and new</h2>
+      <h2>{tr(lang, 'Best sellers and new', 'Meilleurs vendeurs et nouveautés')}</h2>
       <div class="grid" data-list-id="home_featured" data-list-name="Home: featured">
         {featured.map((p, i) => <ProductCard product={p} index={i} />)}
       </div>

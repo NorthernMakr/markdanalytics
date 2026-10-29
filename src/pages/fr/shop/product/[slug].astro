@@ -1,0 +1,10 @@
+---
+// French route: renders the same page as the English one; the page reads its
+// language from the /fr/ URL.
+import Page from '../../../shop/product/[slug].astro';
+import { products } from '../../../../data/products';
+export function getStaticPaths() {
+  return products.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+---
+<Page {...Astro.props} />

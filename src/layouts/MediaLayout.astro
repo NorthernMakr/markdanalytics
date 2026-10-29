@@ -1,30 +1,37 @@
 ---
 import Base from './Base.astro';
+import { langFromPath, localize, tr, LOCALE } from '../i18n';
 import '../styles/media.css';
 
 interface Props { title: string; pageType: string; pageName: string; extra?: Record<string, unknown>; }
 const { title, pageType, pageName, extra = {} } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
 const pageData = {
   page: { name: pageName, type: pageType, section: 'media', siteName: 'Balsam Daily (demo)' },
   ...extra,
 };
-const sections = ['Local', 'Transportation', 'Weather', 'Food', 'Sports'];
-const today = new Date().toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+const sections = tr(lang,
+  ['Local', 'Transportation', 'Weather', 'Food', 'Sports'],
+  ['Local', 'Transport', 'Météo', 'Gastronomie', 'Sports']);
+const today = new Date().toLocaleDateString(LOCALE[lang], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 ---
-<Base title={`${title} | Balsam Daily (demo)`} pageData={pageData} bodyClass="media"
-  demoBanner="Demo news site for analytics testing. The stories, people and video are made up.">
+<Base title={`${title} | Balsam Daily (${tr(lang, 'demo', 'démo')})`} pageData={pageData} bodyClass="media"
+  demoBanner={tr(lang,
+    'Demo news site for analytics testing. The stories, people and video are made up.',
+    'Site de nouvelles démo pour tester l’analytique. Les articles, les personnes et la vidéo sont fictifs.')}>
   <header class="masthead">
     <div class="media-wrap">
       <p class="masthead-date">{today}</p>
       {pageType === 'section front'
-        ? <h1 class="masthead-h1"><a class="masthead-name" href="/media/">Balsam Daily</a></h1>
-        : <a class="masthead-name" href="/media/">Balsam Daily</a>}
+        ? <h1 class="masthead-h1"><a class="masthead-name" href={l('/media/')}>Balsam Daily</a></h1>
+        : <a class="masthead-name" href={l('/media/')}>Balsam Daily</a>}
       <svg class="tideline" viewBox="0 0 600 14" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0 7 Q 25 0 50 7 T 100 7 T 150 7 T 200 7 T 250 7 T 300 7 T 350 7 T 400 7 T 450 7 T 500 7 T 550 7 T 600 7" fill="none" stroke="currentColor" stroke-width="2.5" />
       </svg>
-      <nav aria-label="Sections">
+      <nav aria-label={tr(lang, 'Sections', 'Rubriques')}>
         <ul class="section-nav">
-          {sections.map((s) => <li><a href="/media/" data-teaser-module="section nav">{s}</a></li>)}
+          {sections.map((s) => <li><a href={l('/media/')} data-teaser-module="section nav">{s}</a></li>)}
         </ul>
       </nav>
     </div>
@@ -33,20 +40,26 @@ const today = new Date().toLocaleDateString('en-CA', { weekday: 'long', month: '
     <slot />
   </main>
   <footer class="media-foot">
-    <div class="media-wrap">Balsam Daily is a fictional publication built for testing analytics tags. <a href="/site-notes/">How this site was built</a> · <a href="/sitemap/">Sitemap</a></div>
+    <div class="media-wrap">{tr(lang,
+      'Balsam Daily is a fictional publication built for testing analytics tags.',
+      'Balsam Daily est une publication fictive conçue pour tester des balises analytiques.')}
+      <a href={l('/site-notes/')}>{tr(lang, 'How this site was built', 'Comment ce site a été construit')}</a> · <a href={l('/sitemap/')}>{tr(lang, 'Sitemap', 'Plan du site')}</a></div>
   </footer>
 
   <script>
     import { ga4, adobe } from '../scripts/lab';
-    // Teaser / internal-promo clicks: any link with data-teaser-module
+    // Teaser / internal-promo clicks: any link with data-teaser-module.
+    // link_text and link_url are always the English headline and English path
+    // (data-link-name), so a story's clicks combine across both languages in
+    // reports. Segment by page.language to split them.
     document.addEventListener('click', (e) => {
       const a = (e.target as Element).closest<HTMLAnchorElement>('a[data-teaser-module]');
       if (!a) return;
       const detail = {
         module: a.dataset.teaserModule!,
         position: Number(a.dataset.teaserPosition ?? 0),
-        text: (a.textContent ?? '').trim().slice(0, 100),
-        url: a.pathname,
+        text: (a.dataset.linkName ?? a.textContent ?? '').trim().slice(0, 100),
+        url: a.pathname.replace(/^\/fr(?=\/)/, ''),
       };
       ga4({ event: 'content_click', link_module: detail.module, link_position: detail.position, link_text: detail.text, link_url: detail.url });
       adobe({ event: 'content clicked', link: detail });

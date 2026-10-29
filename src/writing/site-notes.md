@@ -20,6 +20,15 @@ updatedDate: 2026-10-29
 
 The small Worker does two jobs: it stands in for Adobe's Edge Network so the Adobe Web SDK can run without an Adobe account, and it delivers contact form messages. Everything else is static files.
 
+## Languages
+
+The whole site is available in English and French. English pages live at the root (`/shop/`) and French pages under `/fr/` with the same addresses (`/fr/shop/`). The EN | FR switch at the top of every page goes to the same page in the other language.
+
+- **One page, two routes.** Each French route renders the same page component as the English one, and the page works out its language from its own address. Shared layouts carry the translated menus and labels, so a new page needs its text in both languages and nothing else.
+- **Search engines** get `hreflang` links between the two versions (plus `x-default` pointing to English), `og:locale` for sharing previews, `inLanguage` in the structured data, and both versions in the [XML sitemap](/sitemap.xml).
+- **Analytics** records two separate languages on every page: `page.language`, the version being read (`en-CA` or `fr-CA`), and `user.browserLanguage`, the visitor's preferred browser language, plus `user.languageMatch` when the two agree. In GA4 they're `page_language`, `browser_language` and `language_match`; in Adobe, `prop3`/`eVar2`, `prop4`/`eVar3` and `prop5`. Using the language switch sends `language_switch` (GA4) and `language switched` (Adobe).
+- **Analytics is always in English.** Page names and paths, content titles, product, list and promotion names, video titles and link text are English on both versions, so an analyst working in one language can read every report, and a page is one row in a top-pages list. GA4's `page_location` and `page_title` are overridden with the English address and page name, and Adobe's page URL uses the English path. Only what visitors see is translated; the language variables are how analysts split the two.
+
 ## Analytics
 
 Analytics is the point of this site, so the implementation follows the standards on the [analytics practice](/practice/) page:
@@ -100,4 +109,5 @@ AI assistants increasingly answer questions directly instead of sending people t
 
 ## Change log
 
+- **29 October 2026, later:** French versions of every page, the EN | FR language switch, and language variables (page language and browser language) in both data layers, GA4 and the Adobe Web SDK.
 - **29 October 2026:** Site launched with the blog, demo store and demo news site, both data layers, and the Event log. Adobe Web SDK with stand-in Edge Network; Google Tag Manager and GA4 configuration; analytics practice section; contact page; enforced analytics conventions; sitemap, structured data and other SEO and AEO work; mobile tap-target fixes; this page.

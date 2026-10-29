@@ -1,21 +1,29 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
 import { siteMeta } from '../config/tags';
+import { langFromPath, localize, tr } from '../i18n';
 
+// /404.html is served for missing English URLs and /fr/404.html for missing
+// /fr/ URLs (Cloudflare serves the nearest 404 page up the folder tree).
 // error:404 lets reports show which missing URLs people hit (page.path holds the URL).
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
 const pageData = {
   page: { name: 'error:404', type: 'error', section: 'error', siteName: siteMeta.blogName },
 };
 ---
-<BlogLayout title={`Page not found — ${siteMeta.blogName}`} pageData={pageData} noindex>
+<BlogLayout title={`${tr(lang, 'Page not found', 'Page introuvable')} — ${siteMeta.blogName}`} pageData={pageData} noindex>
   <section class="hub-section" style="border-top:0">
     <div class="blog-wrap">
-      <h1 style="font:700 40px/1.1 var(--serif);margin:24px 0 12px">That page isn't here</h1>
-      <p style="color:var(--muted);font-size:18px;max-width:52ch">The address may have changed or been typed slightly wrong. Try the <a href="/">home page</a>, the <a href="/blog/">notes</a>, or the <a href="/practice/">analytics practice</a> section.</p>
+      <h1 style="font:700 40px/1.1 var(--serif);margin:24px 0 12px">{tr(lang, 'That page isn’t here', 'Cette page n’existe pas')}</h1>
+      {lang === 'en'
+        ? <p style="color:var(--muted);font-size:18px;max-width:52ch">The address may have changed or been typed slightly wrong. Try the <a href="/">home page</a>, the <a href="/blog/">notes</a>, or the <a href="/practice/">analytics practice</a> section.</p>
+        : <p style="color:var(--muted);font-size:18px;max-width:52ch">L’adresse a peut-être changé ou contient une faute de frappe. Essayez la <a href={l('/')}>page d’accueil</a>, les <a href={l('/blog/')}>notes</a> ou la section <a href={l('/practice/')}>pratique d’analytique</a>.</p>}
     </div>
   </section>
   <script is:inline>
     // A static 404 page is built once, so record the URL that was actually requested.
-    window.labPage.page.path = location.pathname;
+    // English form of the path, like every other page (/fr/x/ → /x/).
+    window.labPage.page.path = location.pathname.replace(/^\/fr(?=\/)/, '');
   </script>
 </BlogLayout>

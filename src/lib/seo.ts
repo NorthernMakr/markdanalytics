@@ -26,7 +26,7 @@ export const website = () => ({
   name: siteMeta.blogName,
   url: abs('/'),
   description: siteMeta.blogTagline,
-  inLanguage: siteMeta.language,
+  inLanguage: ['en-CA', 'fr-CA'],
   publisher: { '@id': PERSON_ID },
 });
 
@@ -38,6 +38,8 @@ export const breadcrumbs = (items: { name: string; path: string }[]) => ({
 export const article = (a: {
   path: string; title: string; description: string; published: Date; modified?: Date;
   tags?: string[]; section?: string; wordCount?: number;
+  /** BCP 47 language of this version, e.g. 'fr-CA'. */
+  inLanguage?: string;
 }) => ({
   '@type': 'BlogPosting',
   '@id': abs(a.path) + '#article',
@@ -51,7 +53,7 @@ export const article = (a: {
   publisher: { '@id': PERSON_ID },
   isPartOf: { '@id': SITE_ID },
   image: abs(DEFAULT_IMAGE.url),
-  inLanguage: siteMeta.language,
+  inLanguage: a.inLanguage ?? siteMeta.language,
   ...(a.section ? { articleSection: a.section } : {}),
   ...(a.tags?.length ? { keywords: a.tags.join(', ') } : {}),
   ...(a.wordCount ? { wordCount: a.wordCount } : {}),

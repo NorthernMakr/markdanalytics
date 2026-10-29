@@ -1,0 +1,14 @@
+---
+// French route: French practice pages (src/content/practice/fr/) rendered
+// with the English page component.
+import Page from '../../practice/[...slug].astro';
+import { getPractice, slugOf } from '../../../lib/blog';
+export async function getStaticPaths() {
+  const pages = await getPractice('fr');
+  return pages.map((entry) => {
+    const slug = slugOf(entry.id);
+    return { params: { slug: slug === 'index' ? undefined : slug }, props: { entry, pages } };
+  });
+}
+---
+<Page {...Astro.props} />

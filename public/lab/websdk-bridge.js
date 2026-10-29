@@ -65,7 +65,9 @@
   var page = function () { return (window.labPage && window.labPage.page) || {}; };
   var webPage = function () {
     var p = page();
-    return { webPageDetails: { name: p.name, URL: location.href, siteSection: p.section } };
+    // URL uses the English path (page.path), so French and English versions of a
+    // page share one URL in reports; page language is in prop3/eVar2.
+    return { webPageDetails: { name: p.name, URL: location.origin + (p.path || location.pathname) + location.search, siteSection: p.section } };
   };
   var items = function (e) { return e.productListItems ? clone(e.productListItems) : undefined; };
 
@@ -88,8 +90,17 @@
       var wp = webPage();
       wp.webPageDetails.pageViews = { value: 1 };
       xdm = { eventType: 'web.webpagedetails.pageViews', web: wp };
-      // Example of setting Analytics variables directly (no Adobe-side mapping needed)
-      data.__adobe = { analytics: { prop1: page().type, eVar1: page().type, prop2: page().section } };
+      // Example of setting Analytics variables directly (no Adobe-side mapping needed).
+      // Values are English whatever the page language; the language variables
+      // are what analysts segment on.
+      var u = (window.labPage && window.labPage.user) || {};
+      data.__adobe = { analytics: {
+        prop1: page().type, eVar1: page().type,   // page type
+        prop2: page().section,                    // site section
+        prop3: page().language, eVar2: page().language,          // page language, e.g. fr-CA
+        prop4: u.browserLanguage, eVar3: u.browserLanguage,      // browser language, e.g. en-US
+        prop5: u.languageMatch ? 'match' : 'mismatch',           // does the page match the browser?
+      } };
       return { xdm: xdm, data: data };
     }
 

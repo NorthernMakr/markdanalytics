@@ -3,22 +3,26 @@
 // window.adobeDataLayer. It reads the arrays on a timer instead of wrapping
 // push(), so it never interferes with GTM or the Adobe Client Data Layer,
 // which both replace push() with their own functions.
+import { tr, type Lang } from '../i18n';
+interface Props { lang?: Lang }
+const { lang = 'en' } = Astro.props;
+const copy = tr(lang, 'Copy JSON', 'Copier le JSON');
 ---
-<div class="evlog" data-open="false">
+<div class="evlog" data-open="false" data-copy={copy} data-copied={tr(lang, 'Copied', 'Copié')} data-copy-failed={tr(lang, 'Copy failed', 'Échec de la copie')}>
   <button class="evlog-toggle" type="button" aria-expanded="false" aria-controls="evlog-panel">
-    Event log <span class="evlog-count">0</span>
+    {tr(lang, 'Event log', 'Journal')} <span class="evlog-count">0</span>
   </button>
-  <section id="evlog-panel" class="evlog-panel" hidden aria-label="Data layer event log">
+  <section id="evlog-panel" class="evlog-panel" hidden aria-label={tr(lang, 'Data layer event log', 'Journal des événements de la couche de données')}>
     <header class="evlog-head">
       <div class="evlog-tabs" role="tablist">
         <button role="tab" aria-selected="true" data-layer="dataLayer">dataLayer <span data-n="dataLayer">0</span></button>
         <button role="tab" aria-selected="false" data-layer="adobeDataLayer">adobeDataLayer <span data-n="adobeDataLayer">0</span></button>
         <button role="tab" aria-selected="false" data-layer="labEdgeLog" title="Requests built by the Adobe Web SDK">Web SDK <span data-n="labEdgeLog">0</span></button>
       </div>
-      <button class="evlog-copy" type="button">Copy JSON</button>
+      <button class="evlog-copy" type="button">{copy}</button>
     </header>
     <ol class="evlog-list" reversed></ol>
-    <p class="evlog-hint">Newest first, this page only. Web SDK shows each request the SDK built and where it went.</p>
+    <p class="evlog-hint">{tr(lang, 'Newest first, this page only. Web SDK shows each request the SDK built and where it went.', 'Plus récents en premier, cette page seulement. L’onglet Web SDK montre chaque requête construite par le SDK et sa destination.')}</p>
   </section>
 </div>
 
@@ -106,9 +110,9 @@
     const btn = e.currentTarget as HTMLButtonElement;
     try {
       await navigator.clipboard.writeText('[' + seen[active].map(serialise).join(',\n') + ']');
-      btn.textContent = 'Copied';
-    } catch { btn.textContent = 'Copy failed'; }
-    setTimeout(() => (btn.textContent = 'Copy JSON'), 1500);
+      btn.textContent = root.dataset.copied!;
+    } catch { btn.textContent = root.dataset.copyFailed!; }
+    setTimeout(() => (btn.textContent = root.dataset.copy!), 1500);
   });
 
   poll();

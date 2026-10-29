@@ -45,6 +45,8 @@ export const GA4_EVENTS = [
   'scroll_depth', 'content_click', 'filter_applied',
   // forms (generate_lead is Google recommended)
   'form_start', 'generate_lead', 'form_error',
+  // language
+  'language_switch',
 ] as const;
 
 /** Adobe Client Data Layer events. Lowercase words, object then action. */
@@ -56,7 +58,11 @@ export const ADOBE_EVENTS = [
   'media start', 'media milestone', 'media complete', 'media pause', 'media seek',
   'content scrolled', 'content clicked',
   'form started', 'form submitted', 'form error',
+  'language switched',
 ] as const;
+
+/** page.language: the language of the page itself (BCP 47). */
+export const PAGE_LANGUAGES = ['en-CA', 'fr-CA'] as const;
 
 /**
  * Keys that would mean personal data is in the data layer. Checked on every
@@ -77,6 +83,9 @@ export function checkPage(page: Record<string, unknown>, where: string) {
     problems.push(`page.name "${n}" must start with its section "${s}:"`);
   }
   if (!page.siteName) problems.push('page.siteName is missing');
+  if (!(PAGE_LANGUAGES as readonly string[]).includes(String(page.language ?? ''))) {
+    problems.push(`page.language "${page.language}" isn't in PAGE_LANGUAGES`);
+  }
   if (problems.length) {
     throw new Error(`Analytics convention check failed for ${where}:\n  - ${problems.join('\n  - ')}\nSee src/config/analytics.ts`);
   }

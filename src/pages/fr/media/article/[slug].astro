@@ -1,0 +1,9 @@
+---
+// French route: same page as /media/article/[slug]/, language read from the URL.
+import Page from '../../../media/article/[slug].astro';
+import { articles } from '../../../../data/articles';
+export function getStaticPaths() {
+  return articles.map((a) => ({ params: { slug: a.slug }, props: { article: a } }));
+}
+---
+<Page {...Astro.props} />

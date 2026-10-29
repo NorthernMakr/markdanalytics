@@ -1,26 +1,33 @@
 ---
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import { siteMeta } from '../../config/tags';
-import { getPosts, formatDate, isoDate } from '../../lib/blog';
+import { getPosts, formatDate, isoDate, slugOf } from '../../lib/blog';
 import { graph, breadcrumbs } from '../../lib/seo';
+import { langFromPath, localize, tr } from '../../i18n';
 
-const posts = await getPosts();
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
+const posts = await getPosts(lang);
 const pageData = {
   page: { name: 'blog:index', type: 'article list', section: 'blog', siteName: siteMeta.blogName },
   content: { listLength: posts.length },
 };
 ---
-<BlogLayout title={`Notes — ${siteMeta.blogName}`} description="Practical notes on Adobe Analytics, Google Analytics 4, tag management and data layers." pageData={pageData}
-  jsonLd={graph(breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Notes', path: '/blog/' }]))}>
+<BlogLayout title={`Notes — ${siteMeta.blogName}`}
+  description={tr(lang,
+    'Practical notes on Adobe Analytics, Google Analytics 4, tag management and data layers.',
+    'Notes pratiques sur Adobe Analytics, Google Analytics 4, la gestion des balises et les couches de données.')}
+  pageData={pageData}
+  jsonLd={graph(breadcrumbs([{ name: tr(lang, 'Home', 'Accueil'), path: l('/') }, { name: 'Notes', path: l('/blog/') }]))}>
   <section class="hub-section" style="border-top:0">
     <div class="blog-wrap">
       <h1 style="font:700 40px/1.1 var(--serif);margin:24px 0 28px">Notes</h1>
       <ul class="post-list">
         {posts.map((p) => (
           <li>
-            <time datetime={isoDate(p.data.pubDate)}>{formatDate(p.data.pubDate)}</time>
+            <time datetime={isoDate(p.data.pubDate)}>{formatDate(p.data.pubDate, lang)}</time>
             <div>
-              <h3><a href={`/blog/${p.id}/`}>{p.data.title}</a>{p.data.draft && ' (draft)'}</h3>
+              <h3><a href={l(`/blog/${slugOf(p.id)}/`)}>{p.data.title}</a>{p.data.draft && tr(lang, ' (draft)', ' (brouillon)')}</h3>
               <p>{p.data.description}</p>
             </div>
           </li>

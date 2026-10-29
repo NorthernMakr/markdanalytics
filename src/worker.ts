@@ -96,6 +96,10 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
   let f: Record<string, unknown> = {};
   try { f = await req.json(); } catch { return json({ ok: false, error: 'The form data could not be read.' }, 400); }
 
+  // Messages come back in the language of the page that sent the form.
+  const fr = f.lang === 'fr';
+  const msg = (en: string, frText: string) => (fr ? frText : en);
+
   // Bots fill the hidden field or submit instantly; pretend success so they move on.
   const elapsed = Date.now() - Number(f.startedAt ?? 0);
   if (String(f.website ?? '') !== '' || !(elapsed > 3000)) return json({ ok: true });
@@ -105,12 +109,12 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
   const topic = clean(f.topic, 60) || 'General';
   const message = String(f.message ?? '').trim().slice(0, 5000);
 
-  if (!name) return json({ ok: false, field: 'name', error: 'Add your name.' }, 400);
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ ok: false, field: 'email', error: 'Add an email address I can reply to.' }, 400);
-  if (message.length < 10) return json({ ok: false, field: 'message', error: 'Add a message of at least a sentence.' }, 400);
+  if (!name) return json({ ok: false, field: 'name', error: msg('Add your name.', 'Indiquez votre nom.') }, 400);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ ok: false, field: 'email', error: msg('Add an email address I can reply to.', 'Indiquez une adresse courriel à laquelle je peux répondre.') }, 400);
+  if (message.length < 10) return json({ ok: false, field: 'message', error: msg('Add a message of at least a sentence.', 'Écrivez un message d’au moins une phrase.') }, 400);
 
   if (!env.CONTACT_EMAIL || !env.CONTACT_TO) {
-    return json({ ok: false, error: 'The contact form isn\'t switched on yet. Please try again later.' }, 503);
+    return json({ ok: false, error: msg('The contact form isn\'t switched on yet. Please try again later.', 'Le formulaire de contact n’est pas encore activé. Réessayez plus tard.') }, 503);
   }
 
   const host = new URL(req.url).hostname.replace(/^www\./, '');
@@ -120,11 +124,11 @@ async function handleContact(req: Request, env: Env): Promise<Response> {
       from: { email: env.CONTACT_FROM || `contact@${host}`, name: `${host} contact form` },
       replyTo: { email, name },
       subject: `[${host}] ${topic}: message from ${name}`,
-      text: `From: ${name} <${email}>\nTopic: ${topic}\n\n${message}\n\n--\nSent from the contact form on ${host}. Reply to this email to answer ${name} directly.`,
+      text: `From: ${name} <${email}>\nTopic: ${topic}\nLanguage: ${fr ? 'French' : 'English'}\n\n${message}\n\n--\nSent from the contact form on ${host}. Reply to this email to answer ${name} directly.`,
     });
   } catch (e: any) {
     console.error('contact send failed', e?.code, e?.message);
-    return json({ ok: false, error: 'The message couldn\'t be sent right now. Please try again in a few minutes.' }, 502);
+    return json({ ok: false, error: msg('The message couldn\'t be sent right now. Please try again in a few minutes.', 'Le message n’a pas pu être envoyé. Réessayez dans quelques minutes.') }, 502);
   }
   return json({ ok: true });
 }

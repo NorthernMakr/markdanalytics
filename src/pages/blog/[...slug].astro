@@ -1,26 +1,35 @@
 ---
-import { render } from 'astro:content';
+import { render, getEntry } from 'astro:content';
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import { siteMeta } from '../../config/tags';
-import { getPosts, formatDate, isoDate, wordCount, type Post } from '../../lib/blog';
+import { getPosts, formatDate, isoDate, wordCount, slugOf, type Post } from '../../lib/blog';
 import { graph, article, breadcrumbs } from '../../lib/seo';
+import { LOCALE, langFromPath, localize, tr } from '../../i18n';
 
 export async function getStaticPaths() {
-  const posts = await getPosts();
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  const posts = await getPosts('en');
+  return posts.map((post) => ({ params: { slug: slugOf(post.id) }, props: { post } }));
 }
 
 const { post } = Astro.props as { post: Post };
 const { Content } = await render(post);
 const d = post.data;
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
+const slug = slugOf(post.id);
+const path = l(`/blog/${slug}/`);
 
+// Analytics values come from the English post, whatever the page language:
+// content.id, title and category are the same for both versions, so a post is
+// one row in reports. page.language splits them when needed.
+const en = lang === 'fr' ? (await getEntry('blog', slug))?.data ?? d : d;
 const pageData = {
-  page: { name: `blog:${post.id}`, type: 'article', section: 'blog', siteName: siteMeta.blogName },
+  page: { name: `blog:${slug}`, type: 'article', section: 'blog', siteName: siteMeta.blogName },
   content: {
-    id: post.id,
-    title: d.title,
-    category: d.category,
-    tags: d.tags,
+    id: slug,
+    title: en.title,
+    category: en.category,
+    tags: en.tags,
     platform: d.platform,
     publishDate: isoDate(d.pubDate),
     updatedDate: d.updatedDate ? isoDate(d.updatedDate) : undefined,
@@ -32,15 +41,15 @@ const pageData = {
 <BlogLayout title={`${d.title} — ${siteMeta.blogName}`} description={d.description} pageData={pageData}
   ogType="article" published={d.pubDate} modified={d.updatedDate}
   jsonLd={graph(
-    article({ path: `/blog/${post.id}/`, title: d.title, description: d.description, published: d.pubDate, modified: d.updatedDate, tags: d.tags, section: d.category, wordCount: wordCount(post.body) }),
-    breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Notes', path: '/blog/' }, { name: d.title, path: `/blog/${post.id}/` }]),
+    article({ path, title: d.title, description: d.description, published: d.pubDate, modified: d.updatedDate, tags: d.tags, section: d.category, wordCount: wordCount(post.body), inLanguage: LOCALE[lang] }),
+    breadcrumbs([{ name: tr(lang, 'Home', 'Accueil'), path: l('/') }, { name: 'Notes', path: l('/blog/') }, { name: d.title, path }]),
   )}>
   <article class="post">
     <div class="blog-wrap">
       <header class="post-head">
         <h1>{d.title}</h1>
         <div class="post-meta">
-          <time datetime={isoDate(d.pubDate)}>{formatDate(d.pubDate)}</time>
+          <time datetime={isoDate(d.pubDate)}>{formatDate(d.pubDate, lang)}</time>
           <span>{d.category}</span>
           <span class="platform">{d.platform === 'Both' ? 'Adobe + Google' : d.platform}</span>
         </div>
@@ -48,7 +57,7 @@ const pageData = {
       <div class="post-body">
         <Content />
       </div>
-      {d.tags.length > 0 && <p class="post-tags">Tagged: {d.tags.join(', ')}</p>}
+      {d.tags.length > 0 && <p class="post-tags">{tr(lang, 'Tagged:', 'Mots-clés :')} {d.tags.join(', ')}</p>}
     </div>
   </article>
 

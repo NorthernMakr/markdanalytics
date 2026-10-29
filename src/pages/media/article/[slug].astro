@@ -1,12 +1,17 @@
 ---
 import MediaLayout from '../../../layouts/MediaLayout.astro';
-import { articles, formatNewsDate, type Article } from '../../../data/articles';
+import { articles, articleText, newsDate, type Article } from '../../../data/articles';
+import { langFromPath, localize, tr } from '../../../i18n';
 
 export function getStaticPaths() {
   return articles.map((a) => ({ params: { slug: a.slug }, props: { article: a } }));
 }
 const { article: a } = Astro.props as { article: Article };
 const others = articles.filter((x) => x.slug !== a.slug).slice(0, 3);
+const lang = langFromPath(Astro.url.pathname);
+const T = articleText(a, lang);
+// Analytics keeps the English headline and section (one row per story in reports);
+// page.language tells you which version was read.
 
 const extra = {
   content: {
@@ -21,35 +26,35 @@ const extra = {
   },
 };
 ---
-<MediaLayout title={a.headline} pageType="article" pageName={`media:article:${a.slug}`} extra={extra}>
+<MediaLayout title={T.headline} pageType="article" pageName={`media:article:${a.slug}`} extra={extra}>
   <div class="media-wrap">
     <article class="story">
-      <p class="kicker">{a.section}{a.video && <span class="has-video">Video</span>}</p>
-      <h1>{a.headline}</h1>
-      <p class="dek">{a.dek}</p>
-      <p class="byline">By {a.author}, published <time datetime={a.published}>{formatNewsDate(a.published)}</time></p>
+      <p class="kicker">{T.section}{a.video && <span class="has-video">{tr(lang, 'Video', 'Vidéo')}</span>}</p>
+      <h1>{T.headline}</h1>
+      <p class="dek">{T.dek}</p>
+      <p class="byline">{tr(lang, 'By', 'Par')} {a.author}, {tr(lang, 'published', 'publié le')} <time datetime={a.published}>{newsDate(a.published, lang)}</time></p>
 
       {a.video && (
         <figure class="player">
           <video controls playsinline preload="metadata" poster={a.video.poster}
             data-video-id={a.video.id} data-video-title={a.video.title}>
             <source src={a.video.src} type="video/mp4" />
-            Your browser can't play this video.
+            {tr(lang, 'Your browser can’t play this video.', 'Votre navigateur ne peut pas lire cette vidéo.')}
           </video>
-          <figcaption>{a.video.title} ({a.video.duration} sec)</figcaption>
+          <figcaption>{T.videoTitle} ({a.video.duration} s)</figcaption>
         </figure>
       )}
 
       <div class="story-body">
-        {a.body.map((p) => <p>{p}</p>)}
+        {T.body.map((p) => <p>{p}</p>)}
       </div>
     </article>
 
     <section class="read-next" aria-labelledby="read-next">
-      <h2 id="read-next">Read next</h2>
+      <h2 id="read-next">{tr(lang, 'Read next', 'À lire aussi')}</h2>
       <ul>
         {others.map((o, i) => (
-          <li><a href={`/media/article/${o.slug}/`} data-teaser-module="read next" data-teaser-position={i + 1}>{o.headline}</a></li>
+          <li><a href={localize(`/media/article/${o.slug}/`, lang)} data-link-name={o.headline} data-teaser-module="read next" data-teaser-position={i + 1}>{articleText(o, lang).headline}</a></li>
         ))}
       </ul>
     </section>

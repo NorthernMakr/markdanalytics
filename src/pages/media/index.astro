@@ -1,43 +1,48 @@
 ---
 import MediaLayout from '../../layouts/MediaLayout.astro';
-import { articles } from '../../data/articles';
+import { articles, articleText } from '../../data/articles';
+import { langFromPath, localize, tr } from '../../i18n';
 
+const lang = langFromPath(Astro.url.pathname);
 const [lead, ...rest] = articles;
 const popular = [...rest].slice(0, 4);
-const url = (slug: string) => `/media/article/${slug}/`;
+const url = (slug: string) => localize(`/media/article/${slug}/`, lang);
+const txt = (a: typeof lead) => articleText(a, lang);
+const video = tr(lang, 'Video', 'Vidéo');
+const L = txt(lead);
 ---
-<MediaLayout title="Local news" pageType="section front" pageName="media:home">
+<MediaLayout title={tr(lang, 'Local news', 'Nouvelles locales')} pageType="section front" pageName="media:home">
   <div class="media-wrap">
     <div class="front">
       <article class="lead">
-        <a class="lead-visual" href={url(lead.slug)} data-teaser-module="lead" data-teaser-position="1">
+        <a class="lead-visual" href={url(lead.slug)} data-link-name={lead.headline} data-teaser-module="lead" data-teaser-position="1">
           <img src={lead.video?.poster} alt="" width="960" height="540" />
-          {lead.video && <span class="play">▶ Watch: {lead.video.duration} sec</span>}
+          {lead.video && <span class="play">▶ {tr(lang, 'Watch', 'Regarder')} : {lead.video.duration} s</span>}
         </a>
-        <p class="kicker" style="margin-top:16px">{lead.section}{lead.video && <span class="has-video">Video</span>}</p>
-        <h2><a href={url(lead.slug)} data-teaser-module="lead" data-teaser-position="1">{lead.headline}</a></h2>
-        <p>{lead.dek}</p>
-        <p class="byline">By {lead.author}</p>
+        <p class="kicker" style="margin-top:16px">{L.section}{lead.video && <span class="has-video">{video}</span>}</p>
+        <h2><a href={url(lead.slug)} data-link-name={lead.headline} data-teaser-module="lead" data-teaser-position="1">{L.headline}</a></h2>
+        <p>{L.dek}</p>
+        <p class="byline">{tr(lang, 'By', 'Par')} {lead.author}</p>
       </article>
 
       <aside class="rail" aria-labelledby="most-read">
-        <h2 id="most-read">Most read</h2>
+        <h2 id="most-read">{tr(lang, 'Most read', 'Les plus lus')}</h2>
         <ol>
           {popular.map((a, i) => (
-            <li><h3><a href={url(a.slug)} data-teaser-module="most read" data-teaser-position={i + 1}>{a.headline}</a></h3></li>
+            <li><h3><a href={url(a.slug)} data-link-name={a.headline} data-teaser-module="most read" data-teaser-position={i + 1}>{txt(a).headline}</a></h3></li>
           ))}
         </ol>
       </aside>
     </div>
 
     <section class="more" aria-labelledby="latest">
-      <h2 id="latest">Latest</h2>
+      <h2 id="latest">{tr(lang, 'Latest', 'À la une')}</h2>
       <div class="teasers">
         {rest.slice(0, 3).map((a, i) => (
           <article class="teaser">
-            <p class="kicker">{a.section}{a.video && <span class="has-video">Video</span>}</p>
-            <h3><a href={url(a.slug)} data-teaser-module="latest" data-teaser-position={i + 1}>{a.headline}</a></h3>
-            <p>{a.dek}</p>
+            <p class="kicker">{txt(a).section}{a.video && <span class="has-video">{video}</span>}</p>
+            <h3><a href={url(a.slug)} data-link-name={a.headline} data-teaser-module="latest" data-teaser-position={i + 1}>{txt(a).headline}</a></h3>
+            <p>{txt(a).dek}</p>
           </article>
         ))}
       </div>

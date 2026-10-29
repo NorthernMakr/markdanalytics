@@ -1,14 +1,19 @@
 ---
 import ShopLayout from '../../layouts/ShopLayout.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { products, categories } from '../../data/products';
+import { products, categories, categoryLabel } from '../../data/products';
+import { langFromPath, localize, tr } from '../../i18n';
+
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
+const allLabel = tr(lang, 'Shop all', 'Tout voir');
 ---
-<ShopLayout title="Shop all" pageType="product listing" pageName="shop:catalog">
+<ShopLayout title={allLabel} pageType="product listing" pageName="shop:catalog">
   <div class="shop-wrap">
-    <h1 class="page-title" data-title>Shop all</h1>
-    <ul class="chips" aria-label="Filter by category">
-      <li><a href="/shop/catalog/" data-cat="">All</a></li>
-      {categories.map((c) => <li><a href={`/shop/catalog/?category=${c.slug}`} data-cat={c.slug}>{c.name}</a></li>)}
+    <h1 class="page-title" data-title>{allLabel}</h1>
+    <ul class="chips" aria-label={tr(lang, 'Filter by category', 'Filtrer par catégorie')}>
+      <li><a href={l('/shop/catalog/')} data-cat="">{tr(lang, 'All', 'Tout')}</a></li>
+      {categories.map((c) => <li><a href={l(`/shop/catalog/?category=${c.slug}`)} data-cat={c.slug} data-cat-label={categoryLabel(c.slug, lang)}>{categoryLabel(c.slug, lang)}</a></li>)}
     </ul>
     <p class="result-count" aria-live="polite"></p>
     <div class="grid" data-list-id="catalog_all" data-list-name="Catalog: all">
@@ -19,10 +24,11 @@ import { products, categories } from '../../data/products';
   <script>
     import { viewItemList, visibleProducts, trackListClicks } from '../../scripts/commerce';
     import { categories } from '../../data/products';
-    import { ga4, adobe } from '../../scripts/lab';
+    import { ga4, adobe, t } from '../../scripts/lab';
 
     // Filtering happens in the browser from ?category=, so the URL is shareable
-    // and each filtered view gets its own list ID in the data layer.
+    // and each filtered view gets its own list ID in the data layer. List IDs
+    // and names stay in English in both languages.
     const cat = new URLSearchParams(location.search).get('category') ?? '';
     const known = categories.find((c) => c.slug === cat);
     const list = document.querySelector<HTMLElement>('[data-list-id]')!;
@@ -33,10 +39,11 @@ import { products, categories } from '../../data/products';
       if (!card.hidden) index++;
     });
     if (known) {
+      const label = document.querySelector<HTMLElement>(`[data-cat="${known.slug}"]`)?.dataset.catLabel ?? known.name;
       list.dataset.listId = `catalog_${known.slug}`;
       list.dataset.listName = `Catalog: ${known.name}`;
-      document.querySelector('[data-title]')!.textContent = known.name;
-      document.title = `${known.name} | Taiga Supply Co. (demo)`;
+      document.querySelector('[data-title]')!.textContent = label;
+      document.title = `${label} | Taiga Supply Co. (${t('demo', 'démo')})`;
       ga4({ event: 'filter_applied', filter_type: 'category', filter_value: known.slug });
       adobe({ event: 'search filtered', search: { filterType: 'category', filterValue: known.slug } });
     }
@@ -45,7 +52,7 @@ import { products, categories } from '../../data/products';
     });
 
     const shown = visibleProducts(list);
-    document.querySelector('.result-count')!.textContent = `${shown.length} products`;
+    document.querySelector('.result-count')!.textContent = t(`${shown.length} products`, `${shown.length} produits`);
     viewItemList({ listId: list.dataset.listId!, listName: list.dataset.listName! }, shown);
     trackListClicks();
   </script>

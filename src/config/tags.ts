@@ -49,6 +49,7 @@ export const siteMeta = {
   owner: 'Mark Dykeman',
   blogName: 'Tag & Layer',
   blogTagline: 'Practical notes on Adobe Analytics, Google Analytics and the data layers that feed them.',
+  blogTaglineFr: 'Notes pratiques sur Adobe Analytics, Google Analytics et les couches de données qui les alimentent.',
   language: 'en-CA',
   currency: 'CAD',
 };

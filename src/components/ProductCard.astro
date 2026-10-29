@@ -1,18 +1,21 @@
 ---
 import ProductArt from './ProductArt.astro';
-import { money, type Product } from '../data/products';
+import { productText, colourLabel, type Product } from '../data/products';
+import { langFromPath, localize, money, tr } from '../i18n';
 interface Props { product: Product; index: number; }
 const { product: p, index } = Astro.props;
-const href = `/shop/product/${p.slug}/`;
+const lang = langFromPath(Astro.url.pathname);
+const text = productText(p, lang);
+const href = localize(`/shop/product/${p.slug}/`, lang);
 ---
 <article class="card" data-card-sku={p.sku} data-category={p.category}>
   <a class="card-art" href={href} data-sku={p.sku} data-index={index} tabindex="-1" aria-hidden="true">
     <ProductArt kind={p.art} colour={p.colours[0].hex} />
-    {p.badge && <span class="card-badge">{p.badge}</span>}
+    {text.badge && <span class="card-badge">{text.badge}</span>}
   </a>
-  <h3><a href={href} data-sku={p.sku} data-index={index}>{p.name}</a></h3>
-  <p class="card-price">{money(p.price)}</p>
-  <ul class="card-swatches" aria-label={`${p.colours.length} colours`}>
-    {p.colours.map((c) => <li style={`background:${c.hex}`} title={c.name}></li>)}
+  <h3><a href={href} data-sku={p.sku} data-index={index}>{text.name}</a></h3>
+  <p class="card-price">{money(p.price, lang)}</p>
+  <ul class="card-swatches" aria-label={tr(lang, `${p.colours.length} colours`, `${p.colours.length} couleurs`)}>
+    {p.colours.map((c) => <li style={`background:${c.hex}`} title={colourLabel(c.name, lang)}></li>)}
   </ul>
 </article>

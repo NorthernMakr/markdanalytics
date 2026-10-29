@@ -1,44 +1,52 @@
 ---
 import ShopLayout from '../../../layouts/ShopLayout.astro';
 import { SHIPPING } from '../../../scripts/commerce';
-import { money } from '../../../data/products';
+import { langFromPath, localize, money, tr } from '../../../i18n';
+
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
+const tierLabel: Record<string, string> = tr(lang,
+  { standard: 'Standard (5–7 days)', express: 'Express (1–2 days)' },
+  { standard: 'Standard (5 à 7 jours)', express: 'Express (1 à 2 jours)' });
 ---
-<ShopLayout title="Checkout: shipping" pageType="checkout" pageName="shop:checkout:shipping" extra={{ checkout: { step: 1, stepName: 'shipping' } }} checkoutStep={1}>
+<ShopLayout title={tr(lang, 'Checkout: shipping', 'Caisse : livraison')} pageType="checkout" pageName="shop:checkout:shipping" extra={{ checkout: { step: 1, stepName: 'shipping' } }} checkoutStep={1}>
   <div class="shop-wrap">
-    <h1 class="page-title">Shipping</h1>
+    <h1 class="page-title">{tr(lang, 'Shipping', 'Livraison')}</h1>
     <div class="empty" data-empty hidden>
-      <p>Your cart is empty, so there's nothing to check out yet.</p>
-      <div class="actions"><a class="btn" href="/shop/cart/">Go to cart</a></div>
+      <p>{tr(lang, 'Your cart is empty, so there’s nothing to check out yet.', 'Votre panier est vide : il n’y a rien à payer pour l’instant.')}</p>
+      <div class="actions"><a class="btn" href={l('/shop/cart/')}>{tr(lang, 'Go to cart', 'Voir le panier')}</a></div>
     </div>
 
     <div class="cart-layout" data-checkout>
       <form class="ship-form" novalidate autocomplete="off">
-        <p class="notice">Demo checkout. The fields are pre-filled with made-up details and nothing you type is sent anywhere.</p>
+        <p class="notice">{tr(lang,
+          'Demo checkout. The fields are pre-filled with made-up details and nothing you type is sent anywhere.',
+          'Caisse démo. Les champs sont préremplis avec des données inventées, et rien de ce que vous tapez n’est transmis.')}</p>
         <div class="form-grid">
-          <div><label for="fn">First name</label><input id="fn" value="Paige" /></div>
-          <div><label for="ln">Last name</label><input id="ln" value="View" /></div>
-          <div class="full"><label for="em">Email</label><input id="em" type="email" value="paige.view@example.com" /></div>
-          <div class="full"><label for="ad">Street address</label><input id="ad" value="404 Not Found Lane" /></div>
-          <div><label for="ci">City</label><input id="ci" value="Victoria" /></div>
+          <div><label for="fn">{tr(lang, 'First name', 'Prénom')}</label><input id="fn" value="Paige" /></div>
+          <div><label for="ln">{tr(lang, 'Last name', 'Nom')}</label><input id="ln" value="View" /></div>
+          <div class="full"><label for="em">{tr(lang, 'Email', 'Courriel')}</label><input id="em" type="email" value="paige.view@example.com" /></div>
+          <div class="full"><label for="ad">{tr(lang, 'Street address', 'Adresse')}</label><input id="ad" value={tr(lang, '404 Not Found Lane', '404, ruelle Introuvable')} /></div>
+          <div><label for="ci">{tr(lang, 'City', 'Ville')}</label><input id="ci" value="Victoria" /></div>
           <div><label for="pr">Province</label><select id="pr"><option>BC</option><option>AB</option><option>ON</option><option>QC</option></select></div>
-          <div><label for="pc">Postal code</label><input id="pc" value="V8W 0A0" /></div>
+          <div><label for="pc">{tr(lang, 'Postal code', 'Code postal')}</label><input id="pc" value="V8W 0A0" /></div>
         </div>
 
         <fieldset class="options">
-          <legend>Delivery</legend>
+          <legend>{tr(lang, 'Delivery', 'Mode de livraison')}</legend>
           {Object.entries(SHIPPING).map(([key, s], i) => (
             <label class="option">
               <input type="radio" name="tier" value={key} checked={i === 0} />
-              <span>{s.label}</span>
-              <strong>{s.cost ? money(s.cost) : 'Free'}</strong>
+              <span>{tierLabel[key]}</span>
+              <strong>{s.cost ? money(s.cost, lang) : tr(lang, 'Free', 'Gratuite')}</strong>
             </label>
           ))}
         </fieldset>
-        <button class="btn btn-go" type="submit">Continue to payment</button>
+        <button class="btn btn-go" type="submit">{tr(lang, 'Continue to payment', 'Continuer vers le paiement')}</button>
       </form>
 
-      <aside class="summary" aria-label="Order summary">
-        <h2>Order summary</h2>
+      <aside class="summary" aria-label={tr(lang, 'Order summary', 'Résumé de la commande')}>
+        <h2>{tr(lang, 'Order summary', 'Résumé de la commande')}</h2>
         <dl data-totals></dl>
       </aside>
     </div>
@@ -47,6 +55,7 @@ import { money } from '../../../data/products';
   <script>
     import { beginCheckout, addShippingInfo, readSession, writeSession, type ShippingTier } from '../../../scripts/commerce';
     import { renderSummary, guardEmpty } from '../../../scripts/checkout-ui';
+    import { lp } from '../../../scripts/lab';
 
     const form = document.querySelector<HTMLFormElement>('.ship-form')!;
     const layout = document.querySelector<HTMLElement>('[data-checkout]')!;
@@ -66,7 +75,7 @@ import { money } from '../../../data/products';
         writeSession('lab-tier', tier);
         addShippingInfo(tier);
         // Brief pause so tags listening for add_shipping_info can send before the page changes
-        setTimeout(() => (location.href = '/shop/checkout/payment/'), 300);
+        setTimeout(() => (location.href = lp('/shop/checkout/payment/')), 300);
       });
     }
   </script>

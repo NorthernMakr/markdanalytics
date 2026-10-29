@@ -24,8 +24,13 @@ function isFirstInListItem(node, parent) {
   return first === node;
 }
 
+// French content (src/content/*/fr/ and *.fr.md files) gets French wording.
+const isFrench = (file) => /[\\/]fr[\\/]|\.fr\.mdx?$/.test(String(file?.path ?? file?.history?.[0] ?? ''));
+
 export default function rehypeExternalLinks() {
-  return (tree) => {
+  return (tree, file) => {
+    const fr = isFrench(file);
+    const newWin = fr ? 'ouvre une nouvelle fenêtre' : 'opens in a new window';
     const walk = (node, parent, grandparent) => {
       if (node.type === 'element' && node.tagName === 'a') {
         const href = String(node.properties?.href ?? '');
@@ -41,11 +46,11 @@ export default function rehypeExternalLinks() {
             node.properties.target = '_blank';
             node.properties.rel = ['noopener', 'noreferrer'];
             node.properties.className = [...(node.properties.className ?? []), 'ext', listStyle ? 'ext-listed' : 'ext-inline'];
-            node.properties.title = `Opens ${domain} in a new window`;
+            node.properties.title = fr ? `Ouvre ${domain} dans une nouvelle fenêtre` : `Opens ${domain} in a new window`;
             node.children.push(
               ...(listStyle ? [span(['ext-domain'], [text(domain)])] : []),
               span(['ext-icon'], [text('↗')], { ariaHidden: 'true' }),
-              span(['visually-hidden'], [text(listStyle ? ' (opens in a new window)' : ` (opens in a new window, ${domain})`)]),
+              span(['visually-hidden'], [text(listStyle ? ` (${newWin})` : ` (${newWin}, ${domain})`)]),
             );
           }
         }

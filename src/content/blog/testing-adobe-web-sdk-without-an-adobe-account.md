@@ -61,7 +61,7 @@ Commerce events use the standard XDM `commerce` fields, which Adobe Analytics ma
 | `wishlist add` | `commerce.saveForLaters` | (custom event) |
 | everything else | `web.webinteraction.linkClicks` | link call named after the event |
 
-Products travel in `productListItems` (`SKU`, `name`, `quantity`, `priceTotal`, `productCategories`). Page views also set a few Analytics variables directly through `data.__adobe.analytics` (`prop1` and `eVar1` for page type, `prop2` for site section), to show that path.
+Products travel in `productListItems` (`SKU`, `name`, `quantity`, `priceTotal`, `productCategories`). Page views also set a few Analytics variables directly through `data.__adobe.analytics` (`prop1` and `eVar1` for page type, `prop2` for site section, `prop3` and `eVar2` for page language, `prop4` and `eVar3` for browser language, `prop5` for whether they match), to show that path.
 
 ## Seeing it work
 

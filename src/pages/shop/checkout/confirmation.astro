@@ -1,27 +1,36 @@
 ---
 import ShopLayout from '../../../layouts/ShopLayout.astro';
+import { siteMeta } from '../../../config/tags';
+import { langFromPath, localize, tr } from '../../../i18n';
+
+const lang = langFromPath(Astro.url.pathname);
+const l = (p: string) => localize(p, lang);
 ---
-<ShopLayout title="Order confirmed" pageType="order confirmation" pageName="shop:checkout:confirmation" extra={{ checkout: { step: 3, stepName: 'confirmation' } }} checkoutStep={3}>
+<ShopLayout title={tr(lang, 'Order confirmed', 'Commande confirmée')} pageType="order confirmation" pageName="shop:checkout:confirmation" extra={{ checkout: { step: 3, stepName: 'confirmation' } }} checkoutStep={3}>
   <div class="shop-wrap">
     <div class="cart-layout" style="margin-top:36px" data-order hidden>
       <div class="confirm-box">
-        <h1>Thanks, your order is in.</h1>
-        <p>Order number <span class="order-id" data-id></span>. This is a demo, so nothing will ship.</p>
-        <p class="notice" data-dupe hidden>This order's <code>purchase</code> event was already pushed, so it wasn't sent again on reload.</p>
+        <h1>{tr(lang, 'Thanks, your order is in.', 'Merci, votre commande est reçue.')}</h1>
+        <p>{tr(lang, 'Order number', 'Numéro de commande')} <span class="order-id" data-id></span>. {tr(lang, 'This is a demo, so nothing will ship.', 'C’est une démo : rien ne sera expédié.')}</p>
+        <p class="notice" data-dupe hidden>{tr(lang,
+          'This order’s purchase event was already pushed, so it wasn’t sent again on reload.',
+          'L’événement purchase de cette commande a déjà été envoyé; il n’a donc pas été renvoyé au rechargement.')}</p>
         <div class="qty-row">
-          <a class="btn" href="/shop/">Back to the store</a>
-          <a class="btn btn-ghost" href="/">Back to Tag &amp; Layer</a>
+          <a class="btn" href={l('/shop/')}>{tr(lang, 'Back to the store', 'Retour à la boutique')}</a>
+          <a class="btn btn-ghost" href={l('/')}>{tr(lang, 'Back to', 'Retour à')} {siteMeta.blogName}</a>
         </div>
       </div>
-      <aside class="summary" aria-label="Order summary">
-        <h2>What you ordered</h2>
+      <aside class="summary" aria-label={tr(lang, 'Order summary', 'Résumé de la commande')}>
+        <h2>{tr(lang, 'What you ordered', 'Votre commande')}</h2>
         <dl data-totals></dl>
       </aside>
     </div>
 
     <div class="empty" style="margin-top:36px" data-none hidden>
-      <p>There's no recent order to show. Place one from the cart to see the purchase event.</p>
-      <div class="actions"><a class="btn" href="/shop/cart/">Go to cart</a></div>
+      <p>{tr(lang,
+        'There’s no recent order to show. Place one from the cart to see the purchase event.',
+        'Aucune commande récente à afficher. Passez-en une depuis le panier pour voir l’événement purchase.')}</p>
+      <div class="actions"><a class="btn" href={l('/shop/cart/')}>{tr(lang, 'Go to cart', 'Voir le panier')}</a></div>
     </div>
   </div>
 
