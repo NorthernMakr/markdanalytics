@@ -26,6 +26,10 @@ ${pages.filter((p) => p.kind === 'practice').map(line).join('\n')}
 
 ${pages.filter((p) => p.kind === 'post').map(line).join('\n')}
 
+## About this site
+
+- [Notes on this site's development](${abs('/site-notes/')}): How the site was built, and what was done for mobile, accessibility, SEO, AI answer engines and privacy.
+
 ## Optional
 
 - [Sitemap](${abs('/sitemap.xml')})

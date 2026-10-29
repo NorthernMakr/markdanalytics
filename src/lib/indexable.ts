@@ -7,6 +7,7 @@
 import { getCollection } from 'astro:content';
 import { getPosts } from './blog';
 import { siteMeta } from '../config/tags';
+import { frontmatter as siteNotes } from '../writing/site-notes.md';
 
 export interface IndexablePage {
   path: string;
@@ -38,6 +39,8 @@ export async function getIndexablePages(): Promise<IndexablePage[]> {
   return [
     { path: '/', title: siteMeta.blogName, description: siteMeta.blogTagline, lastmod: newest(all), kind: 'page' },
     { path: '/blog/', title: 'Notes', description: 'All posts on analytics implementation.', lastmod: newest(postPages), kind: 'page' },
+    { path: '/site-notes/', title: "Notes on this site's development", description: siteNotes.description, lastmod: new Date(siteNotes.updatedDate ?? siteNotes.pubDate), kind: 'page' },
+    { path: '/sitemap/', title: 'Sitemap', description: 'Every page on the site.', lastmod: newest(all), kind: 'page' },
     ...practicePages,
     ...postPages,
   ];

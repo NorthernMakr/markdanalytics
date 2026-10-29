@@ -1,0 +1,69 @@
+---
+// Human-readable sitemap. Search engines use /sitemap.xml instead; this page
+// lists everything, including the demo sites that are kept out of search.
+import BlogLayout from '../layouts/BlogLayout.astro';
+import { siteMeta } from '../config/tags';
+import { getIndexablePages } from '../lib/indexable';
+import { graph, breadcrumbs } from '../lib/seo';
+import { products } from '../data/products';
+import { articles } from '../data/articles';
+
+const pages = await getIndexablePages();
+const practice = pages.filter((p) => p.kind === 'practice');
+const posts = pages.filter((p) => p.kind === 'post');
+
+const pageData = {
+  page: { name: 'site:sitemap', type: 'article list', section: 'site', siteName: siteMeta.blogName },
+};
+---
+<BlogLayout title={`Sitemap — ${siteMeta.blogName}`} description="Every page on markdanalytics.ca: notes, the analytics practice section, and the demo store and news site used for testing."
+  pageData={pageData} jsonLd={graph(breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Sitemap', path: '/sitemap/' }]))}>
+  <article class="post">
+    <div class="blog-wrap">
+      <header class="post-head">
+        <h1>Sitemap</h1>
+      </header>
+      <div class="post-body sitemap">
+        <h2>Main pages</h2>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/blog/">Notes</a></li>
+          <li><a href="/practice/">Analytics practice</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/site-notes/">Notes on this site's development</a></li>
+        </ul>
+
+        <h2>Analytics practice</h2>
+        <ul>{practice.map((p) => <li><a href={p.path}>{p.title}</a></li>)}</ul>
+
+        <h2>Notes</h2>
+        <ul>{posts.map((p) => <li><a href={p.path}>{p.title}</a></li>)}</ul>
+
+        <h2>Demo store: Taiga Supply Co.</h2>
+        <p>A fictional store for testing ecommerce tracking. Not listed in search engines.</p>
+        <ul>
+          <li><a href="/shop/">Store home</a></li>
+          <li><a href="/shop/catalog/">Catalog</a></li>
+          {products.map((p) => <li><a href={`/shop/product/${p.slug}/`}>{p.name}</a></li>)}
+          <li><a href="/shop/cart/">Cart</a></li>
+          <li><a href="/shop/checkout/">Checkout</a></li>
+        </ul>
+
+        <h2>Demo news site: Balsam Daily</h2>
+        <p>A fictional news site for testing article and video tracking. Not listed in search engines.</p>
+        <ul>
+          <li><a href="/media/">Balsam Daily home</a></li>
+          {articles.map((a) => <li><a href={`/media/article/${a.slug}/`}>{a.headline}</a></li>)}
+        </ul>
+
+        <h2>For machines</h2>
+        <ul>
+          <li><a href="/sitemap.xml">XML sitemap</a> for search engines</li>
+          <li><a href="/rss.xml">RSS feed</a></li>
+          <li><a href="/llms.txt">llms.txt</a> for AI assistants</li>
+          <li><a href="/robots.txt">robots.txt</a></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</BlogLayout>

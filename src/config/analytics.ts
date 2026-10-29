@@ -24,7 +24,10 @@ export const PAGE_TYPES = [
 ] as const;
 
 /** page.section: the top-level area of the site. Lowercase, from this list only. */
-export const SECTIONS = ['home', 'blog', 'practice', 'contact', 'error', 'shop', 'media'] as const;
+export const SECTIONS = [
+  'home', 'blog', 'practice', 'contact', 'error', 'shop', 'media',
+  'site', // pages about the site itself (development notes)
+] as const;
 
 /** page.name: lowercase, colon-separated hierarchy, e.g. "shop:product:tidepool-daypack". */
 export const PAGE_NAME_PATTERN = /^[a-z0-9-]+(:[a-z0-9-]+)*$/;

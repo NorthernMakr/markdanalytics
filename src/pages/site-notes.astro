@@ -1,0 +1,48 @@
+---
+// Notes on this site's development. The text lives in src/writing/site-notes.md;
+// update it (and its updatedDate) whenever something notable changes.
+import BlogLayout from '../layouts/BlogLayout.astro';
+import { siteMeta } from '../config/tags';
+import { formatDate, isoDate, wordCount } from '../lib/blog';
+import { graph, article, breadcrumbs } from '../lib/seo';
+import { Content, frontmatter as fm, rawContent } from '../writing/site-notes.md';
+
+const published = new Date(fm.pubDate);
+const updated = fm.updatedDate ? new Date(fm.updatedDate) : undefined;
+const path = '/site-notes/';
+
+const pageData = {
+  page: { name: 'site:development-notes', type: 'article', section: 'site', siteName: siteMeta.blogName },
+  content: {
+    id: 'site-notes', title: fm.title, category: 'Site', author: siteMeta.owner,
+    publishDate: isoDate(published), updatedDate: updated ? isoDate(updated) : undefined,
+    wordCount: wordCount(rawContent()),
+  },
+};
+---
+<BlogLayout title={`${fm.title} — ${siteMeta.blogName}`} description={fm.description} pageData={pageData}
+  ogType="article" published={published} modified={updated}
+  jsonLd={graph(
+    article({ path, title: fm.title, description: fm.description, published, modified: updated, section: 'Site', wordCount: wordCount(rawContent()) }),
+    breadcrumbs([{ name: 'Home', path: '/' }, { name: fm.title, path }]),
+  )}>
+  <article class="post">
+    <div class="blog-wrap">
+      <header class="post-head">
+        <h1>{fm.title}</h1>
+        <div class="post-meta">
+          <time datetime={isoDate(updated ?? published)}>{updated && updated > published ? `Updated ${formatDate(updated)}` : formatDate(published)}</time>
+          <span>About this site</span>
+        </div>
+      </header>
+      <div class="post-body">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <script>
+    import { trackScrollDepth } from '../scripts/scroll';
+    trackScrollDepth(document.querySelector('.post-body'));
+  </script>
+</BlogLayout>

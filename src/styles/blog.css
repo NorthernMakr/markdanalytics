@@ -124,3 +124,10 @@
 .blog-nav ul a { display: inline-block; padding: 10px 0; }
 .blog-nav ul { row-gap: 0; }
 .blog-nav .blog-wrap { padding-top: 8px; padding-bottom: 8px; }
+
+.blog-footer p { margin: 0 0 8px; }
+.footer-links { list-style: none; display: flex; flex-wrap: wrap; gap: 0 22px; margin: 0; padding: 0; }
+.footer-links a { display: inline-block; padding: 8px 0; color: var(--muted); }
+.sitemap h2 { font-size: 22px; margin-top: 1.6em; }
+.sitemap p { color: var(--muted); font: 16px/1.5 var(--sans); margin: -0.3em 0 0.6em; }
+.sitemap ul { font: 17px/1.5 var(--sans); }
