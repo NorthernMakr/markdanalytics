@@ -1,0 +1,100 @@
+---
+import ShopLayout from '../../layouts/ShopLayout.astro';
+import ProductArt from '../../components/ProductArt.astro';
+import { products } from '../../data/products';
+---
+<ShopLayout title="Your cart" pageType="cart" pageName="shop:cart" checkoutStep={0}>
+  <div class="shop-wrap">
+    <h1 class="page-title">Your cart</h1>
+
+    <div class="empty" data-empty hidden>
+      <p>Your cart is empty.</p>
+      <div class="actions">
+        <a class="btn" href="/shop/catalog/">Browse the catalog</a>
+        <button class="btn btn-ghost" type="button" data-sample>Add sample items</button>
+      </div>
+    </div>
+
+    <div class="cart-layout" data-full hidden>
+      <ul class="cart-lines"></ul>
+      <aside class="summary" aria-label="Order summary">
+        <h2>Order summary</h2>
+        <dl data-totals></dl>
+        <a class="btn btn-go" href="/shop/checkout/">Go to checkout</a>
+        <p style="margin:12px 0 0;font-size:14px;color:var(--slate)">Taxes estimated at 12% (GST + PST).</p>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Hidden art templates the script clones into cart lines -->
+  <div hidden>
+    {products.map((p) => <template data-art={p.sku}><ProductArt kind={p.art} colour={p.colours[0].hex} /></template>)}
+  </div>
+
+  <script>
+    import { getCart, bySku, totals, viewCart, removeFromCart, addToCart } from '../../scripts/commerce';
+    import { money, products } from '../../data/products';
+
+    const lines = document.querySelector<HTMLUListElement>('.cart-lines')!;
+    const empty = document.querySelector<HTMLElement>('[data-empty]')!;
+    const full = document.querySelector<HTMLElement>('[data-full]')!;
+    const dl = document.querySelector<HTMLElement>('[data-totals]')!;
+
+    function render() {
+      const cart = getCart();
+      empty.hidden = cart.length > 0;
+      full.hidden = cart.length === 0;
+      lines.innerHTML = '';
+      for (const l of cart) {
+        const p = bySku(l.sku)!;
+        const li = document.createElement('li');
+        li.className = 'cart-line';
+        const thumb = document.createElement('div');
+        thumb.className = 'thumb';
+        const tpl = document.querySelector<HTMLTemplateElement>(`template[data-art="${p.sku}"]`);
+        if (tpl) {
+          thumb.append(tpl.content.cloneNode(true));
+          const hex = p.colours.find((c) => c.name === l.colour)?.hex;
+          if (hex) thumb.querySelectorAll('.fill').forEach((el) => el.setAttribute('fill', hex));
+        }
+        const info = document.createElement('div');
+        info.innerHTML = `<h3><a href="/shop/product/${p.slug}/"></a></h3><p></p>
+          <div class="line-actions">
+            <select aria-label="Quantity">${[1,2,3,4,5,6,7,8,9,10].map((n) => `<option ${n === l.qty ? 'selected' : ''}>${n}</option>`).join('')}</select>
+            <button class="btn-link" type="button">Remove</button>
+          </div>`;
+        info.querySelector('a')!.textContent = p.name;
+        info.querySelector('p')!.textContent = `${l.colour}, ${money(p.price)} each`;
+        const sel = info.querySelector('select')!;
+        sel.addEventListener('change', () => {
+          const next = Number(sel.value);
+          if (next > l.qty) addToCart(p, l.colour, next - l.qty, 'cart quantity');
+          else removeFromCart(p.sku, l.colour, l.qty - next);
+          render();
+        });
+        info.querySelector('button')!.addEventListener('click', () => { removeFromCart(p.sku, l.colour, l.qty); render(); });
+        const total = document.createElement('div');
+        total.className = 'line-total';
+        total.textContent = money(p.price * l.qty);
+        li.append(thumb, info, total);
+        lines.append(li);
+      }
+      const t = totals(cart);
+      dl.innerHTML = `<dt>Subtotal</dt><dd>${money(t.subtotal)}</dd>
+        <dt>Shipping</dt><dd>Calculated at checkout</dd>
+        <dt>Estimated tax</dt><dd>${money(t.tax)}</dd>
+        <dt class="grand">Estimated total</dt><dd class="grand">${money(t.subtotal + t.tax)}</dd>`;
+    }
+
+    // One-click way to get items into the cart while testing
+    document.querySelector('[data-sample]')!.addEventListener('click', () => {
+      addToCart(products[0], products[0].colours[0].name, 1, 'sample items');
+      addToCart(products[7], products[7].colours[1].name, 2, 'sample items');
+      render();
+      viewCart();
+    });
+
+    render();
+    if (getCart().length) viewCart();
+  </script>
+</ShopLayout>

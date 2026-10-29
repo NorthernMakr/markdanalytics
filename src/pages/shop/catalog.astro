@@ -1,0 +1,52 @@
+---
+import ShopLayout from '../../layouts/ShopLayout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { products, categories } from '../../data/products';
+---
+<ShopLayout title="Shop all" pageType="product listing" pageName="shop:catalog">
+  <div class="shop-wrap">
+    <h1 class="page-title" data-title>Shop all</h1>
+    <ul class="chips" aria-label="Filter by category">
+      <li><a href="/shop/catalog/" data-cat="">All</a></li>
+      {categories.map((c) => <li><a href={`/shop/catalog/?category=${c.slug}`} data-cat={c.slug}>{c.name}</a></li>)}
+    </ul>
+    <p class="result-count" aria-live="polite"></p>
+    <div class="grid" data-list-id="catalog_all" data-list-name="Catalog: all">
+      {products.map((p, i) => <ProductCard product={p} index={i} />)}
+    </div>
+  </div>
+
+  <script>
+    import { viewItemList, visibleProducts, trackListClicks } from '../../scripts/commerce';
+    import { categories } from '../../data/products';
+    import { ga4, adobe } from '../../scripts/lab';
+
+    // Filtering happens in the browser from ?category=, so the URL is shareable
+    // and each filtered view gets its own list ID in the data layer.
+    const cat = new URLSearchParams(location.search).get('category') ?? '';
+    const known = categories.find((c) => c.slug === cat);
+    const list = document.querySelector<HTMLElement>('[data-list-id]')!;
+    let index = 0;
+    list.querySelectorAll<HTMLElement>('[data-card-sku]').forEach((card) => {
+      card.hidden = !!known && card.dataset.category !== cat;
+      if (!card.hidden) card.querySelectorAll<HTMLElement>('a[data-index]').forEach((a) => (a.dataset.index = String(index)));
+      if (!card.hidden) index++;
+    });
+    if (known) {
+      list.dataset.listId = `catalog_${known.slug}`;
+      list.dataset.listName = `Catalog: ${known.name}`;
+      document.querySelector('[data-title]')!.textContent = known.name;
+      document.title = `${known.name} | Driftwood Supply Co. (demo)`;
+      ga4({ event: 'filter_applied', filter_type: 'category', filter_value: known.slug });
+      adobe({ event: 'search filtered', search: { filterType: 'category', filterValue: known.slug } });
+    }
+    document.querySelectorAll<HTMLElement>('[data-cat]').forEach((a) => {
+      if (a.dataset.cat === (known ? cat : '')) a.setAttribute('aria-current', 'true');
+    });
+
+    const shown = visibleProducts(list);
+    document.querySelector('.result-count')!.textContent = `${shown.length} products`;
+    viewItemList({ listId: list.dataset.listId!, listName: list.dataset.listName! }, shown);
+    trackListClicks();
+  </script>
+</ShopLayout>

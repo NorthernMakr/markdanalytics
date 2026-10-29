@@ -1,0 +1,44 @@
+---
+import ShopLayout from '../../../layouts/ShopLayout.astro';
+---
+<ShopLayout title="Order confirmed" pageType="order confirmation" pageName="shop:checkout:confirmation" extra={{ checkout: { step: 3, stepName: 'confirmation' } }} checkoutStep={3}>
+  <div class="shop-wrap">
+    <div class="cart-layout" style="margin-top:36px" data-order hidden>
+      <div class="confirm-box">
+        <h1>Thanks, your order is in.</h1>
+        <p>Order number <span class="order-id" data-id></span>. This is a demo, so nothing will ship.</p>
+        <p class="notice" data-dupe hidden>This order's <code>purchase</code> event was already pushed, so it wasn't sent again on reload.</p>
+        <div class="qty-row">
+          <a class="btn" href="/shop/">Back to the store</a>
+          <a class="btn btn-ghost" href="/">Back to Tag &amp; Layer</a>
+        </div>
+      </div>
+      <aside class="summary" aria-label="Order summary">
+        <h2>What you ordered</h2>
+        <dl data-totals></dl>
+      </aside>
+    </div>
+
+    <div class="empty" style="margin-top:36px" data-none hidden>
+      <p>There's no recent order to show. Place one from the cart to see the purchase event.</p>
+      <div class="actions"><a class="btn" href="/shop/cart/">Go to cart</a></div>
+    </div>
+  </div>
+
+  <script>
+    import { purchase, readSession, saveCart, type Order } from '../../../scripts/commerce';
+    import { renderSummary } from '../../../scripts/checkout-ui';
+
+    const order = readSession<Order | null>('lab-order', null);
+    if (!order || !order.cart.length) {
+      document.querySelector<HTMLElement>('[data-none]')!.hidden = false;
+    } else {
+      document.querySelector<HTMLElement>('[data-order]')!.hidden = false;
+      document.querySelector('[data-id]')!.textContent = order.id;
+      renderSummary(document.querySelector('[data-totals]')!, order.tier, order.cart, order.totals);
+      const sent = purchase(order);
+      document.querySelector<HTMLElement>('[data-dupe]')!.hidden = sent;
+      saveCart([]); // empty the cart once the order is placed
+    }
+  </script>
+</ShopLayout>

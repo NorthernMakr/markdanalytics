@@ -1,0 +1,29 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import { siteMeta } from '../../config/tags';
+import { getPosts, formatDate, isoDate } from '../../lib/blog';
+
+const posts = await getPosts();
+const pageData = {
+  page: { name: 'blog:index', type: 'article list', section: 'blog', siteName: siteMeta.blogName },
+  content: { listLength: posts.length },
+};
+---
+<BlogLayout title={`Notes — ${siteMeta.blogName}`} pageData={pageData}>
+  <section class="hub-section" style="border-top:0">
+    <div class="blog-wrap">
+      <h1 style="font:700 40px/1.1 var(--serif);margin:24px 0 28px">Notes</h1>
+      <ul class="post-list">
+        {posts.map((p) => (
+          <li>
+            <time datetime={isoDate(p.data.pubDate)}>{formatDate(p.data.pubDate)}</time>
+            <div>
+              <h3><a href={`/blog/${p.id}/`}>{p.data.title}</a>{p.data.draft && ' (draft)'}</h3>
+              <p>{p.data.description}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BlogLayout>

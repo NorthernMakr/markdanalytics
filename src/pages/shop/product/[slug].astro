@@ -1,0 +1,109 @@
+---
+import ShopLayout from '../../../layouts/ShopLayout.astro';
+import ProductArt from '../../../components/ProductArt.astro';
+import ProductCard from '../../../components/ProductCard.astro';
+import { products, categoryName, money, type Product } from '../../../data/products';
+
+export function getStaticPaths() {
+  return products.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+const { product: p } = Astro.props as { product: Product };
+const related = products.filter((x) => x.category === p.category && x.sku !== p.sku).slice(0, 4);
+const fill = related.length < 4 ? products.filter((x) => x.sku !== p.sku && !related.includes(x)).slice(0, 4 - related.length) : [];
+const alsoLike = [...related, ...fill];
+
+// Product data goes into the page-level object too, so tags that only read
+// page data (no event listener) can still pick it up.
+const extra = {
+  product: { sku: p.sku, name: p.name, category: p.category, subcategory: p.subcategory, price: p.price, currency: 'CAD' },
+};
+---
+<ShopLayout title={p.name} pageType="product detail" pageName={`shop:product:${p.slug}`} extra={extra}>
+  <div class="shop-wrap">
+    <div class="pdp" data-sku={p.sku}>
+      <div class="pdp-art">
+        <ProductArt kind={p.art} colour={p.colours[0].hex} label={p.name} />
+      </div>
+      <div>
+        <p class="crumbs"><a href="/shop/catalog/">Shop all</a> / <a href={`/shop/catalog/?category=${p.category}`}>{categoryName(p.category)}</a></p>
+        <h1>{p.name}</h1>
+        <p class="pdp-price">{money(p.price)}</p>
+        <p class="pdp-blurb">{p.blurb}</p>
+
+        <form class="add-form" novalidate>
+          <fieldset class="swatch-picker">
+            <legend class="field-label">Colour: <span data-colour-name>{p.colours[0].name}</span></legend>
+            {p.colours.map((c, i) => (
+              <label>
+                <input type="radio" name="colour" value={c.name} data-hex={c.hex} checked={i === 0} />
+                <span class="dot" style={`background:${c.hex}`}></span>
+                {c.name}
+              </label>
+            ))}
+          </fieldset>
+          <div class="qty-row">
+            <label class="visually-hidden" for="qty">Quantity</label>
+            <select id="qty" name="qty">
+              {[1, 2, 3, 4, 5].map((n) => <option value={n}>Qty {n}</option>)}
+            </select>
+            <button class="btn btn-go" type="submit">Add to cart</button>
+            <button class="btn btn-ghost" type="button" data-wishlist>Save to wishlist</button>
+          </div>
+          <p class="added-msg" role="status" hidden></p>
+        </form>
+
+        <ul class="pdp-details">
+          {p.details.map((d) => <li>{d}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <section class="shop-section">
+      <h2>You might also like</h2>
+      <div class="grid" data-list-id="pdp_related" data-list-name="Product page: related">
+        {alsoLike.map((x, i) => <ProductCard product={x} index={i} />)}
+      </div>
+    </section>
+  </div>
+
+  <script>
+    import { bySku, viewItem, addToCart, addToWishlist, viewItemList, visibleProducts, trackListClicks } from '../../../scripts/commerce';
+
+    const root = document.querySelector<HTMLElement>('.pdp')!;
+    const product = bySku(root.dataset.sku!)!;
+    const form = root.querySelector<HTMLFormElement>('.add-form')!;
+    const msg = root.querySelector<HTMLElement>('.added-msg')!;
+    const colour = () => (form.querySelector<HTMLInputElement>('input[name="colour"]:checked')?.value ?? product.colours[0].name);
+
+    viewItem(product);
+
+    // Recolour the illustration when a colour is picked
+    form.addEventListener('change', (e) => {
+      const input = e.target as HTMLInputElement;
+      if (input.name !== 'colour') return;
+      root.querySelector('[data-colour-name]')!.textContent = input.value;
+      root.querySelectorAll<SVGElement>('.pdp-art .fill').forEach((el) => el.setAttribute('fill', input.dataset.hex!));
+      root.querySelectorAll<SVGElement>('.pdp-art .stroke').forEach((el) => el.setAttribute('stroke', input.dataset.hex!));
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const qty = Number((form.querySelector('#qty') as HTMLSelectElement).value);
+      addToCart(product, colour(), qty);
+      msg.innerHTML = '';
+      msg.append(`Added ${qty} × ${product.name} (${colour()}) to your cart. `);
+      const link = Object.assign(document.createElement('a'), { href: '/shop/cart/', textContent: 'View cart' });
+      msg.append(link);
+      msg.hidden = false;
+    });
+
+    form.querySelector('[data-wishlist]')!.addEventListener('click', (e) => {
+      addToWishlist(product, colour());
+      (e.currentTarget as HTMLButtonElement).textContent = 'Saved to wishlist';
+    });
+
+    const list = document.querySelector<HTMLElement>('[data-list-id]')!;
+    viewItemList({ listId: list.dataset.listId!, listName: list.dataset.listName! }, visibleProducts(list));
+    trackListClicks();
+  </script>
+</ShopLayout>

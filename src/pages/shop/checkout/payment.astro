@@ -1,0 +1,61 @@
+---
+import ShopLayout from '../../../layouts/ShopLayout.astro';
+const methods = [
+  { value: 'credit card', label: 'Credit card (demo, no card details asked)' },
+  { value: 'gift card', label: 'Gift card (demo)' },
+  { value: 'pay in store', label: 'Pay at pickup' },
+];
+---
+<ShopLayout title="Checkout: payment" pageType="checkout" pageName="shop:checkout:payment" extra={{ checkout: { step: 2, stepName: 'payment' } }} checkoutStep={2}>
+  <div class="shop-wrap">
+    <h1 class="page-title">Payment</h1>
+    <div class="empty" data-empty hidden>
+      <p>Your cart is empty, so there's nothing to pay for.</p>
+      <div class="actions"><a class="btn" href="/shop/cart/">Go to cart</a></div>
+    </div>
+
+    <div class="cart-layout" data-checkout>
+      <form class="pay-form" novalidate autocomplete="off">
+        <p class="notice">This demo never asks for card numbers. Pick a method to set <code>payment_type</code> in the data layer.</p>
+        <fieldset class="options">
+          <legend>Payment method</legend>
+          {methods.map((m, i) => (
+            <label class="option">
+              <input type="radio" name="method" value={m.value} checked={i === 0} />
+              <span>{m.label}</span>
+            </label>
+          ))}
+        </fieldset>
+        <div class="qty-row">
+          <button class="btn btn-go" type="submit">Place order</button>
+          <a class="btn btn-ghost" href="/shop/checkout/">Back to shipping</a>
+        </div>
+      </form>
+
+      <aside class="summary" aria-label="Order summary">
+        <h2>Order summary</h2>
+        <dl data-totals></dl>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    import { addPaymentInfo, createOrder, readSession, writeSession, type ShippingTier } from '../../../scripts/commerce';
+    import { renderSummary, guardEmpty } from '../../../scripts/checkout-ui';
+
+    const form = document.querySelector<HTMLFormElement>('.pay-form')!;
+    const tier = readSession<ShippingTier>('lab-tier', 'standard');
+
+    if (!guardEmpty(document.querySelector('[data-checkout]')!, document.querySelector('[data-empty]')!)) {
+      renderSummary(document.querySelector('[data-totals]')!, tier);
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const method = form.querySelector<HTMLInputElement>('input[name="method"]:checked')!.value;
+        addPaymentInfo(method, tier);
+        writeSession('lab-order', createOrder(tier, method));
+        // Brief pause so tags listening for add_payment_info can send before the page changes
+        setTimeout(() => (location.href = '/shop/checkout/confirmation/'), 300);
+      });
+    }
+  </script>
+</ShopLayout>

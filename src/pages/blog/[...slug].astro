@@ -1,0 +1,54 @@
+---
+import { render } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import { siteMeta } from '../../config/tags';
+import { getPosts, formatDate, isoDate, wordCount, type Post } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: Post };
+const { Content } = await render(post);
+const d = post.data;
+
+const pageData = {
+  page: { name: `blog:${post.id}`, type: 'article', section: 'blog', siteName: siteMeta.blogName },
+  content: {
+    id: post.id,
+    title: d.title,
+    category: d.category,
+    tags: d.tags,
+    platform: d.platform,
+    publishDate: isoDate(d.pubDate),
+    updatedDate: d.updatedDate ? isoDate(d.updatedDate) : undefined,
+    author: siteMeta.owner,
+    wordCount: wordCount(post.body),
+  },
+};
+---
+<BlogLayout title={`${d.title} — ${siteMeta.blogName}`} description={d.description} pageData={pageData}>
+  <article class="post">
+    <div class="blog-wrap">
+      <header class="post-head">
+        <h1>{d.title}</h1>
+        <div class="post-meta">
+          <time datetime={isoDate(d.pubDate)}>{formatDate(d.pubDate)}</time>
+          <span>{d.category}</span>
+          <span class="platform">{d.platform === 'Both' ? 'Adobe + Google' : d.platform}</span>
+        </div>
+      </header>
+      <div class="post-body">
+        <Content />
+      </div>
+      {d.tags.length > 0 && <p class="post-tags">Tagged: {d.tags.join(', ')}</p>}
+    </div>
+  </article>
+
+  <script>
+    // Scroll-depth milestones for blog posts (25/50/75/100%).
+    import { trackScrollDepth } from '../../scripts/scroll';
+    trackScrollDepth(document.querySelector('.post-body'));
+  </script>
+</BlogLayout>

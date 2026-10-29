@@ -1,0 +1,77 @@
+---
+import ShopLayout from '../../layouts/ShopLayout.astro';
+import ProductArt from '../../components/ProductArt.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { products, categories, getProduct } from '../../data/products';
+
+const hero = getProduct('squall-rain-shell')!;
+const featured = products.filter((p) => p.badge);
+const tileArt: Record<string, typeof products[number]> = {
+  packs: getProduct('tidepool-daypack')!,
+  apparel: getProduct('harbour-wool-beanie')!,
+  camp: getProduct('lighthouse-lantern')!,
+};
+const promo = { id: 'P-FALL-SHIP', name: 'Free shipping on fall orders', creative: 'home_strip_text', slot: 'home_top' };
+---
+<ShopLayout title="Gear for the wet coast" pageType="home" pageName="shop:home">
+  <section class="shop-hero">
+    <div class="shop-wrap">
+      <div>
+        <h1>Built for sideways rain.</h1>
+        <p>The {hero.name} is three layers of waterproof for ferry decks, forest trails and everything in between.</p>
+        <a class="btn btn-go" href={`/shop/product/${hero.slug}/`} data-promo-hero>Shop the rain shell</a>
+      </div>
+      <ProductArt kind={hero.art} colour={hero.colours[0].hex} label={hero.name} />
+    </div>
+  </section>
+
+  <aside class="promo-strip" data-promo={JSON.stringify(promo)}>
+    <a href="/shop/catalog/"><span>Free standard shipping on every order this fall.</span> Shop all gear</a>
+  </aside>
+
+  <section class="shop-section">
+    <div class="shop-wrap">
+      <h2>Shop by category</h2>
+      <div class="cat-tiles">
+        {categories.map((c) => (
+          <a class="cat-tile" href={`/shop/catalog/?category=${c.slug}`}>
+            <strong>{c.name}</strong>
+            <ProductArt kind={tileArt[c.slug].art} colour={tileArt[c.slug].colours[0].hex} />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="shop-section">
+    <div class="shop-wrap">
+      <h2>Best sellers and new</h2>
+      <div class="grid" data-list-id="home_featured" data-list-name="Home: featured">
+        {featured.map((p, i) => <ProductCard product={p} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { viewItemList, visibleProducts, trackListClicks, viewPromotion, selectPromotion, selectItem, bySku } from '../../scripts/commerce';
+
+    const list = document.querySelector<HTMLElement>('[data-list-id]')!;
+    viewItemList({ listId: list.dataset.listId!, listName: list.dataset.listName! }, visibleProducts(list));
+    trackListClicks();
+
+    // Promotion strip: view on load, select on click
+    const strip = document.querySelector<HTMLElement>('[data-promo]')!;
+    const promo = JSON.parse(strip.dataset.promo!);
+    viewPromotion(promo);
+    strip.querySelector('a')!.addEventListener('click', () => selectPromotion(promo));
+
+    // Hero is a promotion too, and leads to a product
+    const heroPromo = { id: 'P-SQUALL-HERO', name: 'Squall rain shell launch', creative: 'home_hero_shell', slot: 'home_hero' };
+    viewPromotion(heroPromo);
+    document.querySelector('[data-promo-hero]')!.addEventListener('click', () => {
+      selectPromotion(heroPromo);
+      const p = bySku('DW-AP-201');
+      if (p) selectItem({ listId: 'home_hero', listName: 'Home: hero' }, p, 0);
+    });
+  </script>
+</ShopLayout>

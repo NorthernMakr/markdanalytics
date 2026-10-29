@@ -1,0 +1,111 @@
+---
+// Shared shell for every page on the site.
+//
+// Load order in <head> matters for analytics, so it's fixed here:
+//   1. dataLayer / adobeDataLayer are created and this page's data is pushed
+//   2. Adobe Tags (Launch) embed, if configured
+//   3. Google Tag Manager / gtag.js, if configured
+// That way both tag managers find page data already waiting when they start.
+import { tags, siteMeta } from '../config/tags';
+import EventLog from '../components/EventLog.astro';
+import '../styles/base.css';
+
+export interface PageData {
+  page: {
+    name: string;
+    type: string;
+    section: string;
+    siteName: string;
+    [key: string]: unknown;
+  };
+  content?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  pageData: PageData;
+  bodyClass?: string;
+  demoBanner?: string;
+}
+
+const { title, description = siteMeta.blogTagline, pageData, bodyClass = '', demoBanner } = Astro.props;
+
+const fullData = {
+  ...pageData,
+  page: {
+    ...pageData.page,
+    path: Astro.url.pathname,
+    language: siteMeta.language,
+    environment: import.meta.env.PROD ? 'production' : 'development',
+  },
+  user: { loginStatus: 'guest' },
+};
+
+// JSON for an inline script; escape "<" so content can't close the tag.
+const pageJson = JSON.stringify(fullData).replace(/</g, '\\u003c');
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+---
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {demoBanner && <meta name="robots" content="noindex" />}
+
+    <!-- 1. Data layers + page data (must come before any tag manager) -->
+    <script is:inline set:html={`
+      window.dataLayer = window.dataLayer || [];
+      window.adobeDataLayer = window.adobeDataLayer || [];
+      window.labPage = ${pageJson};
+      window.lab = {
+        /* GA4 / GTM: clear the previous ecommerce object before each ecommerce push */
+        ga4: function (evt) {
+          if (evt && evt.ecommerce) window.dataLayer.push({ ecommerce: null });
+          window.dataLayer.push(evt);
+        },
+        /* Adobe Client Data Layer */
+        adobe: function (evt) { window.adobeDataLayer.push(evt); }
+      };
+      window.dataLayer.push(Object.assign({ event: 'page_data_ready' }, window.labPage));
+      window.adobeDataLayer.push(Object.assign({ event: 'page loaded' }, window.labPage));
+    `} />
+
+    <!-- 2. Adobe Experience Platform Tags (Launch) -->
+    {tags.adobeTagsUrl && <script is:inline src={tags.adobeTagsUrl} async></script>}
+
+    <!-- 3. Google Tag Manager -->
+    {tags.gtmId && (
+      <script is:inline set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${tags.gtmId}');`} />
+    )}
+
+    <!-- Optional: gtag.js direct -->
+    {tags.ga4Id && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${tags.ga4Id}`}></script>
+        <script is:inline set:html={`function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${tags.ga4Id}');`} />
+      </>
+    )}
+  </head>
+  <body class={bodyClass}>
+    {tags.gtmId && (
+      <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${tags.gtmId}`} height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    )}
+
+    {demoBanner && (
+      <div class="lab-ribbon" role="note">
+        <span>{demoBanner}</span>
+        <a href="/">Back to {siteMeta.blogName}</a>
+      </div>
+    )}
+
+    <slot />
+
+    {tags.showEventLog && <EventLog />}
+  </body>
+</html>

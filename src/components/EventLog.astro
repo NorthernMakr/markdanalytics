@@ -1,0 +1,158 @@
+---
+// Floating panel that mirrors everything pushed to window.dataLayer and
+// window.adobeDataLayer. It reads the arrays on a timer instead of wrapping
+// push(), so it never interferes with GTM or the Adobe Client Data Layer,
+// which both replace push() with their own functions.
+---
+<div class="evlog" data-open="false">
+  <button class="evlog-toggle" type="button" aria-expanded="false" aria-controls="evlog-panel">
+    Event log <span class="evlog-count">0</span>
+  </button>
+  <section id="evlog-panel" class="evlog-panel" hidden aria-label="Data layer event log">
+    <header class="evlog-head">
+      <div class="evlog-tabs" role="tablist">
+        <button role="tab" aria-selected="true" data-layer="dataLayer">dataLayer <span data-n="dataLayer">0</span></button>
+        <button role="tab" aria-selected="false" data-layer="adobeDataLayer">adobeDataLayer <span data-n="adobeDataLayer">0</span></button>
+      </div>
+      <button class="evlog-copy" type="button">Copy JSON</button>
+    </header>
+    <ol class="evlog-list" reversed></ol>
+    <p class="evlog-hint">Newest first. Mirrors pushes on this page only.</p>
+  </section>
+</div>
+
+<script>
+  type Layer = 'dataLayer' | 'adobeDataLayer';
+  const root = document.querySelector<HTMLElement>('.evlog')!;
+  const toggle = root.querySelector<HTMLButtonElement>('.evlog-toggle')!;
+  const panel = root.querySelector<HTMLElement>('.evlog-panel')!;
+  const list = root.querySelector<HTMLOListElement>('.evlog-list')!;
+  const count = root.querySelector<HTMLElement>('.evlog-count')!;
+  const tabs = root.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+  const seen: Record<Layer, unknown[]> = { dataLayer: [], adobeDataLayer: [] };
+  let active: Layer = 'dataLayer';
+
+  const OPEN_KEY = 'evlog-open';
+  const safeGet = (k: string) => { try { return sessionStorage.getItem(k); } catch { return null; } };
+  const safeSet = (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch { /* ignore */ } };
+
+  function label(item: any): string {
+    if (item && typeof item === 'object') {
+      if ('event' in item) return String(item.event);
+      if (Array.isArray(item) || typeof item.length === 'number') return 'gtag(' + (item[0] ?? '') + ')';
+      if ('ecommerce' in item && item.ecommerce === null) return '(ecommerce cleared)';
+    }
+    if (typeof item === 'function') return '(function)';
+    return '(data)';
+  }
+
+  function serialise(item: unknown) {
+    try {
+      // gtag() pushes an arguments object; show it as an array.
+      const v = item && typeof item === 'object' && !Array.isArray(item) && Object.prototype.toString.call(item) === '[object Arguments]'
+        ? Array.from(item as ArrayLike<unknown>) : item;
+      return JSON.stringify(v, (_k, val) => (val instanceof Element ? `<${val.tagName.toLowerCase()}>` : val), 2);
+    } catch { return String(item); }
+  }
+
+  function render() {
+    list.innerHTML = '';
+    const items = seen[active];
+    for (let i = items.length - 1; i >= 0; i--) {
+      const li = document.createElement('li');
+      const det = document.createElement('details');
+      const sum = document.createElement('summary');
+      sum.textContent = label(items[i]);
+      const pre = document.createElement('pre');
+      pre.textContent = serialise(items[i]);
+      det.append(sum, pre);
+      li.append(det);
+      list.append(li);
+    }
+  }
+
+  function poll() {
+    let changed = false;
+    (['dataLayer', 'adobeDataLayer'] as Layer[]).forEach((name) => {
+      const arr = (window as any)[name];
+      if (!Array.isArray(arr)) return;
+      if (arr.length > seen[name].length) {
+        seen[name] = arr.slice();
+        changed = true;
+      }
+      root.querySelector(`[data-n="${name}"]`)!.textContent = String(seen[name].length);
+    });
+    count.textContent = String(seen.dataLayer.length + seen.adobeDataLayer.length);
+    if (changed && !panel.hidden) render();
+  }
+
+  function setOpen(open: boolean) {
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    root.dataset.open = String(open);
+    safeSet(OPEN_KEY, open ? '1' : '0');
+    if (open) render();
+  }
+
+  toggle.addEventListener('click', () => setOpen(panel.hidden));
+  tabs.forEach((t) => t.addEventListener('click', () => {
+    active = t.dataset.layer as Layer;
+    tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+    render();
+  }));
+  root.querySelector('.evlog-copy')!.addEventListener('click', async (e) => {
+    const btn = e.currentTarget as HTMLButtonElement;
+    try {
+      await navigator.clipboard.writeText('[' + seen[active].map(serialise).join(',\n') + ']');
+      btn.textContent = 'Copied';
+    } catch { btn.textContent = 'Copy failed'; }
+    setTimeout(() => (btn.textContent = 'Copy JSON'), 1500);
+  });
+
+  poll();
+  setInterval(poll, 400);
+  if (safeGet(OPEN_KEY) === '1') setOpen(true);
+</script>
+
+<style>
+  .evlog {
+    position: fixed; right: 16px; bottom: 16px; z-index: 9999;
+    font: 13px/1.4 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #E8ECF2;
+  }
+  .evlog-toggle {
+    display: inline-flex; gap: 8px; align-items: center;
+    background: #14213D; color: #E8ECF2; border: 0; border-radius: 999px;
+    padding: 9px 14px; cursor: pointer; box-shadow: 0 4px 14px rgba(20,33,61,.35);
+    float: right;
+  }
+  .evlog-count {
+    background: #E9A23B; color: #14213D; font-weight: 700;
+    border-radius: 999px; padding: 0 7px; min-width: 22px; text-align: center;
+  }
+  .evlog-panel {
+    clear: both; margin-bottom: 8px;
+    width: min(440px, calc(100vw - 32px)); max-height: min(70vh, 560px);
+    display: flex; flex-direction: column;
+    background: #1B2A47; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 12px 40px rgba(20,33,61,.45);
+  }
+  .evlog[data-open="true"] { display: flex; flex-direction: column-reverse; align-items: flex-end; }
+  .evlog-panel[hidden] { display: none; }
+  .evlog-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px; background: #14213D; }
+  .evlog-tabs { display: flex; gap: 4px; }
+  .evlog-tabs button, .evlog-copy {
+    background: transparent; color: #AEB8C8; border: 1px solid #2E4068; border-radius: 6px;
+    padding: 5px 9px; cursor: pointer; font: inherit;
+  }
+  .evlog-tabs button[aria-selected="true"] { background: #E9A23B; border-color: #E9A23B; color: #14213D; font-weight: 600; }
+  .evlog-list { list-style: none; margin: 0; padding: 6px 8px; overflow: auto; flex: 1; }
+  .evlog-list li { border-bottom: 1px solid #2E4068; }
+  .evlog-list summary { cursor: pointer; padding: 6px 2px; font-weight: 600; }
+  .evlog-list pre {
+    margin: 0 0 8px; padding: 8px; background: #0F1A30; border-radius: 6px;
+    white-space: pre-wrap; word-break: break-word; font-size: 12px; color: #CFE0FF;
+  }
+  .evlog-hint { margin: 0; padding: 6px 10px 9px; color: #8592A8; font-size: 12px; }
+  .evlog button:focus-visible { outline: 2px solid #E9A23B; outline-offset: 2px; }
+</style>

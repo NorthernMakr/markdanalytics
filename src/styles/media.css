@@ -1,0 +1,70 @@
+/* The Tidewater Daily — demo media site */
+.media {
+  --newsprint: #FFFFFF;
+  --ink: #16191D;
+  --harbour: #1E4C6B;
+  --flag: #C8102E;
+  --muted: #5E6670;
+  --rule: #E3E6EA;
+  --head: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --body: Georgia, "Times New Roman", serif;
+  --ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--newsprint);
+  color: var(--ink);
+  font: 18px/1.65 var(--body);
+}
+.media a { color: inherit; text-decoration: none; }
+.media a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.media-wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+.masthead { text-align: center; padding: 22px 0 0; }
+.masthead-date { font: 14px/1 var(--ui); color: var(--muted); margin: 0 0 10px; }
+.masthead-name { display: inline-block; font: 700 clamp(40px, 7.5vw, 84px)/1 var(--head); letter-spacing: -0.02em; color: var(--harbour); }
+.masthead-name:hover { text-decoration: none !important; }
+.tideline { display: block; width: 100%; height: 14px; color: var(--harbour); margin: 14px 0 0; }
+.section-nav { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 26px; margin: 0; padding: 12px 0; font: 600 15px/1.2 var(--ui); border-bottom: 1px solid var(--rule); }
+
+.media-main { padding: 28px 0 0; }
+.media-foot { margin-top: 72px; border-top: 1px solid var(--rule); padding: 24px 0 90px; font: 14px/1.4 var(--ui); color: var(--muted); }
+
+.kicker { font: 700 13px/1 var(--ui); color: var(--harbour); margin: 0 0 8px; display: inline-flex; gap: 10px; align-items: center; }
+.has-video { color: var(--flag); display: inline-flex; gap: 4px; align-items: center; }
+.has-video::before { content: ""; width: 0; height: 0; border-left: 8px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+
+/* Front page */
+.front { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+.lead-visual { position: relative; display: block; border-radius: 4px; overflow: hidden; background: var(--harbour); }
+.lead-visual img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.lead-visual .play { position: absolute; left: 18px; bottom: 18px; background: var(--flag); color: #fff; font: 700 14px/1 var(--ui); padding: 10px 14px; border-radius: 3px; }
+.lead h2 { font: 700 clamp(30px, 3.6vw, 44px)/1.08 var(--head); letter-spacing: -0.015em; margin: 16px 0 10px; }
+:where(.lead) p { margin: 0; font-size: 19px; color: #3A4048; max-width: 60ch; }
+.byline { font: 14px/1.4 var(--ui); color: var(--muted); margin-top: 10px; }
+
+.rail h2, .more h2, .read-next h2 { font: 700 15px/1 var(--ui); margin: 0 0 14px; padding-bottom: 10px; border-bottom: 3px solid var(--ink); }
+.rail ol { list-style: none; margin: 0; padding: 0; counter-reset: rank; }
+.rail li { counter-increment: rank; display: grid; grid-template-columns: 34px 1fr; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.rail li::before { content: counter(rank); font: 700 26px/1 var(--head); color: var(--harbour); }
+.rail h3 { font: 700 18px/1.25 var(--head); margin: 0; }
+
+.more { margin-top: 48px; }
+.teasers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.teaser h3 { font: 700 22px/1.2 var(--head); margin: 0 0 6px; }
+.teaser p { margin: 0; font-size: 16px; color: #3A4048; }
+
+/* Article */
+.story { max-width: 720px; margin: 0 auto; }
+.story h1 { font: 700 clamp(32px, 4.6vw, 48px)/1.08 var(--head); letter-spacing: -0.015em; margin: 8px 0 14px; }
+.story .dek { font-size: 21px; line-height: 1.45; color: #3A4048; margin: 0 0 16px; }
+.story .byline { padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 26px; }
+.player { margin: 0 0 28px; }
+.player video { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 4px; }
+.player figcaption { font: 14px/1.4 var(--ui); color: var(--muted); margin-top: 8px; }
+.story-body p { margin: 0 0 1.1em; }
+.story-body p:first-child::first-letter { float: left; font: 700 64px/0.85 var(--head); color: var(--harbour); padding: 6px 8px 0 0; }
+.read-next { max-width: 720px; margin: 48px auto 0; }
+.read-next ul { list-style: none; margin: 0; padding: 0; }
+.read-next li { padding: 12px 0; border-bottom: 1px solid var(--rule); font: 700 19px/1.3 var(--head); }
+
+@media (max-width: 860px) {
+  .front, .teasers { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,46 @@
+---
+import MediaLayout from '../../layouts/MediaLayout.astro';
+import { articles } from '../../data/articles';
+
+const [lead, ...rest] = articles;
+const popular = [...rest].slice(0, 4);
+const url = (slug: string) => `/media/article/${slug}/`;
+---
+<MediaLayout title="Local news" pageType="section front" pageName="media:home">
+  <div class="media-wrap">
+    <div class="front">
+      <article class="lead">
+        <a class="lead-visual" href={url(lead.slug)} data-teaser-module="lead" data-teaser-position="1">
+          <img src={lead.video?.poster} alt="" width="960" height="540" />
+          {lead.video && <span class="play">▶ Watch: {lead.video.duration} sec</span>}
+        </a>
+        <p class="kicker" style="margin-top:16px">{lead.section}{lead.video && <span class="has-video">Video</span>}</p>
+        <h2><a href={url(lead.slug)} data-teaser-module="lead" data-teaser-position="1">{lead.headline}</a></h2>
+        <p>{lead.dek}</p>
+        <p class="byline">By {lead.author}</p>
+      </article>
+
+      <aside class="rail" aria-labelledby="most-read">
+        <h2 id="most-read">Most read</h2>
+        <ol>
+          {popular.map((a, i) => (
+            <li><h3><a href={url(a.slug)} data-teaser-module="most read" data-teaser-position={i + 1}>{a.headline}</a></h3></li>
+          ))}
+        </ol>
+      </aside>
+    </div>
+
+    <section class="more" aria-labelledby="latest">
+      <h2 id="latest">Latest</h2>
+      <div class="teasers">
+        {rest.slice(0, 3).map((a, i) => (
+          <article class="teaser">
+            <p class="kicker">{a.section}{a.video && <span class="has-video">Video</span>}</p>
+            <h3><a href={url(a.slug)} data-teaser-module="latest" data-teaser-position={i + 1}>{a.headline}</a></h3>
+            <p>{a.dek}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</MediaLayout>

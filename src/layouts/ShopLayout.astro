@@ -1,0 +1,61 @@
+---
+import Base from './Base.astro';
+import { categories } from '../data/products';
+import '../styles/shop.css';
+
+interface Props {
+  title: string;
+  pageType: string;          // e.g. "product detail", "checkout"
+  pageName: string;          // e.g. "shop:product:tidepool-daypack"
+  extra?: Record<string, unknown>;
+  checkoutStep?: number;     // hides the main nav during checkout, like real stores
+}
+const { title, pageType, pageName, extra = {}, checkoutStep } = Astro.props;
+const pageData = {
+  page: { name: pageName, type: pageType, section: 'shop', siteName: 'Driftwood Supply Co. (demo)' },
+  ...extra,
+};
+const steps = ['Cart', 'Shipping', 'Payment', 'Done'];
+---
+<Base title={`${title} | Driftwood Supply Co. (demo)`} pageData={pageData} bodyClass="shop"
+  demoBanner="Demo store for analytics testing. Nothing is for sale and no details are collected.">
+  <header class="shop-head">
+    <div class="shop-wrap shop-head-row">
+      <a class="shop-logo" href="/shop/">
+        <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M2 16 q9-12 18 0 t18 0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></svg>
+        Driftwood <span>Supply Co.</span>
+      </a>
+      {checkoutStep === undefined ? (
+        <nav aria-label="Shop">
+          <ul class="shop-nav">
+            <li><a href="/shop/catalog/">Shop all</a></li>
+            {categories.map((c) => <li><a href={`/shop/catalog/?category=${c.slug}`}>{c.name}</a></li>)}
+          </ul>
+        </nav>
+      ) : (
+        <ol class="checkout-steps" aria-label="Checkout progress">
+          {steps.map((s, i) => <li aria-current={i === checkoutStep ? 'step' : undefined} class={i < checkoutStep ? 'done' : ''}>{s}</li>)}
+        </ol>
+      )}
+      <a class="shop-cart" href="/shop/cart/">Cart <span class="cart-count" aria-label="items in cart">0</span></a>
+    </div>
+  </header>
+
+  <main class="shop-main">
+    <slot />
+  </main>
+
+  <footer class="shop-foot">
+    <div class="shop-wrap">
+      <p>Driftwood Supply Co. is a fictional store. Prices in CAD. Built for testing analytics tags.</p>
+    </div>
+  </footer>
+
+  <script>
+    import { cartCount } from '../scripts/commerce';
+    const badge = document.querySelector('.cart-count');
+    const update = () => { if (badge) badge.textContent = String(cartCount()); };
+    update();
+    document.addEventListener('cart:change', update);
+  </script>
+</Base>

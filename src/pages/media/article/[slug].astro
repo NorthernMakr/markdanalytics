@@ -1,0 +1,64 @@
+---
+import MediaLayout from '../../../layouts/MediaLayout.astro';
+import { articles, formatNewsDate, type Article } from '../../../data/articles';
+
+export function getStaticPaths() {
+  return articles.map((a) => ({ params: { slug: a.slug }, props: { article: a } }));
+}
+const { article: a } = Astro.props as { article: Article };
+const others = articles.filter((x) => x.slug !== a.slug).slice(0, 3);
+
+const extra = {
+  content: {
+    id: a.slug,
+    title: a.headline,
+    section: a.section,
+    author: a.author,
+    publishDate: a.published,
+    hasVideo: !!a.video,
+    videoId: a.video?.id,
+    wordCount: a.body.join(' ').split(/\s+/).length,
+  },
+};
+---
+<MediaLayout title={a.headline} pageType="article" pageName={`media:article:${a.slug}`} extra={extra}>
+  <div class="media-wrap">
+    <article class="story">
+      <p class="kicker">{a.section}{a.video && <span class="has-video">Video</span>}</p>
+      <h1>{a.headline}</h1>
+      <p class="dek">{a.dek}</p>
+      <p class="byline">By {a.author}, published <time datetime={a.published}>{formatNewsDate(a.published)}</time></p>
+
+      {a.video && (
+        <figure class="player">
+          <video controls playsinline preload="metadata" poster={a.video.poster}
+            data-video-id={a.video.id} data-video-title={a.video.title}>
+            <source src={a.video.src} type="video/mp4" />
+            Your browser can't play this video.
+          </video>
+          <figcaption>{a.video.title} ({a.video.duration} sec)</figcaption>
+        </figure>
+      )}
+
+      <div class="story-body">
+        {a.body.map((p) => <p>{p}</p>)}
+      </div>
+    </article>
+
+    <section class="read-next" aria-labelledby="read-next">
+      <h2 id="read-next">Read next</h2>
+      <ul>
+        {others.map((o, i) => (
+          <li><a href={`/media/article/${o.slug}/`} data-teaser-module="read next" data-teaser-position={i + 1}>{o.headline}</a></li>
+        ))}
+      </ul>
+    </section>
+  </div>
+
+  <script>
+    import { trackVideo } from '../../../scripts/video';
+    import { trackScrollDepth } from '../../../scripts/scroll';
+    document.querySelectorAll<HTMLVideoElement>('video[data-video-id]').forEach(trackVideo);
+    trackScrollDepth(document.querySelector('.story-body'));
+  </script>
+</MediaLayout>

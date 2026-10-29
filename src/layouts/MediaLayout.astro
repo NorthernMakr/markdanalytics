@@ -1,0 +1,53 @@
+---
+import Base from './Base.astro';
+import '../styles/media.css';
+
+interface Props { title: string; pageType: string; pageName: string; extra?: Record<string, unknown>; }
+const { title, pageType, pageName, extra = {} } = Astro.props;
+const pageData = {
+  page: { name: pageName, type: pageType, section: 'media', siteName: 'The Tidewater Daily (demo)' },
+  ...extra,
+};
+const sections = ['Local', 'Transportation', 'Weather', 'Food', 'Sports'];
+const today = new Date().toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+---
+<Base title={`${title} | The Tidewater Daily (demo)`} pageData={pageData} bodyClass="media"
+  demoBanner="Demo news site for analytics testing. The stories, people and video are made up.">
+  <header class="masthead">
+    <div class="media-wrap">
+      <p class="masthead-date">{today}</p>
+      <a class="masthead-name" href="/media/">The Tidewater Daily</a>
+      <svg class="tideline" viewBox="0 0 600 14" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 7 Q 25 0 50 7 T 100 7 T 150 7 T 200 7 T 250 7 T 300 7 T 350 7 T 400 7 T 450 7 T 500 7 T 550 7 T 600 7" fill="none" stroke="currentColor" stroke-width="2.5" />
+      </svg>
+      <nav aria-label="Sections">
+        <ul class="section-nav">
+          {sections.map((s) => <li><a href="/media/" data-teaser-module="section nav">{s}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="media-main">
+    <slot />
+  </main>
+  <footer class="media-foot">
+    <div class="media-wrap">The Tidewater Daily is a fictional publication built for testing analytics tags.</div>
+  </footer>
+
+  <script>
+    import { ga4, adobe } from '../scripts/lab';
+    // Teaser / internal-promo clicks: any link with data-teaser-module
+    document.addEventListener('click', (e) => {
+      const a = (e.target as Element).closest<HTMLAnchorElement>('a[data-teaser-module]');
+      if (!a) return;
+      const detail = {
+        module: a.dataset.teaserModule!,
+        position: Number(a.dataset.teaserPosition ?? 0),
+        text: (a.textContent ?? '').trim().slice(0, 100),
+        url: a.pathname,
+      };
+      ga4({ event: 'content_click', link_module: detail.module, link_position: detail.position, link_text: detail.text, link_url: detail.url });
+      adobe({ event: 'content clicked', link: detail });
+    });
+  </script>
+</Base>

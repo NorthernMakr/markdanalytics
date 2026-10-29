@@ -1,0 +1,73 @@
+---
+import ShopLayout from '../../../layouts/ShopLayout.astro';
+import { SHIPPING } from '../../../scripts/commerce';
+import { money } from '../../../data/products';
+---
+<ShopLayout title="Checkout: shipping" pageType="checkout" pageName="shop:checkout:shipping" extra={{ checkout: { step: 1, stepName: 'shipping' } }} checkoutStep={1}>
+  <div class="shop-wrap">
+    <h1 class="page-title">Shipping</h1>
+    <div class="empty" data-empty hidden>
+      <p>Your cart is empty, so there's nothing to check out yet.</p>
+      <div class="actions"><a class="btn" href="/shop/cart/">Go to cart</a></div>
+    </div>
+
+    <div class="cart-layout" data-checkout>
+      <form class="ship-form" novalidate autocomplete="off">
+        <p class="notice">Demo checkout. The fields are pre-filled with made-up details and nothing you type is sent anywhere.</p>
+        <div class="form-grid">
+          <div><label for="fn">First name</label><input id="fn" value="Sam" /></div>
+          <div><label for="ln">Last name</label><input id="ln" value="Tester" /></div>
+          <div class="full"><label for="em">Email</label><input id="em" type="email" value="sam@example.com" /></div>
+          <div class="full"><label for="ad">Street address</label><input id="ad" value="123 Example Street" /></div>
+          <div><label for="ci">City</label><input id="ci" value="Victoria" /></div>
+          <div><label for="pr">Province</label><select id="pr"><option>BC</option><option>AB</option><option>ON</option><option>QC</option></select></div>
+          <div><label for="pc">Postal code</label><input id="pc" value="V8W 0A0" /></div>
+        </div>
+
+        <fieldset class="options">
+          <legend>Delivery</legend>
+          {Object.entries(SHIPPING).map(([key, s], i) => (
+            <label class="option">
+              <input type="radio" name="tier" value={key} checked={i === 0} />
+              <span>{s.label}</span>
+              <strong>{s.cost ? money(s.cost) : 'Free'}</strong>
+            </label>
+          ))}
+        </fieldset>
+        <button class="btn btn-go" type="submit">Continue to payment</button>
+      </form>
+
+      <aside class="summary" aria-label="Order summary">
+        <h2>Order summary</h2>
+        <dl data-totals></dl>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    import { beginCheckout, addShippingInfo, readSession, writeSession, type ShippingTier } from '../../../scripts/commerce';
+    import { renderSummary, guardEmpty } from '../../../scripts/checkout-ui';
+
+    const form = document.querySelector<HTMLFormElement>('.ship-form')!;
+    const layout = document.querySelector<HTMLElement>('[data-checkout]')!;
+    const dl = document.querySelector<HTMLElement>('[data-totals]')!;
+    const tierNow = () => (form.querySelector<HTMLInputElement>('input[name="tier"]:checked')!.value as ShippingTier);
+
+    if (!guardEmpty(layout, document.querySelector('[data-empty]')!)) {
+      const saved = readSession<ShippingTier | null>('lab-tier', null);
+      if (saved) form.querySelector<HTMLInputElement>(`input[value="${saved}"]`)!.checked = true;
+      renderSummary(dl, tierNow());
+      beginCheckout();
+
+      form.addEventListener('change', () => renderSummary(dl, tierNow()));
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const tier = tierNow();
+        writeSession('lab-tier', tier);
+        addShippingInfo(tier);
+        // Brief pause so tags listening for add_shipping_info can send before the page changes
+        setTimeout(() => (location.href = '/shop/checkout/payment/'), 300);
+      });
+    }
+  </script>
+</ShopLayout>
