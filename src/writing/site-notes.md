@@ -22,7 +22,7 @@ The small Worker does two jobs: it stands in for Adobe's Edge Network so the Ado
 
 ## Languages
 
-The whole site is available in English and French. English pages live at the root (`/shop/`) and French pages under `/fr/` with the same addresses (`/fr/shop/`). The EN | FR switch at the top of every page goes to the same page in the other language.
+The whole site is available in English and French. The French follows Quebec usage (`fr-CA`): courriel, magasiner, fin de semaine, and Quebec punctuation spacing. English pages live at the root (`/shop/`) and French pages under `/fr/` with the same addresses (`/fr/shop/`). The EN | FR switch at the top of every page goes to the same page in the other language.
 
 - **One page, two routes.** Each French route renders the same page component as the English one, and the page works out its language from its own address. Shared layouts carry the translated menus and labels, so a new page needs its text in both languages and nothing else.
 - **Search engines** get `hreflang` links between the two versions (plus `x-default` pointing to English), `og:locale` for sharing previews, `inLanguage` in the structured data, and both versions in the [XML sitemap](/sitemap.xml).

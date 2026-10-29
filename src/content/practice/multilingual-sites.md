@@ -105,4 +105,4 @@ This site's build checks every page's language against an allowed list (`en-CA`,
 
 ## A note on review
 
-I work in English and French, so I can review content, data layer specifications and reports in either language, including checking that a translated page still sends the right analytics values. I also have basic German and Japanese (I read kana, not kanji): enough to check that a page, a language switch or a data layer behaves as expected, though not to review the writing.
+I work in English and French, so I can review content, data layer specifications and reports in either language, including checking that a translated page still sends the right analytics values. I also have basic German (four years of study in high school) and Japanese (a year teaching English in rural Japan; I read kana, not kanji): enough to check that a page, a language switch or a data layer behaves as expected, though not to review the writing.

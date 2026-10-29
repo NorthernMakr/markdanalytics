@@ -107,7 +107,7 @@ const BADGE_FR: Record<string, string> = { 'Best seller': 'Meilleur vendeur', Ne
 const PRODUCT_FR: Record<string, { name: string; blurb: string; details: string[] }> = {
   'tidepool-daypack': {
     name: 'Sac de jour Tidepool',
-    blurb: 'Un sac de 22 litres taillé pour les traversées en traversier et les sentiers en forêt.',
+    blurb: 'Un sac de 22 litres taillé pour les journées de traversier et les sentiers en forêt.',
     details: ['Capacité de 22 L', 'Nylon 420D recyclé', 'Pochette rembourrée pour portable de 15 po', 'Poids : 640 g'],
   },
   'breakwater-dry-bag': {

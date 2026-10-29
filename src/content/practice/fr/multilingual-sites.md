@@ -105,4 +105,4 @@ La construction du site vérifie la langue de chaque page par rapport à une lis
 
 ## Une note sur la révision
 
-Je travaille en anglais et en français : je peux donc réviser du contenu, des spécifications de couche de données et des rapports dans l’une ou l’autre langue, y compris vérifier qu’une page traduite envoie toujours les bonnes valeurs d’analytique. J’ai aussi des notions d’allemand et de japonais (je lis les kana, pas les kanji) : assez pour vérifier qu’une page, un sélecteur de langue ou une couche de données se comporte comme prévu, mais pas pour réviser le texte.
+Je travaille en anglais et en français : je peux donc réviser du contenu, des spécifications de couche de données et des rapports dans l’une ou l’autre langue, y compris vérifier qu’une page traduite envoie toujours les bonnes valeurs d’analytique. J’ai aussi des notions d’allemand (quatre ans d’études au secondaire) et de japonais (une année à enseigner l’anglais dans le Japon rural; je lis les kana, pas les kanji) : assez pour vérifier qu’une page, un sélecteur de langue ou une couche de données se comporte comme prévu, mais pas pour réviser le texte.

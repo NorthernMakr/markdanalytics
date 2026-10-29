@@ -8,7 +8,7 @@ const l = (p: string) => localize(p, lang);
 const methods = [
   { value: 'credit card', label: tr(lang, 'Credit card (demo, no card details asked)', 'Carte de crédit (démo, aucun numéro demandé)') },
   { value: 'gift card', label: tr(lang, 'Gift card (demo)', 'Carte-cadeau (démo)') },
-  { value: 'pay in store', label: tr(lang, 'Pay at pickup', 'Payer au ramassage') },
+  { value: 'pay in store', label: tr(lang, 'Pay at pickup', 'Payer à la cueillette') },
 ];
 ---
 <ShopLayout title={tr(lang, 'Checkout: payment', 'Caisse : paiement')} pageType="checkout" pageName="shop:checkout:payment" extra={{ checkout: { step: 2, stepName: 'payment' } }} checkoutStep={2}>

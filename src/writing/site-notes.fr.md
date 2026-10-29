@@ -22,7 +22,7 @@ Le petit Worker a deux rôles : il remplace l’Edge Network d’Adobe pour que 
 
 ## Langues
 
-Tout le site est offert en anglais et en français. Les pages anglaises sont à la racine (`/shop/`) et les pages françaises sous `/fr/`, aux mêmes adresses (`/fr/shop/`). Le sélecteur EN | FR en haut de chaque page mène à la même page dans l’autre langue.
+Tout le site est offert en anglais et en français. Le français suit l’usage québécois (`fr-CA`) : courriel, magasiner, fin de semaine, et l’espacement de la ponctuation propre au Québec. Les pages anglaises sont à la racine (`/shop/`) et les pages françaises sous `/fr/`, aux mêmes adresses (`/fr/shop/`). Le sélecteur EN | FR en haut de chaque page mène à la même page dans l’autre langue.
 
 - **Une page, deux routes.** Chaque route française affiche le même composant de page que la route anglaise, et la page déduit sa langue de sa propre adresse. Les gabarits communs portent les menus et libellés traduits : une nouvelle page n’a besoin que de son texte dans les deux langues.
 - **Les moteurs de recherche** reçoivent des liens `hreflang` entre les deux versions (et `x-default` vers l’anglais), `og:locale` pour les aperçus de partage, `inLanguage` dans les données structurées, et les deux versions dans le [plan du site XML](/sitemap.xml).
@@ -38,7 +38,7 @@ L’analytique est la raison d’être de ce site; l’implémentation suit donc
 - L’Adobe Web SDK fonctionne pour vrai contre une doublure de l’Edge Network sur ce domaine. [Tester l’Adobe Web SDK sans compte Adobe](/fr/blog/testing-adobe-web-sdk-without-an-adobe-account/) explique comment.
 - GA4 est configuré par Google Tag Manager, et la configuration du conteneur est conservée dans le dépôt du site pour que ses changements soient versionnés aussi.
 
-## Mobile
+## Appareils mobiles
 
 - Les mises en page sont adaptatives et pensées pour les téléphones comme pour les ordinateurs : les grilles passent à une colonne et les menus vont à la ligne plutôt que de déborder.
 - Chaque page a été vérifiée à 390 et 360 pixels de large (des tailles de téléphone courantes), sans défilement horizontal.
