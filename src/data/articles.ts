@@ -20,7 +20,7 @@ export const articles: Article[] = [
     section: 'Transportation',
     headline: 'Island ferry schedule shakeup adds early sailings, drops late-night run',
     dek: 'Commuters gain a 5:40 a.m. departure, but the last boat home leaves 90 minutes earlier starting in January.',
-    author: 'Priya Natarajan',
+    author: 'Dana Layer',
     published: '2026-10-28',
     video: demoVideo('vid-ferry-001', 'What the new ferry schedule means for commuters'),
     body: [
@@ -36,7 +36,7 @@ export const articles: Article[] = [
     section: 'Food',
     headline: 'Harbourfront night market returns with 60 vendors and a later closing time',
     dek: 'Organizers say this year\'s market will run until 11 p.m. on Fridays, with a new zone for local bakers.',
-    author: 'Marcus Lee',
+    author: "Bounce O'Rately",
     published: '2026-10-27',
     body: [
       'After a one-year pause, the harbourfront night market is back for its winter season, with sixty vendors confirmed for opening weekend.',
@@ -50,7 +50,7 @@ export const articles: Article[] = [
     section: 'Weather',
     headline: 'King tides expected this weekend; low-lying waterfront paths may close',
     dek: 'The highest tides of the year coincide with a Pacific storm system arriving Saturday night.',
-    author: 'Hannah Okafor',
+    author: 'Evie Varr',
     published: '2026-10-26',
     video: demoVideo('vid-tide-002', 'Watching the king tides roll in'),
     body: [
@@ -65,7 +65,7 @@ export const articles: Article[] = [
     section: 'Local',
     headline: 'Renovated north-end library branch reopens with a makerspace and longer hours',
     dek: 'The branch now opens at 9 a.m. on weekdays and adds 3D printers, sewing machines and a recording booth.',
-    author: 'Marcus Lee',
+    author: "Bounce O'Rately",
     published: '2026-10-24',
     body: [
       'The north-end library branch reopened Monday after an eighteen-month renovation.',
@@ -78,7 +78,7 @@ export const articles: Article[] = [
     section: 'Sports',
     headline: 'Rowing club marks 100 years with a regatta and an open boathouse',
     dek: 'Members past and present are invited to row a heritage boat restored for the occasion.',
-    author: 'Hannah Okafor',
+    author: 'Evie Varr',
     published: '2026-10-22',
     body: [
       'The harbour rowing club turns 100 this year and is celebrating with a regatta on November 14.',
