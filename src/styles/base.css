@@ -25,3 +25,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   position: absolute !important; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap;
 }
+
+.lab-ribbon a { display: inline-block; padding: 8px 0; }
+.lab-ribbon { padding-top: 0; padding-bottom: 0; }
+.lab-ribbon span { padding: 7px 0; }

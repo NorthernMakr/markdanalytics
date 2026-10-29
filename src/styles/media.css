@@ -69,3 +69,7 @@
   .front, .teasers { grid-template-columns: 1fr; }
 }
 .masthead-h1 { margin: 0; font-size: inherit; }
+
+/* Comfortable tap targets for menu links on touch screens */
+.section-nav { padding: 4px 0; }
+.section-nav a { display: inline-block; padding: 10px 0; }
