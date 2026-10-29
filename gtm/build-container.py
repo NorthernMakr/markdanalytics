@@ -116,13 +116,11 @@ login = dlv("user.loginStatus")
 # languages, so analysts segment on these rather than seeing pages split in two.
 page_language = dlv("page.language")
 browser_language = dlv("user.browserLanguage")
-# GA4 collects page_location and page_title from the browser, which would be the
-# /fr/ address and the French tab title. Both are overridden with English values:
-# the English URL (page.path is the English path) and the page name.
-page_path = dlv("page.path")
-english_url = custom_js("JS - English page URL",
-    "function () {\n  // Same URL for both language versions; page_language tells them apart.\n"
-    "  return location.origin + ({{DLV - page.path}} || location.pathname) + location.search;\n}")
+# GA4 has no pageName. Its Pages and screens report groups by page title, which
+# GA4 reads from the browser tab (French on French pages). Sending the English
+# page name as page_title makes that report work like Adobe's Pages report:
+# one row per page, whatever the language. page_location stays the real URL
+# (French addresses on French pages), like Adobe's Page URL.
 language_match = lookup("Lookup - Language match", dlv("user.languageMatch"),
                         [("true", "match"), ("false", "mismatch")], default="unknown")
 content_category = dlv("content.category")
@@ -138,7 +136,6 @@ tags.append({
         tmpl("tagId", MID),
         # Shared parameters: sent with every GA4 event from this container
         params_table("configSettingsTable", [
-            ("page_location", english_url),
             ("page_title", page_name),
             ("page_name", page_name),
             ("page_type", page_type),

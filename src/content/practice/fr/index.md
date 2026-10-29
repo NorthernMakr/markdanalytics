@@ -10,7 +10,7 @@ platform: Both
 
 Dans les grandes organisations, la plupart des problèmes d’analytique ne sont pas des problèmes de balisage. Ce sont des problèmes de mémoire. Personne ne se souvient pourquoi l’eVar37 existe, quelle équipe l’a demandée, si l’événement d’étape de paiement se déclenche encore dans la nouvelle application, ou laquelle des trois dimensions « type de page » est la bonne. Les balises fonctionnent; le savoir qui les entoure s’est évaporé.
 
-Une pratique règle ce problème en consignant les choses de façon cohérente, et en faisant de la version écrite celle que les gens utilisent vraiment. Cette page présente ce que je documenterais si je dirigeais une pratique d’analytique numérique en entreprise, et pourquoi chaque élément mérite sa place. Les pages suivantes de cette section approfondiront chacun d’eux, avec la [boutique démo](/fr/shop/) et le [site média](/fr/media/) de ce domaine comme exemples concrets.
+Une pratique règle ce problème en consignant les choses de façon cohérente, et en faisant de la version écrite celle que les gens utilisent vraiment. Cette page présente ce que je documenterais si je dirigeais une pratique d’analytique numérique en entreprise, et pourquoi chaque élément mérite sa place. Les pages suivantes de cette section approfondiront chacun d’eux, avec la [boutique démo](/fr/boutique/) et le [site média](/fr/medias/) de ce domaine comme exemples concrets.
 
 ## L’ensemble documentaire
 
@@ -76,7 +76,7 @@ Une documentation introuvable n’existe pas. Trois habitudes aident :
 - **Classifications et valeurs Adobe :** minuscules, hiérarchies séparées par des deux-points pour les noms de page (`shop:product:tidepool-daypack`).
 - **Noms affichés :** majuscule initiale seulement, aucune abréviation qu’une nouvelle recrue ne connaîtrait pas.
 
-Sur ce site bilingue, tout ce qui part vers l’analytique est en anglais, quelle que soit la langue de la page : noms et chemins de page, titres, produits, listes, promotions, vidéos, texte des liens. Les analystes travaillent habituellement dans une seule langue, et les données de Workspace ou de GA4 doivent leur rester compréhensibles; une page forme aussi une seule ligne dans le palmarès des pages. Pour séparer les langues, on segmente sur `page.language` et `user.browserLanguage`. [Mesurer un site multilingue](/fr/practice/multilingual-sites/) traite du sujet en détail.
+Sur ce site bilingue, tout ce qui part vers l’analytique est en anglais, quelle que soit la langue de la page : noms et chemins de page, titres, produits, listes, promotions, vidéos, texte des liens. Les analystes travaillent habituellement dans une seule langue, et les données de Workspace ou de GA4 doivent leur rester compréhensibles; une page forme aussi une seule ligne dans le palmarès des pages. Pour séparer les langues, on segmente sur `page.language` et `user.browserLanguage`. [Mesurer un site multilingue](/fr/pratique/sites-multilingues/) traite du sujet en détail.
 
 ## Ajouter ou modifier une variable
 
@@ -117,7 +117,7 @@ La spécification est le contrat. L’assurance qualité teste selon elle, pas s
 
 ## Une base standard : couche de données et balises
 
-Chaque propriété de la pratique part de la même base, pour que les équipes ne réinventent pas le suivi des pages et que les analystes puissent comparer les sites. Ce site applique exactement cette base; le [billet sur la couche de données](/fr/blog/how-this-sites-data-layer-works/) la présente en détail.
+Chaque propriété de la pratique part de la même base, pour que les équipes ne réinventent pas le suivi des pages et que les analystes puissent comparer les sites. Ce site applique exactement cette base; le [billet sur la couche de données](/fr/blogue/comment-fonctionne-la-couche-de-donnees/) la présente en détail.
 
 ### La couche de données
 
@@ -127,7 +127,7 @@ Un objet de page, construit côté serveur et envoyé avant tout gestionnaire de
 {
   "page": { "name": "shop:product:tidepool-daypack", "type": "product detail",
             "section": "shop", "siteName": "Taiga Supply Co.",
-            "path": "/shop/product/tidepool-daypack/", "language": "fr-CA",
+            "path": "/fr/boutique/produit/sac-de-jour-tidepool/", "language": "fr-CA",
             "environment": "production" },
   "user": { "loginStatus": "guest", "browserLanguage": "en-CA", "languageMatch": false },
   "content": { },
@@ -186,7 +186,7 @@ Certaines normes s’appliquent à tous les niveaux :
 
 Les normes qui reposent sur la mémoire dérivent. Sur ce site, les conventions vivent dans un seul fichier de valeurs permises (types de page, sections, format des noms de page, langues et chaque nom d’événement enregistré), et la construction vérifie chaque page par rapport à lui. Une page avec un type non enregistré, ou un nom de page qui n’est pas en minuscules séparées par des deux-points, fait échouer la construction et n’atteint jamais la production. Hors production, chaque envoi dans la couche de données est aussi vérifié dans le navigateur, avec un avertissement dans la console pour un événement non enregistré ou une clé comme `email` ou `phone` qui laisse croire qu’une donnée personnelle s’est glissée. Ajouter un type de page ou un événement oblige à l’ajouter d’abord à ce fichier : c’est le processus de changement en miniature.
 
-La [boutique](/fr/shop/) de ce site est prévue pour s’exercer à ces cas. Le journal, sur chaque page, montre les deux couches de données en direct, et la page de confirmation ne renvoie volontairement pas `purchase` au rechargement.
+La [boutique](/fr/boutique/) de ce site est prévue pour s’exercer à ces cas. Le journal, sur chaque page, montre les deux couches de données en direct, et la page de confirmation ne renvoie volontairement pas `purchase` au rechargement.
 
 ## À venir dans cette section
 

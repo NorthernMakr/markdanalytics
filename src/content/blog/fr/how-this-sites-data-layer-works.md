@@ -21,7 +21,7 @@ Au moment de la construction du site, chaque page reçoit un petit objet qui la 
     "type": "article",
     "section": "blog",
     "siteName": "Tag & Layer",
-    "path": "/blog/how-this-sites-data-layer-works/",
+    "path": "/fr/blogue/comment-fonctionne-la-couche-de-donnees/",
     "language": "fr-CA",
     "environment": "production"
   },
@@ -45,7 +45,7 @@ Le site existe en anglais et en français, et l’objet de page consigne deux ch
 - `page.language` est la langue de la page (`en-CA` ou `fr-CA`), fixée à la construction.
 - `user.browserLanguage` est la langue préférée du navigateur du visiteur, lue dans `navigator.languages` au chargement. `user.languageMatch` indique si les deux concordent.
 
-Un visiteur francophone qui lit la page anglaise apparaît avec `languageMatch: false` : c’est l’auditoire visé par une invitation à changer de langue. Tout le reste reste en anglais dans les deux versions : noms et chemins de page, titres de contenu, noms de produits et de listes, titres de vidéo, texte des liens. Un analyste qui travaille dans une seule langue comprend donc tout ce qu’il voit, et une page forme une seule ligne dans les rapports. Pour GA4, `page_location` et `page_title` sont aussi remplacés par l’adresse anglaise et le nom de page, puisque GA4 les lirait autrement dans le navigateur. Le sélecteur EN | FR en haut de chaque page envoie `language_switch` / `language switched` quand quelqu’un change de langue.
+Un visiteur francophone qui lit la page anglaise apparaît avec `languageMatch: false` : c’est l’auditoire visé par une invitation à changer de langue. Tout le reste reste en anglais dans les deux versions : noms de page, titres de contenu, noms de produits et de listes, titres de vidéo, texte des liens. Un analyste qui travaille dans une seule langue comprend donc tout ce qu’il voit, et une page forme une seule ligne dans les rapports. Seule l’adresse est dans la langue de la page (`/fr/blogue/…`), comme l’URL de page d’Adobe côtoie un `pageName` anglais. GA4 n’a pas de `pageName` : la balise Google envoie donc le nom de page comme `page_title`, que GA4 lirait autrement dans l’onglet (en français) du navigateur. Le sélecteur EN | FR en haut de chaque page envoie `language_switch` / `language switched` quand quelqu’un change de langue.
 
 ## Envoyé dans les deux couches, avant tout gestionnaire de balises
 

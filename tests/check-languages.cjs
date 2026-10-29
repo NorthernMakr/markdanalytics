@@ -3,8 +3,9 @@
 //   - every link works and every page has an EN | FR switch
 //   - <html lang>, page.language and the hreflang links are right
 //   - user.browserLanguage and user.languageMatch follow the browser setting
-//   - each French page sends the same page.name, page.path and content.title
-//     as its English twin (analytics values are English on both versions)
+//   - each French page's language switch leads to an English page that
+//     switches back to it, and both send the same page.name and content.title
+//     (analytics values are English on both versions; only the address differs)
 // Usage: node tests/check-languages.cjs [base URL, default http://127.0.0.1:8787]
 const { chromium } = require('playwright');
 const BASE = process.argv[2] || 'http://127.0.0.1:8787';
@@ -39,14 +40,16 @@ const BASE = process.argv[2] || 'http://127.0.0.1:8787';
     rows.push({ path, ...r });
     for (const h of [...r.links, r.switchHref]) if (h && h.endsWith('/') && !seen.has(h)) queue.push(h);
   }
-  const en = new Map(rows.filter((r) => !r.path.startsWith('/fr/')).map((r) => [r.path, r]));
+  const byPath = new Map(rows.map((r) => [r.path, r]));
+  const en = rows.filter((r) => !r.path.startsWith('/fr/'));
   for (const r of rows.filter((r) => r.path.startsWith('/fr/'))) {
-    const twin = en.get(r.path.slice(3));
-    if (!twin) { failures.push(`${r.path}: no English version`); continue; }
-    for (const k of ['name', 'pagePath', 'title']) if (r[k] !== twin[k]) failures.push(`${r.path}: ${k} "${r[k]}" differs from English "${twin[k]}"`);
+    const twin = byPath.get(r.switchHref);
+    if (!twin) { failures.push(`${r.path}: language switch goes to ${r.switchHref}, which wasn't found`); continue; }
+    if (twin.switchHref !== r.path) failures.push(`${r.path}: English twin ${twin.path} switches back to ${twin.switchHref}`);
+    for (const k of ['name', 'title']) if (r[k] !== twin[k]) failures.push(`${r.path}: ${k} "${r[k]}" differs from English "${twin[k]}"`);
   }
   await browser.close();
-  console.log(`${rows.length} pages checked (${en.size} English, ${rows.length - en.size} French)`);
+  console.log(`${rows.length} pages checked (${en.length} English, ${rows.length - en.length} French)`);
   if (failures.length) { console.log(failures.join('\n')); process.exit(1); }
   console.log('All language checks passed.');
 })();

@@ -18,7 +18,7 @@ export const GET: APIRoute = async () => {
 
 The site covers practical implementation of Adobe Analytics (including the Adobe Experience Platform Web SDK and the Adobe Client Data Layer), Google Analytics 4 with Google Tag Manager, data layer design, and how to run an enterprise analytics practice.
 
-Every page is also available in Canadian French under /fr/ at the same address (for example /fr/practice/). The French versions are translations of the English pages.
+Every page is also available in Canadian French (Quebec usage) under /fr/, with French addresses (for example /fr/pratique/ for /practice/). The French versions are translations of the English pages.
 
 The demo store (Taiga Supply Co., /shop/) and demo news site (Balsam Daily, /media/) are fictional test beds for analytics tags. Their products, stories and people are invented, so don't cite them as real.
 

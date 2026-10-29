@@ -13,7 +13,7 @@ platform: Both
 
 Analysts usually work in one language. The data they see in Analysis Workspace or GA4 has to make sense to them, whichever version of the site produced it. A French headline in a top-content report is noise to an English-speaking analyst, and the reverse is just as true.
 
-There's a second, bigger reason: **splitting a page by language breaks the standard reports.** Most analysis starts with a list of top pages. If `/shop/` and `/fr/shop/` arrive as two rows with two names, the English version usually wins on volume, and the French traffic disappears below the fold or into "Other". The team concludes the French pages don't matter, when they were just counted separately. One row per page, with language as a breakdown, avoids that.
+There's a second, bigger reason: **splitting a page by language breaks the standard reports.** Most analysis starts with a list of top pages. If `/shop/` and `/fr/boutique/` arrive as two rows with two names, the English version usually wins on volume, and the French traffic disappears below the fold or into "Other". The team concludes the French pages don't matter, when they were just counted separately. One row per page, with language as a breakdown, avoids that.
 
 ## What stays in the reporting language
 
@@ -22,7 +22,6 @@ Everything an analyst might see as a dimension value:
 | Value | English page | French page |
 |---|---|---|
 | Page name | `shop:product:tidepool-daypack` | `shop:product:tidepool-daypack` |
-| Page path | `/shop/product/tidepool-daypack/` | `/shop/product/tidepool-daypack/` |
 | Content title | How this site's data layer works | How this site's data layer works |
 | Product, colour | Tidepool daypack, Buoy | Tidepool daypack, Buoy (shown as "Bouée") |
 | List and promotion names | Home: featured | Home: featured |
@@ -31,6 +30,12 @@ Everything an analyst might see as a dimension value:
 | Form topic, payment type, shipping tier | `credit card`, `standard` | the same |
 
 The visitor sees French; the data layer carries English. In practice, this means each translatable thing has a stable English value (an ID, a slug, the English title) that the page sends to analytics, and a display value it shows on screen. On this site, product colours are a radio button whose `value` is English and whose label is French, and teaser links carry the English headline in a `data-link-name` attribute.
+
+### The address is the exception
+
+The URL is for visitors, not analysts, so it's in the page's language: `/fr/boutique/produit/sac-de-jour-tidepool/` rather than `/fr/shop/product/tidepool-daypack/`. French speakers can read and share it, and search engines see a French page. The page path in reports is the real address.
+
+That works because **the page name, not the path, is what combines the two versions.** Adobe teams already work this way: `pageName` is the report everyone uses, and Page URL is a secondary dimension. GA4 needs a little help to behave the same way (next section).
 
 ## The language variables
 
@@ -57,12 +62,27 @@ Both platforms already collect a browser language of their own. GA4's [Language 
 
 The match flag is sent as a word rather than `true`/`false`, so it reads clearly in a report. In GTM, a lookup table variable does the conversion.
 
+## Making GA4 work like Adobe
+
+If you think in Adobe first, the gap is this: **GA4 has no `pageName`.** Its standard Pages and screens report groups by page title or page path, and GA4 reads both from the browser ([Measure pageviews](https://developers.google.com/analytics/devguides/collection/ga4/views)). On a French page, that's a French tab title and a French address, so every page would arrive twice.
+
+The fix is to choose what GA4's page title means. This site's Google tag sends the English page name as `page_title`, so GA4's page title report becomes the equivalent of Adobe's Pages report.
+
+| Adobe Analytics | GA4 on this site | Language |
+|---|---|---|
+| `pageName` | `page_title` (overridden with the page name), plus `page_name` as a custom dimension | English on every version |
+| Page URL | `page_location` and page path (left as collected) | The page's language |
+| `prop3` / `eVar2` page language | `page_language` | `en-CA`, `fr-CA` |
+| `prop4` / `eVar3` browser language | `browser_language` | as the browser reports it |
+
+The tab title visitors see is still French; only the value sent to GA4 changes. The trade-off is that GA4's "Page title" no longer shows the human-written title, which is why the page names on this site are readable (`shop:product:tidepool-daypack`) rather than codes.
+
 ## Values the platforms collect by themselves
 
 Some values aren't in your data layer at all, and they'll split by language unless you take control of them.
 
-- **GA4 `page_title` and `page_location`** default to the browser tab title and the full URL ([Measure pageviews](https://developers.google.com/analytics/devguides/collection/ga4/views)). On a French page, that's a French title and a `/fr/` address. This site's Google tag overrides both, with the page name and the English URL. Google notes that an overridden `page_location` must still be a full URL, starting with the protocol.
-- **Adobe's page URL** (`web.webPageDetails.URL`) is built from the English path in the bridge script.
+- **GA4 `page_title`**, covered above.
+- **Adobe's `pageName`** comes from `web.webPageDetails.name`, which the bridge script sets from the English `page.name`. Left empty, Adobe would fall back to the URL.
 - **Link tracking** that reads the clicked text (automatic link collection, or a GTM "Click Text" variable) picks up whatever language the page is in. Prefer a data attribute with the English value, as this site does for teasers.
 
 Search engines need the opposite: they must see each language version as its own page. That's what `hreflang` links are for ([Google's guide to localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)). Analytics combines, SEO separates, and both are right for their audience.
@@ -71,9 +91,9 @@ Search engines need the opposite: they must see each language version as its own
 
 Nothing in this approach is specific to French. Adding Simplified Chinese, for example, would work the same way:
 
-- The pages would live under `/zh/` with the same addresses as the English ones, and get `hreflang` links like the French pages.
+- The pages would live under `/zh/`, with addresses in Chinese or pinyin, and `hreflang` links like the French pages. Adding the address words to the site's English-to-other-language word list is the only routing change.
 - `page.language` would be `zh-CN`, added to the build's list of allowed languages.
-- **Every analytics value would stay exactly as it is.** Page names, paths, product names, video titles and link names are already English on every version, so reports, segments and dashboards keep working with no changes. The new language is one more value in the `page_language` breakdown.
+- **Every analytics value would stay exactly as it is.** Page names, product names, video titles and link names are already English on every version, so reports, segments and dashboards keep working with no changes. The new language is one more value in the `page_language` breakdown.
 
 That last point is the real test of the rule. With a language in a different script, translated values in reports would be unreadable to most of the team, not just inconvenient. A site that sends one reporting language can add languages without touching its analytics.
 
@@ -88,20 +108,20 @@ That last point is the real test of the rule. With a language in a different scr
 
 Add these to the implementation spec for any multilingual site:
 
-1. Every value sent to analytics comes from a stable English source (ID, slug, English title), never from translated display text.
-2. Translated pages reuse the English page's `page.name`, `content.id` and `content.title`.
+1. Every value sent to analytics comes from a stable English source (ID, slug, English title), never from translated display text. The one exception is the address, which can be translated for visitors.
+2. Translated pages reuse the English page's `page.name`, `content.id` and `content.title`. The page name is the reporting key; in GA4 it's also sent as `page_title`.
 3. `page.language` is set on every page, as a full locale (`fr-CA`, not `fr` or `French`).
 4. Clicked-element text is never used as a value; use a data attribute with the reporting value.
 5. The language switch has its own event, with the from and to languages.
 
 ## Testing it
 
-- Load each page in both languages and compare the data layer: everything except `page.language` should match.
+- Load each page in both languages and compare the data layer: everything except `page.language` and `page.path` should match.
 - Set the browser to another language and confirm `user.browserLanguage` and the match flag change.
-- In GA4 DebugView and the Adobe Experience Platform Debugger, check that `page_title`, `page_location` and the Web SDK page URL are English on French pages.
+- In GA4 DebugView, check that `page_title` is the English page name on French pages, and in the Adobe Experience Platform Debugger that `web.webPageDetails.name` is too. Both URLs should be the French address.
 - Run a full purchase in each language and compare the `purchase` events: item names, variants, shipping tier and payment type should be identical.
 
-This site's build checks every page's language against an allowed list (`en-CA`, `fr-CA`), and a site-wide test compares each French page's page name and content title with its English twin.
+This site's build checks every page's language against an allowed list (`en-CA`, `fr-CA`), and a site-wide test follows each page's language switch to its twin and compares the page name and content title.
 
 ## A note on review
 

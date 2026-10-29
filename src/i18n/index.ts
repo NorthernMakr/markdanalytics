@@ -15,18 +15,63 @@ export const LANG_LABEL: Record<Lang, { short: string; long: string }> = {
   fr: { short: 'FR', long: 'Français' },
 };
 
+// French addresses. Each English path segment that has a French equivalent is
+// listed once; anything not listed is the same in both languages (contact,
+// article, confirmation). Translating segment by segment keeps the mapping
+// reversible, so every page knows its address in the other language.
+//
+// Adding a blog post, practice page, product or story with a French version?
+// Add its French slug here. `npm run test:languages` fails if a French page has
+// no English twin or the reverse.
+export const FR_SEGMENTS: Record<string, string> = {
+  // Sections and pages
+  shop: 'boutique', catalog: 'catalogue', product: 'produit', cart: 'panier',
+  checkout: 'caisse', payment: 'paiement', media: 'medias', blog: 'blogue',
+  practice: 'pratique', 'site-notes': 'notes-du-site', sitemap: 'plan-du-site',
+  // Blog posts
+  'how-this-sites-data-layer-works': 'comment-fonctionne-la-couche-de-donnees',
+  'testing-adobe-web-sdk-without-an-adobe-account': 'tester-adobe-web-sdk-sans-compte-adobe',
+  // Practice pages
+  'multilingual-sites': 'sites-multilingues',
+  // Demo store products
+  'tidepool-daypack': 'sac-de-jour-tidepool',
+  'breakwater-dry-bag': 'sac-etanche-breakwater',
+  'squall-rain-shell': 'manteau-coquille-squall',
+  'harbour-wool-beanie': 'tuque-en-laine-harbour',
+  'cove-two-person-tent': 'tente-deux-places-cove',
+  'lighthouse-lantern': 'lanterne-lighthouse',
+  'galley-enamel-mug': 'tasse-emaillee-galley',
+  'current-insulated-bottle': 'bouteille-isolee-current',
+  // Demo news stories
+  'ferry-schedule-shakeup': 'nouvel-horaire-du-traversier',
+  'night-market-returns': 'retour-du-marche-de-nuit',
+  'king-tide-warning': 'grandes-marees-cette-fin-de-semaine',
+  'library-branch-reopens': 'reouverture-de-la-bibliotheque-du-nord',
+  'rowing-club-centennial': 'centenaire-du-club-daviron',
+};
+const EN_SEGMENTS: Record<string, string> = Object.fromEntries(Object.entries(FR_SEGMENTS).map(([en, fr]) => [fr, en]));
+
+/** One URL segment in French: frSlug('tidepool-daypack') → 'sac-de-jour-tidepool'. */
+export const frSlug = (segment: string) => FR_SEGMENTS[segment] ?? segment;
+const mapSegments = (path: string, dict: Record<string, string>) =>
+  path.split('/').map((seg) => dict[seg] ?? seg).join('/');
+
 export const langFromPath = (path: string): Lang =>
   path === '/fr' || path.startsWith('/fr/') ? 'fr' : 'en';
 
-/** The path without its language prefix: /fr/shop/ → /shop/. */
+/** The English path of any page: /fr/boutique/panier/ → /shop/cart/. */
 export const basePath = (path: string) =>
-  langFromPath(path) === 'fr' ? path.slice(3) || '/' : path;
+  langFromPath(path) === 'fr' ? mapSegments(path.slice(3) || '/', EN_SEGMENTS) : path;
 
-/** A site path in the given language: ('/shop/', 'fr') → '/fr/shop/'. */
+/** An English site path in the given language: ('/shop/cart/', 'fr') → '/fr/boutique/panier/'. */
 export const localize = (path: string, lang: Lang) => {
   if (lang === 'en') return path;
   if (/^(https?:|mailto:|#)/.test(path)) return path;
-  return '/fr' + (path.startsWith('/') ? path : '/' + path);
+  if (/\.(xml|txt)$/.test(path)) return '/fr' + path; // feeds keep their file names
+  const cut = path.search(/[?#]/);
+  const p = cut < 0 ? path : path.slice(0, cut);
+  const rest = cut < 0 ? '' : path.slice(cut);
+  return '/fr' + mapSegments(p.startsWith('/') ? p : '/' + p, FR_SEGMENTS) + rest;
 };
 
 /** The same page in the other language. */

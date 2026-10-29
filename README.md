@@ -137,7 +137,7 @@ So both tag managers start with page data already waiting. See
 
 `page.language` is the language of the page (set at build time);
 `user.browserLanguage` and `user.languageMatch` are filled in by the browser as
-the page loads. `page.path` is always the English path, even on `/fr/` pages.
+the page loads. `page.path` is the real address (French on French pages).
 
 Blog posts and media articles add a `content` object (title, category or
 section, author, publish date, word count; media articles also `hasVideo` and
@@ -217,13 +217,15 @@ One-time setup in Cloudflare:
 
 ## English and French
 
-Every page exists in English (at the root) and French (under `/fr/`, same
-addresses). French route files in `src/pages/fr/` render the English page
+Every page exists in English (at the root) and French (under `/fr/`, with
+French addresses: `/shop/cart/` is `/fr/boutique/panier/`). The word list in
+`FR_SEGMENTS` (`src/i18n/index.ts`) drives every French address; add a French
+slug there when you add a post, practice page, product or story. French route files in `src/pages/fr/` render the English page
 component, which reads its language from the URL; strings are picked with
 `tr(lang, 'English', 'Français')` from `src/i18n/index.ts`.
 
-**Analytics values are always English**, on both versions: page names and
-paths, content titles, product, list and promo names, video titles, link text.
+**Analytics values are always English**, on both versions, except the address:
+page names, content titles, product, list and promo names, video titles, link text.
 Analysts usually work in one language, and a page should be one row in a
 top-pages report. The language variables are how you split them:
 
@@ -234,8 +236,9 @@ top-pages report. The language variables are how you split them:
 | `user.languageMatch` | `language_match` (`match` / `mismatch`) | `prop5` |
 | language switch click | `language_switch` (`language_from`, `language_to`) | `language switched` |
 
-The GTM container also overrides GA4's `page_location` (English URL) and
-`page_title` (page name), which GA4 would otherwise read from the browser.
+GA4 has no `pageName`, so the GTM container sends the English page name as
+`page_title` (GA4 would otherwise use the French tab title). GA4's Pages report by
+page title then works like Adobe's Pages report; `page_location` stays the real URL.
 
 **In GA4**, register these as event-scoped custom dimensions (Admin > Custom
 definitions) so they appear in reports: `page_language`, `browser_language`,
@@ -260,7 +263,8 @@ add the translated text. Nothing in the analytics changes.
 
 Files starting with `_` and posts with `draft: true` are never published.
 
-For the French version, put a file with the **same name** in `src/content/blog/fr/`.
+For the French version, put a file with the **same name** in `src/content/blog/fr/`,
+and add its French address to `FR_SEGMENTS` in `src/i18n/index.ts`.
 Practice pages work the same way (`src/content/practice/fr/`).
 
 ## Where things live

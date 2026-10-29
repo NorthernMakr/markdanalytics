@@ -49,9 +49,9 @@ const today = new Date().toLocaleDateString(LOCALE[lang], { weekday: 'long', mon
   <script>
     import { ga4, adobe } from '../scripts/lab';
     // Teaser / internal-promo clicks: any link with data-teaser-module.
-    // link_text and link_url are always the English headline and English path
-    // (data-link-name), so a story's clicks combine across both languages in
-    // reports. Segment by page.language to split them.
+    // link_text is always the English headline (data-link-name), so a story's
+    // clicks combine across both languages; link_url is the real address.
+    // Segment by page.language to split them.
     document.addEventListener('click', (e) => {
       const a = (e.target as Element).closest<HTMLAnchorElement>('a[data-teaser-module]');
       if (!a) return;
@@ -59,7 +59,7 @@ const today = new Date().toLocaleDateString(LOCALE[lang], { weekday: 'long', mon
         module: a.dataset.teaserModule!,
         position: Number(a.dataset.teaserPosition ?? 0),
         text: (a.dataset.linkName ?? a.textContent ?? '').trim().slice(0, 100),
-        url: a.pathname.replace(/^\/fr(?=\/)/, ''),
+        url: a.pathname,
       };
       ga4({ event: 'content_click', link_module: detail.module, link_position: detail.position, link_text: detail.text, link_url: detail.url });
       adobe({ event: 'content clicked', link: detail });

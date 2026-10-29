@@ -1,11 +1,12 @@
 ---
 // French route: renders the French version of each post with the English
-// post page component. Posts live in src/content/blog/fr/ under the same slug.
+// post page component. Posts live in src/content/blog/fr/ under the same file name (French address from FR_SEGMENTS in src/i18n).
 import Page from '../../blog/[...slug].astro';
 import { getPosts, slugOf } from '../../../lib/blog';
+import { frSlug } from '../../../i18n';
 export async function getStaticPaths() {
   const posts = await getPosts('fr');
-  return posts.map((post) => ({ params: { slug: slugOf(post.id) }, props: { post } }));
+  return posts.map((post) => ({ params: { slug: frSlug(slugOf(post.id)) }, props: { post } }));
 }
 ---
 <Page {...Astro.props} />

@@ -23,7 +23,6 @@ const pageData = {
   </section>
   <script is:inline>
     // A static 404 page is built once, so record the URL that was actually requested.
-    // English form of the path, like every other page (/fr/x/ → /x/).
-    window.labPage.page.path = location.pathname.replace(/^\/fr(?=\/)/, '');
+    window.labPage.page.path = location.pathname;
   </script>
 </BlogLayout>

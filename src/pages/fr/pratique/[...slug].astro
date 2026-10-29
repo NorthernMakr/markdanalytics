@@ -3,11 +3,12 @@
 // with the English page component.
 import Page from '../../practice/[...slug].astro';
 import { getPractice, slugOf } from '../../../lib/blog';
+import { frSlug } from '../../../i18n';
 export async function getStaticPaths() {
   const pages = await getPractice('fr');
   return pages.map((entry) => {
     const slug = slugOf(entry.id);
-    return { params: { slug: slug === 'index' ? undefined : slug }, props: { entry, pages } };
+    return { params: { slug: slug === 'index' ? undefined : frSlug(slug) }, props: { entry, pages } };
   });
 }
 ---

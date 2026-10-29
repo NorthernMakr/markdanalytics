@@ -62,9 +62,9 @@ const fullData = {
   ...pageData,
   page: {
     ...pageData.page,
-    // English path for both versions (/fr/shop/ reports as /shop/), so a page is
-    // one row in reports; language says which version was read.
-    path: enPath,
+    // The real address, in the page's language (/fr/boutique/ on French pages).
+    // page.name is the English key that combines both versions in reports.
+    path: Astro.url.pathname,
     language: LOCALE[lang], // language of the page itself
     environment: import.meta.env.PROD ? 'production' : 'development',
   },

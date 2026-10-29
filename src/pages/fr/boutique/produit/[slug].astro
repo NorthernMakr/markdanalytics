@@ -3,8 +3,9 @@
 // language from the /fr/ URL.
 import Page from '../../../shop/product/[slug].astro';
 import { products } from '../../../../data/products';
+import { frSlug } from '../../../../i18n';
 export function getStaticPaths() {
-  return products.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+  return products.map((p) => ({ params: { slug: frSlug(p.slug) }, props: { product: p } }));
 }
 ---
 <Page {...Astro.props} />
