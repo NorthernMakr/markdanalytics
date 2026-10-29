@@ -1,6 +1,6 @@
 ---
 title: Running an enterprise digital analytics practice
-description: What I'd document if I were running an enterprise analytics practice. QA and documentation standards, variable records, a change process, developer specs, and a standard base for Adobe and Google.
+description: What to document when running an enterprise analytics practice, from QA standards and variable records to developer specs and a base Adobe and GA4 setup.
 pubDate: 2026-10-29
 category: Analytics practice
 tags: [governance, QA, documentation, data layer, Adobe Analytics, GA4]

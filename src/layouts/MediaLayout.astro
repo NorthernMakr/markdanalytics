@@ -16,7 +16,9 @@ const today = new Date().toLocaleDateString('en-CA', { weekday: 'long', month: '
   <header class="masthead">
     <div class="media-wrap">
       <p class="masthead-date">{today}</p>
-      <a class="masthead-name" href="/media/">Balsam Daily</a>
+      {pageType === 'section front'
+        ? <h1 class="masthead-h1"><a class="masthead-name" href="/media/">Balsam Daily</a></h1>
+        : <a class="masthead-name" href="/media/">Balsam Daily</a>}
       <svg class="tideline" viewBox="0 0 600 14" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0 7 Q 25 0 50 7 T 100 7 T 150 7 T 200 7 T 250 7 T 300 7 T 350 7 T 400 7 T 450 7 T 500 7 T 550 7 T 600 7" fill="none" stroke="currentColor" stroke-width="2.5" />
       </svg>

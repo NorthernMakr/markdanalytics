@@ -7,7 +7,7 @@ const pageData = {
   page: { name: 'error:404', type: 'error', section: 'error', siteName: siteMeta.blogName },
 };
 ---
-<BlogLayout title={`Page not found — ${siteMeta.blogName}`} pageData={pageData}>
+<BlogLayout title={`Page not found — ${siteMeta.blogName}`} pageData={pageData} noindex>
   <section class="hub-section" style="border-top:0">
     <div class="blog-wrap">
       <h1 style="font:700 40px/1.1 var(--serif);margin:24px 0 12px">That page isn't here</h1>

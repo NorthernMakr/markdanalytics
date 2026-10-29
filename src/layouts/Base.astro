@@ -8,6 +8,7 @@
 // That way both tag managers find page data already waiting when they start.
 import { tags, siteMeta } from '../config/tags';
 import { checkPage, GA4_EVENTS, ADOBE_EVENTS, FORBIDDEN_KEYS } from '../config/analytics';
+import { DEFAULT_IMAGE } from '../lib/seo';
 import EventLog from '../components/EventLog.astro';
 import '../styles/base.css';
 
@@ -29,9 +30,26 @@ interface Props {
   pageData: PageData;
   bodyClass?: string;
   demoBanner?: string;
+  /** Keep this page out of search results and the sitemap (demo sites, 404). */
+  noindex?: boolean;
+  /** Full robots value, overriding noindex (e.g. "noindex, nofollow"). */
+  robots?: string;
+  /** Open Graph type: "website" by default, "article" for posts. */
+  ogType?: 'website' | 'article';
+  /** schema.org structured data for this page (see src/lib/seo.ts). */
+  jsonLd?: object;
+  /** Article dates for Open Graph. */
+  published?: Date;
+  modified?: Date;
 }
 
-const { title, description = siteMeta.blogTagline, pageData, bodyClass = '', demoBanner } = Astro.props;
+const {
+  title, description = siteMeta.blogTagline, pageData, bodyClass = '', demoBanner,
+  noindex = !!demoBanner, robots, ogType = 'website', jsonLd, published, modified,
+} = Astro.props;
+const robotsContent = robots ?? (noindex ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-image-preview:large');
+const ogImage = new URL(DEFAULT_IMAGE.url, Astro.site).toString();
+const ldJson = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : '';
 
 const fullData = {
   ...pageData,
@@ -61,7 +79,29 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    {demoBanner && <meta name="robots" content="noindex" />}
+    <meta name="robots" content={robotsContent} />
+    <meta name="author" content={siteMeta.owner} />
+    <link rel="alternate" type="application/rss+xml" title={`${siteMeta.blogName} (RSS)`} href="/rss.xml" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <!-- Sharing previews (Open Graph, also read by LinkedIn, Slack, X) -->
+    <meta property="og:site_name" content={siteMeta.blogName} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={String(DEFAULT_IMAGE.width)} />
+    <meta property="og:image:height" content={String(DEFAULT_IMAGE.height)} />
+    <meta property="og:image:alt" content={DEFAULT_IMAGE.alt} />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    {(modified ?? published) && <meta property="article:modified_time" content={(modified ?? published)!.toISOString()} />}
+    {ogType === 'article' && <meta property="article:author" content={siteMeta.owner} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Structured data for search engines and AI answer engines -->
+    {ldJson && <script is:inline type="application/ld+json" set:html={ldJson} />}
 
     <!-- 0. Adobe Web SDK + bridge from adobeDataLayer events to sendEvent -->
     {tags.webSdk.mode !== 'off' && (

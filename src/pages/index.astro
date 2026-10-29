@@ -2,6 +2,7 @@
 import BlogLayout from '../layouts/BlogLayout.astro';
 import { siteMeta } from '../config/tags';
 import { getPosts, formatDate, isoDate } from '../lib/blog';
+import { graph } from '../lib/seo';
 
 const posts = (await getPosts()).slice(0, 5);
 
@@ -20,7 +21,7 @@ const highlighted = JSON.stringify(specimen, null, 2)
   .replace(/("[^"]+")(\s*:)/g, '<span class="k">$1</span>$2')
   .replace(/(:\s*)("[^"]*")/g, '$1<span class="s">$2</span>');
 ---
-<BlogLayout title={`${siteMeta.blogName} — analytics implementation notes`} pageData={pageData}>
+<BlogLayout title={`${siteMeta.blogName} — analytics implementation notes`} pageData={pageData} jsonLd={graph()}>
   <section class="hub-hero">
     <div class="blog-wrap">
       <div>

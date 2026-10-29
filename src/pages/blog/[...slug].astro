@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import { siteMeta } from '../../config/tags';
 import { getPosts, formatDate, isoDate, wordCount, type Post } from '../../lib/blog';
+import { graph, article, breadcrumbs } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -28,7 +29,12 @@ const pageData = {
   },
 };
 ---
-<BlogLayout title={`${d.title} — ${siteMeta.blogName}`} description={d.description} pageData={pageData}>
+<BlogLayout title={`${d.title} — ${siteMeta.blogName}`} description={d.description} pageData={pageData}
+  ogType="article" published={d.pubDate} modified={d.updatedDate}
+  jsonLd={graph(
+    article({ path: `/blog/${post.id}/`, title: d.title, description: d.description, published: d.pubDate, modified: d.updatedDate, tags: d.tags, section: d.category, wordCount: wordCount(post.body) }),
+    breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Notes', path: '/blog/' }, { name: d.title, path: `/blog/${post.id}/` }]),
+  )}>
   <article class="post">
     <div class="blog-wrap">
       <header class="post-head">

@@ -68,3 +68,4 @@
 @media (max-width: 860px) {
   .front, .teasers { grid-template-columns: 1fr; }
 }
+.masthead-h1 { margin: 0; font-size: inherit; }
