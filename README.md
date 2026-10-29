@@ -185,6 +185,32 @@ the scroll-depth events.
 
 ---
 
+## Analytics conventions (enforced)
+
+`src/config/analytics.ts` lists the allowed page types, sections, page-name
+format, GA4 event names and Adobe event names. Every page is checked at build
+time: a page that breaks a convention **fails the build** with a message saying
+what to fix. Outside production, every push to either data layer is also checked
+in the browser (console warning for an unregistered event, or a key such as
+`email` or `phone` that suggests personal data).
+
+To add a page type, section or event, add it to that file first.
+
+## Contact form
+
+`/contact/` posts to `/api/contact` (in `src/worker.ts`), which emails the
+message to you through Cloudflare. Your address is a secret in Cloudflare, never
+in the site or this repository. Nothing is stored, and analytics only record
+`form_start`, `generate_lead` (with the topic) and `form_error`, never what was typed.
+
+One-time setup in Cloudflare:
+1. **markdanalytics.ca → Email → Email Routing:** enable it, then under
+   **Destination addresses** add the inbox you want messages in and click the
+   verification link Cloudflare emails you.
+2. **Workers & Pages → markdanalytics → Settings → Variables and Secrets**
+   (runtime, not build): add a **Secret** named `CONTACT_TO` with that address.
+3. Redeploy. Until then the form politely says it isn't switched on yet.
+
 ## Writing a blog post
 
 1. Copy `src/content/blog/_post-template.md` and rename it. The file name

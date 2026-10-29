@@ -1,0 +1,114 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import { siteMeta } from '../config/tags';
+
+const pageData = {
+  page: { name: 'contact', type: 'contact', section: 'contact', siteName: siteMeta.blogName },
+};
+const topics = ['Analytics implementation work', 'Speaking or writing', 'Feedback on a post', 'Something else'];
+---
+<BlogLayout title={`Contact — ${siteMeta.blogName}`} description="Send me a message about analytics implementation, a post, or anything else." pageData={pageData}>
+  <section class="contact">
+    <div class="blog-wrap contact-grid">
+      <div class="contact-intro">
+        <h1>Get in touch</h1>
+        <p>Questions about a post, an implementation you're wrestling with, or work you'd like to talk about: send a message and I'll reply by email.</p>
+        <h2>What happens to your message</h2>
+        <ul>
+          <li>It goes straight to my inbox. It isn't stored on this site or passed to a form service.</li>
+          <li>Your email address is used only so I can reply.</li>
+          <li>This site's analytics record that the form was sent and the topic you picked, never your name, email or message.</li>
+        </ul>
+      </div>
+
+      <form class="contact-form" novalidate>
+        <div class="field">
+          <label for="c-name">Name</label>
+          <input id="c-name" name="name" autocomplete="name" maxlength="100" required />
+        </div>
+        <div class="field">
+          <label for="c-email">Email</label>
+          <input id="c-email" name="email" type="email" autocomplete="email" maxlength="200" required />
+        </div>
+        <div class="field">
+          <label for="c-topic">Topic</label>
+          <select id="c-topic" name="topic">
+            {topics.map((t) => <option>{t}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="c-message">Message</label>
+          <textarea id="c-message" name="message" rows="7" maxlength="5000" required></textarea>
+        </div>
+        <!-- Left empty by people; bots tend to fill it in. -->
+        <div class="hp" aria-hidden="true">
+          <label for="c-website">Website</label>
+          <input id="c-website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+        <button class="contact-send" type="submit">Send message</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    import { ga4, adobe } from '../scripts/lab';
+
+    const form = document.querySelector<HTMLFormElement>('.contact-form')!;
+    const status = form.querySelector<HTMLElement>('.form-status')!;
+    const button = form.querySelector<HTMLButtonElement>('.contact-send')!;
+    const startedAt = Date.now();
+    let started = false;
+
+    // Analytics: record that the form was used and the topic chosen, never what was typed.
+    form.addEventListener('input', () => {
+      if (started) return;
+      started = true;
+      ga4({ event: 'form_start', form_name: 'contact' });
+      adobe({ event: 'form started', form: { name: 'contact' } });
+    });
+
+    const setStatus = (text: string, kind: 'ok' | 'error' | '') => {
+      status.textContent = text;
+      status.dataset.kind = kind;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+      const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+
+      button.disabled = true;
+      button.textContent = 'Sending…';
+      setStatus('', '');
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ ...data, startedAt }),
+        });
+        const out = await res.json().catch(() => ({ ok: false, error: 'The message couldn\'t be sent. Please try again.' }));
+        if (out.ok) {
+          form.reset();
+          setStatus('Message sent. I\'ll reply by email, usually within a few days.', 'ok');
+          ga4({ event: 'generate_lead', form_name: 'contact', form_topic: data.topic });
+          adobe({ event: 'form submitted', form: { name: 'contact', topic: data.topic } });
+          button.textContent = 'Message sent';
+          return;
+        }
+        if (out.field) {
+          const el = form.querySelector<HTMLElement>(`[name="${out.field}"]`);
+          el?.setAttribute('aria-invalid', 'true');
+          el?.focus();
+        }
+        setStatus(out.error ?? 'The message couldn\'t be sent. Please try again.', 'error');
+        ga4({ event: 'form_error', form_name: 'contact', error_field: out.field ?? 'server' });
+        adobe({ event: 'form error', form: { name: 'contact', errorField: out.field ?? 'server' } });
+      } catch {
+        setStatus('The message couldn\'t be sent. Check your connection and try again.', 'error');
+      }
+      button.disabled = false;
+      button.textContent = 'Send message';
+    });
+  </script>
+</BlogLayout>

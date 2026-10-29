@@ -1,0 +1,21 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import { siteMeta } from '../config/tags';
+
+// error:404 lets reports show which missing URLs people hit (page.path holds the URL).
+const pageData = {
+  page: { name: 'error:404', type: 'error', section: 'error', siteName: siteMeta.blogName },
+};
+---
+<BlogLayout title={`Page not found — ${siteMeta.blogName}`} pageData={pageData}>
+  <section class="hub-section" style="border-top:0">
+    <div class="blog-wrap">
+      <h1 style="font:700 40px/1.1 var(--serif);margin:24px 0 12px">That page isn't here</h1>
+      <p style="color:var(--muted);font-size:18px;max-width:52ch">The address may have changed or been typed slightly wrong. Try the <a href="/">home page</a>, the <a href="/blog/">notes</a>, or the <a href="/practice/">analytics practice</a> section.</p>
+    </div>
+  </section>
+  <script is:inline>
+    // A static 404 page is built once, so record the URL that was actually requested.
+    window.labPage.page.path = location.pathname;
+  </script>
+</BlogLayout>

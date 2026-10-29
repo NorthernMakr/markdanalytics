@@ -6,7 +6,13 @@
 // requests Adobe's edge would, returns a minimal valid response (including a
 // fake ECID so the SDK's identity step completes), and sends nothing to Adobe.
 
-interface Env { ASSETS: { fetch: (req: Request) => Promise<Response> } }
+interface Env {
+  ASSETS: { fetch: (req: Request) => Promise<Response> };
+  // Contact form (see handleContact below)
+  CONTACT_EMAIL?: { send: (msg: Record<string, unknown>) => Promise<unknown> };
+  CONTACT_TO?: string;   // secret: where messages are delivered (a verified address)
+  CONTACT_FROM?: string; // optional: sender address on this domain
+}
 
 const ORG_COOKIE = (orgId: string) => `kndctr_${orgId.replace('@', '_')}_identity`;
 
@@ -71,10 +77,63 @@ async function mockEdge(req: Request, url: URL): Promise<Response> {
   });
 }
 
+// ---------------------------------------------------------------------------
+// Contact form: POST /api/contact
+//
+// The visitor's message is emailed to CONTACT_TO, a secret set in the
+// Cloudflare dashboard, so the owner's address never appears in the site or
+// the repository. Nothing is stored: the message exists only in that email.
+// Spam checks: a hidden honeypot field, a minimum time on page, and size limits.
+// ---------------------------------------------------------------------------
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
+
+const clean = (v: unknown, max: number) => String(v ?? '').replace(/[\r\n]+/g, ' ').trim().slice(0, max);
+
+async function handleContact(req: Request, env: Env): Promise<Response> {
+  if (req.method !== 'POST') return json({ ok: false, error: 'Use POST.' }, 405);
+
+  let f: Record<string, unknown> = {};
+  try { f = await req.json(); } catch { return json({ ok: false, error: 'The form data could not be read.' }, 400); }
+
+  // Bots fill the hidden field or submit instantly; pretend success so they move on.
+  const elapsed = Date.now() - Number(f.startedAt ?? 0);
+  if (String(f.website ?? '') !== '' || !(elapsed > 3000)) return json({ ok: true });
+
+  const name = clean(f.name, 100);
+  const email = clean(f.email, 200);
+  const topic = clean(f.topic, 60) || 'General';
+  const message = String(f.message ?? '').trim().slice(0, 5000);
+
+  if (!name) return json({ ok: false, field: 'name', error: 'Add your name.' }, 400);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ ok: false, field: 'email', error: 'Add an email address I can reply to.' }, 400);
+  if (message.length < 10) return json({ ok: false, field: 'message', error: 'Add a message of at least a sentence.' }, 400);
+
+  if (!env.CONTACT_EMAIL || !env.CONTACT_TO) {
+    return json({ ok: false, error: 'The contact form isn\'t switched on yet. Please try again later.' }, 503);
+  }
+
+  const host = new URL(req.url).hostname.replace(/^www\./, '');
+  try {
+    await env.CONTACT_EMAIL.send({
+      to: env.CONTACT_TO,
+      from: { email: env.CONTACT_FROM || `contact@${host}`, name: `${host} contact form` },
+      replyTo: { email, name },
+      subject: `[${host}] ${topic}: message from ${name}`,
+      text: `From: ${name} <${email}>\nTopic: ${topic}\n\n${message}\n\n--\nSent from the contact form on ${host}. Reply to this email to answer ${name} directly.`,
+    });
+  } catch (e: any) {
+    console.error('contact send failed', e?.code, e?.message);
+    return json({ ok: false, error: 'The message couldn\'t be sent right now. Please try again in a few minutes.' }, 502);
+  }
+  return json({ ok: true });
+}
+
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const url = new URL(req.url);
     if (url.pathname.startsWith('/ee/')) return mockEdge(req, url);
+    if (url.pathname === '/api/contact') return handleContact(req, env);
     return env.ASSETS.fetch(req);
   },
 };

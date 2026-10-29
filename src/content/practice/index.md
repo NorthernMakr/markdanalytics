@@ -176,6 +176,10 @@ Some standards apply at every level:
 - **Test the edges:** reloads (purchase must not double-count), back button, empty cart, ad blockers, consent declined.
 - **Use each platform's tools:** Adobe Experience Platform Debugger and Assurance for Adobe; Tag Assistant and DebugView for Google; the browser's network panel for both.
 
+### Automate the conventions
+
+Standards that rely on memory drift. On this site the conventions live in one file of allowed values (page types, sections, page-name format, and every registered event name), and the build checks every page against it. A page with an unregistered page type, or a page name that isn't lowercase and colon-separated, fails the build and never reaches production. Outside production, every data layer push is also checked in the browser, with a console warning for an unregistered event or a key like `email` or `phone` that suggests personal data has slipped in. Adding a page type or event means adding it to that file first, which is the change process in miniature.
+
 This site's [store](/shop/) is set up to practise these cases. The Event log on every page shows both data layers live, and the confirmation page deliberately doesn't re-send `purchase` on reload.
 
 ## Coming next in this section

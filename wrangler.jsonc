@@ -1,6 +1,6 @@
 // Cloudflare deployment settings. Cloudflare runs `npm run build`, then
 // `npx wrangler deploy`, which publishes the static site built into ./dist
-// plus the small Worker in src/worker.ts (the mock Adobe Edge endpoint).
+// plus the small Worker in src/worker.ts (mock Adobe Edge + contact form).
 {
   "name": "markdanalytics",
   "main": "src/worker.ts",
@@ -8,7 +8,11 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    // Only /ee/* goes to the Worker; everything else is served as static files.
-    "run_worker_first": ["/ee/*"]
-  }
+    "not_found_handling": "404-page", // serve dist/404.html for unknown URLs
+    // Only these paths go to the Worker; everything else is served as static files.
+    "run_worker_first": ["/ee/*", "/api/*"]
+  },
+  // Contact form email. Where it delivers is the CONTACT_TO secret, set in the
+  // Cloudflare dashboard (never in this file), and must be a verified address.
+  "send_email": [{ "name": "CONTACT_EMAIL" }]
 }

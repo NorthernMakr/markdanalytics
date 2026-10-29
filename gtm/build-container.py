@@ -158,6 +158,14 @@ ga4_event("GA4 - Event - Filter applied", filter_trigger, params=[
     ("filter_value", dlv("filter_value")),
 ])
 
+# --- Forms (contact page). Never carries what the visitor typed. --------------------------
+form_trigger = event_trigger("CE - Form events", "^(form_start|generate_lead|form_error)$")
+ga4_event("GA4 - Event - Forms", form_trigger, params=[
+    ("form_name", dlv("form_name")),
+    ("form_topic", dlv("form_topic")),
+    ("error_field", dlv("error_field")),
+])
+
 container = {
     "exportFormatVersion": 2,
     "exportTime": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),

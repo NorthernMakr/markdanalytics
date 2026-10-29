@@ -7,6 +7,7 @@
 //   3. Google Tag Manager / gtag.js, if configured
 // That way both tag managers find page data already waiting when they start.
 import { tags, siteMeta } from '../config/tags';
+import { checkPage, GA4_EVENTS, ADOBE_EVENTS, FORBIDDEN_KEYS } from '../config/analytics';
 import EventLog from '../components/EventLog.astro';
 import '../styles/base.css';
 
@@ -43,6 +44,10 @@ const fullData = {
   user: { loginStatus: 'guest' },
 };
 
+// Enforce the site's analytics conventions: a page that breaks them fails the build.
+checkPage(fullData.page, Astro.url.pathname);
+const conventions = JSON.stringify({ ga4: GA4_EVENTS, adobe: ADOBE_EVENTS, forbidden: FORBIDDEN_KEYS });
+
 // JSON for an inline script; escape "<" so content can't close the tag.
 const pageJson = JSON.stringify(fullData).replace(/</g, '\\u003c');
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
@@ -71,20 +76,34 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
       window.dataLayer = window.dataLayer || [];
       window.adobeDataLayer = window.adobeDataLayer || [];
       window.labPage = ${pageJson};
+      /* Outside production, warn when a push breaks the conventions in src/config/analytics.ts */
+      var labRules = ${conventions};
+      var labCheck = function (layer, list, evt) {
+        if (window.labPage.page.environment === 'production' || !evt) return;
+        if (list.indexOf(evt.event) < 0) console.warn('[analytics conventions] ' + layer + ': unregistered event "' + evt.event + '"');
+        (function scan(o, path) {
+          if (!o || typeof o !== 'object') return;
+          Object.keys(o).forEach(function (k) {
+            if (labRules.forbidden.indexOf(k) >= 0) console.warn('[analytics conventions] ' + layer + ': personal-data key "' + path + k + '" in "' + evt.event + '"');
+            scan(o[k], path + k + '.');
+          });
+        })(evt, '');
+      };
       window.lab = {
         /* GA4 / GTM: clear the previous ecommerce object before each ecommerce push */
         ga4: function (evt) {
+          labCheck('dataLayer', labRules.ga4, evt);
           if (evt && evt.ecommerce) window.dataLayer.push({ ecommerce: null });
           window.dataLayer.push(evt);
         },
-        /* Adobe Client Data Layer */
         /* Adobe Client Data Layer, also forwarded to the Web SDK bridge when it's on */
         adobe: function (evt) {
+          labCheck('adobeDataLayer', labRules.adobe, evt);
           window.adobeDataLayer.push(evt);
           if (window.labWebSdk) window.labWebSdk(evt);
         }
       };
-      window.dataLayer.push(Object.assign({ event: 'page_data_ready' }, window.labPage));
+      window.lab.ga4(Object.assign({ event: 'page_data_ready' }, window.labPage));
       window.lab.adobe(Object.assign({ event: 'page loaded' }, window.labPage));
     `} />
 
