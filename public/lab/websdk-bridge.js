@@ -81,6 +81,39 @@
     'wishlist add': 'saveForLaters',
   };
 
+  // Adobe Analytics variables, set directly in data.__adobe.analytics (no
+  // Adobe-side mapping needed). Values are English whatever the page language.
+  //
+  // eVars DESCRIBE the context. They're sent on EVERY request (the page view
+  // and every interaction), so each hit carries its own context and no report
+  // depends on persistence. Intended report suite settings: eVar1-5 expire on
+  // Hit, allocation Most recent (last).
+  //   eVar1 page type, eVar2 site section, eVar3 page language,
+  //   eVar4 browser language, eVar5 language match
+  //
+  // Props COUNT things, on the hit where they happen (props never persist):
+  //   prop1 page name (page views), prop2 interaction (every non-page-view hit,
+  //   e.g. "cart add", "purchase", "content clicked"), prop3 video name (media
+  //   events), prop4 link name (teaser and section clicks)
+  function contextVars() {
+    var p = page();
+    var u = (window.labPage && window.labPage.user) || {};
+    return {
+      eVar1: p.type,
+      eVar2: p.section,
+      eVar3: p.language,                         // e.g. fr-CA
+      eVar4: u.browserLanguage,                  // e.g. en-US
+      eVar5: u.languageMatch ? 'match' : 'mismatch',
+    };
+  }
+  function countVars(e) {
+    var c = { prop2: e.event };
+    if (e.media && e.media.name) c.prop3 = e.media.name;
+    if (e.link && e.link.text) c.prop4 = e.link.text;
+    return c;
+  }
+  var assign = function (a, b) { for (var k in b) if (b[k] !== undefined) a[k] = b[k]; return a; };
+
   function toXdm(e) {
     var name = e.event;
     var xdm, data = { lab: clone(e) };
@@ -90,17 +123,7 @@
       var wp = webPage();
       wp.webPageDetails.pageViews = { value: 1 };
       xdm = { eventType: 'web.webpagedetails.pageViews', web: wp };
-      // Example of setting Analytics variables directly (no Adobe-side mapping needed).
-      // Values are English whatever the page language; the language variables
-      // are what analysts segment on.
-      var u = (window.labPage && window.labPage.user) || {};
-      data.__adobe = { analytics: {
-        prop1: page().type, eVar1: page().type,   // page type
-        prop2: page().section,                    // site section
-        prop3: page().language, eVar2: page().language,          // page language, e.g. fr-CA
-        prop4: u.browserLanguage, eVar3: u.browserLanguage,      // browser language, e.g. en-US
-        prop5: u.languageMatch ? 'match' : 'mismatch',           // does the page match the browser?
-      } };
+      data.__adobe = { analytics: assign(contextVars(), { prop1: page().name }) };
       return { xdm: xdm, data: data };
     }
 
@@ -114,6 +137,7 @@
       }
       xdm = { eventType: 'commerce.' + key, web: webPage(), commerce: commerce };
       if (items(e)) xdm.productListItems = items(e);
+      data.__adobe = { analytics: assign(contextVars(), countVars(e)) };
       return { xdm: xdm, data: data };
     }
 
@@ -125,6 +149,7 @@
       }),
     };
     if (items(e)) xdm.productListItems = items(e);
+    data.__adobe = { analytics: assign(contextVars(), countVars(e)) };
     return { xdm: xdm, data: data };
   }
 

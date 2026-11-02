@@ -49,15 +49,18 @@ Chaque variable a une fiche dans le plan de marquage, toujours avec les mêmes c
 | Définition | Le gabarit de la page : accueil, article, fiche produit, panier, caisse, confirmation de commande |
 | Source dans la couche de données | `page.type` |
 | Valeurs permises et format | En minuscules, tirées d’une liste fixe; aucun texte libre |
-| Adobe Analytics | `prop1` et `eVar1` (expiration au hit); avec le Web SDK, `data.__adobe.analytics` |
+| Adobe Analytics | `eVar1`, expiration au hit, attribution à la plus récente; avec le Web SDK, `data.__adobe.analytics` |
 | GA4 | Paramètre d’événement `page_type`, dimension personnalisée de portée événement « Page type » |
-| Définie sur | Chaque page vue; persiste sur les événements de cette page |
+| Définie sur | Chaque hit de la page : la page vue et chaque interaction. Chaque hit porte sa propre valeur; rien ne dépend de la persistance |
 | Classification de confidentialité | Pas une donnée personnelle |
 | Responsable | Responsable de l’analytique |
 | Statut | En production depuis le 2026-10-29 |
-| Notes et historique | (vide) |
+| Vérifiée | Envois côté client dans l’Edge Network simulé; traitement côté Adobe pas encore vérifié dans une suite de rapports |
+| Notes et historique | 2026-11-02 : passage de `prop1` + `eVar1` sur les pages vues seulement à `eVar1` sur chaque hit |
 
 Deux champs font l’essentiel du travail. La **question d’affaires** empêche de créer des variables « au cas où ». La **source dans la couche de données** sépare ce que le site expose de la façon dont chaque outil le stocke : une migration d’outil ne change donc pas le site.
+
+**Définie sur** est là où les implémentations Adobe se trompent le plus souvent sans bruit. Une prop ne s’applique qu’au hit où elle est fixée ([Adobe : props](https://experienceleague.adobe.com/fr/docs/analytics/components/dimensions/prop)), et le crédit d’une eVar pour les événements suivants dépend de son expiration et de son attribution, des réglages de la suite de rapports qui valent par défaut la visite et la dernière valeur ([Adobe : eVars](https://experienceleague.adobe.com/fr/docs/analytics/components/dimensions/evar)). La fiche dit donc exactement quels hits portent la valeur et quels sont les réglages, et **Vérifiée** indique si cela a été contrôlé dans Adobe même ou seulement dans le navigateur.
 
 ### La partager
 
@@ -153,16 +156,23 @@ Elles sont recueillies sur chaque propriété dès le premier jour. Les deux var
 
 | Couche de données | Adobe Analytics | GA4 |
 |---|---|---|
-| `page.name` | `pageName` (`web.webPageDetails.name`) | `page_name` |
-| `page.type` | `prop1`, `eVar1` | `page_type` |
-| `page.section` | `prop2`, canal | `site_section` |
+| `page.name` | `pageName` (`web.webPageDetails.name`), `prop1` | `page_name` |
+| `page.type` | `eVar1` | `page_type` |
+| `page.section` | `eVar2`, canal | `site_section` |
 | `page.siteName` | suite de rapports ou `eVar` | `site_name` |
 | `page.environment` | `eVar` | `site_environment` |
-| `page.language` | `prop3`, `eVar2` | `page_language` |
-| `user.browserLanguage` | `prop4`, `eVar3` | `browser_language` |
-| `user.languageMatch` | `prop5` (`match` / `mismatch`) | `language_match` |
+| `page.language` | `eVar3` | `page_language` |
+| `user.browserLanguage` | `eVar4` | `browser_language` |
+| `user.languageMatch` | `eVar5` (`match` / `mismatch`) | `language_match` |
 | `user.loginStatus` | `eVar` (expiration à la visite) | `login_status` (portée utilisateur) |
 | `content.*` | des `eVar` par champ de contenu | paramètres `content_*` |
+
+**Comment les variables Adobe sont réparties.** Les eVars *décrivent* le contexte; les props *comptent* des choses.
+
+- **Les eVars** portent les valeurs descriptives ci-dessus et sont envoyées sur **chaque hit de la page** : la page vue et chaque interaction (événements de produit, de panier, de vidéo et de clic). Elles expirent au hit : chaque hit porte donc son propre contexte, et aucun rapport ne dépend de la durée de persistance d’une valeur. L’expiration et l’attribution des eVars sont des réglages de la suite de rapports, pas du code de page; elles font donc partie de la spécification : ici, expiration au hit et attribution à la plus récente.
+- **Les props** comptent des choses sur le hit où elles surviennent, sans jamais persister : `prop1` nom de page (pages vues), `prop2` interaction (tous les autres hits, comme `cart add`, `purchase` ou `media start`), `prop3` nom de la vidéo, `prop4` nom du lien.
+
+GA4 n’a pas besoin d’une règle équivalente : les paramètres communs de la balise Google accompagnent chaque événement qu’elle envoie.
 
 ## Normes d’assurance qualité
 
