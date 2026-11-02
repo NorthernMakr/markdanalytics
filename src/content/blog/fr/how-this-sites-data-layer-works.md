@@ -8,7 +8,7 @@ tags: [dataLayer, ACDL, GA4, GTM, Adobe Tags]
 platform: Both
 ---
 
-Chaque page de ce site se décrit une seule fois, et cette description est transmise aux outils de Google comme à ceux d’Adobe. Ce billet explique la mise en place, pour que les pages de test aient du sens.
+Chaque page de ce site se décrit une seule fois, et cette description est transmise aux outils de Google comme à ceux d’Adobe. Ce billet explique la mise en place, pour que les pages de test aient du sens. Nouveau venu dans les couches de données? Commencez par [Qu’est-ce qu’une couche de données, et pourquoi ce site en a deux](/fr/blogue/quest-ce-quune-couche-de-donnees/).
 
 ## Un objet de page, construit à la publication
 

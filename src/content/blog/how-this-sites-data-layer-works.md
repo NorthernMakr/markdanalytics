@@ -8,7 +8,7 @@ tags: [dataLayer, ACDL, GA4, GTM, Adobe Tags]
 platform: Both
 ---
 
-Every page on this site describes itself once, and that description is handed to both Google and Adobe tooling. This post explains the setup so the test pages make sense.
+Every page on this site describes itself once, and that description is handed to both Google and Adobe tooling. This post explains the setup so the test pages make sense. New to data layers? Start with [What a data layer is, and why this site has two](/blog/what-is-a-data-layer/).
 
 ## One page object, built at publish time
 

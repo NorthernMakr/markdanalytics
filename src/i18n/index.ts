@@ -31,6 +31,7 @@ export const FR_SEGMENTS: Record<string, string> = {
   // Blog posts
   'how-this-sites-data-layer-works': 'comment-fonctionne-la-couche-de-donnees',
   'testing-adobe-web-sdk-without-an-adobe-account': 'tester-adobe-web-sdk-sans-compte-adobe',
+  'what-is-a-data-layer': 'quest-ce-quune-couche-de-donnees',
   // Practice pages
   'multilingual-sites': 'sites-multilingues',
   'data-layer-specification': 'specification-couche-de-donnees',
