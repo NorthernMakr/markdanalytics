@@ -252,6 +252,10 @@ To check both languages, run the site locally (`npm run build`, then
 if a link is broken, a switch is missing, or a French page sends a different
 page name, path or title from its English twin.
 
+`npm run test:purchase` buys in both languages and checks the purchase payloads:
+GA4 `value` is the item subtotal (no tax or shipping, per Google), while Adobe's
+XDM `order.priceTotal` is the full total including tax and shipping.
+
 To add a language (say `zh-CN` under `/zh/`): add it to `LANGS` and `LOCALE`
 in `src/i18n/index.ts` and `PAGE_LANGUAGES` in `src/config/analytics.ts`, then
 add the translated text. Nothing in the analytics changes.
