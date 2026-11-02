@@ -9,7 +9,7 @@ const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 
 export async function rssFeed(lang: Lang): Promise<Response> {
   const items = (await getIndexablePages())
-    .filter((p) => p.lang === lang && p.kind !== 'page')
+    .filter((p) => p.lang === lang && p.kind === 'article')
     .sort((a, b) => (b.published ?? b.lastmod).valueOf() - (a.published ?? a.lastmod).valueOf());
   const self = localize('/rss.xml', lang);
 

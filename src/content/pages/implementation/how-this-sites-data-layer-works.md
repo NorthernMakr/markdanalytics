@@ -8,7 +8,7 @@ tags: [dataLayer, ACDL, GA4, GTM, Adobe Tags]
 platform: Both
 ---
 
-Every page on this site describes itself once, and that description is handed to both Google and Adobe tooling. This post explains the setup so the test pages make sense. New to data layers? Start with [What a data layer is, and why this site has two](/blog/what-is-a-data-layer/).
+Every page on this site describes itself once, and that description is handed to both Google and Adobe tooling. This post explains the setup so the test pages make sense. New to data layers? Start with [What a data layer is, and why this site has two](/basics/what-is-a-data-layer/).
 
 ## One page object, built at publish time
 
@@ -17,11 +17,11 @@ When the site is built, each page gets a small object describing it:
 ```json
 {
   "page": {
-    "name": "blog:how-this-sites-data-layer-works",
+    "name": "implementation:how-this-sites-data-layer-works",
     "type": "article",
-    "section": "blog",
+    "section": "implementation",
     "siteName": "Mark D. Analytics",
-    "path": "/blog/how-this-sites-data-layer-works/",
+    "path": "/implementation/how-this-sites-data-layer-works/",
     "language": "en-CA",
     "environment": "production"
   },
@@ -45,7 +45,7 @@ The site is in English and French, and the page object records two different thi
 - `page.language` is the language of the page (`en-CA` or `fr-CA`), set when the page is built.
 - `user.browserLanguage` is the visitor's preferred browser language, read from `navigator.languages` as the page loads. `user.languageMatch` says whether the two agree.
 
-A French-speaking visitor reading the English page shows up as `languageMatch: false`, which is the audience a language switch prompt would be for. Everything else stays in English in both versions: page names, content titles, product and list names, video titles, link text. An analyst working in one language can read everything they see, and a page is one row in reports. Only the address is in the page's language (`/fr/blogue/…`), the way Adobe's Page URL sits beside an English `pageName`. GA4 has no `pageName`, so the Google tag sends the page name as `page_title`, which GA4 would otherwise read from the (French) browser tab. The EN | FR switch at the top of every page pushes `language_switch` / `language switched` when someone changes language.
+A French-speaking visitor reading the English page shows up as `languageMatch: false`, which is the audience a language switch prompt would be for. Everything else stays in English in both versions: page names, content titles, product and list names, video titles, link text. An analyst working in one language can read everything they see, and a page is one row in reports. Only the address is in the page's language (`/fr/mise-en-oeuvre/…`), the way Adobe's Page URL sits beside an English `pageName`. GA4 has no `pageName`, so the Google tag sends the page name as `page_title`, which GA4 would otherwise read from the (French) browser tab. The EN | FR switch at the top of every page pushes `language_switch` / `language switched` when someone changes language.
 
 ## Pushed to both layers, before any tag manager loads
 

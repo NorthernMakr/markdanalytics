@@ -154,7 +154,7 @@ window.lab.adobe({
 });
 ```
 
-Vous pouvez le voir en direct : chaque page a un bouton **Journal** dans le coin inférieur droit, qui montre les deux tableaux se remplir en temps réel. [Comment fonctionne la couche de données de ce site](/fr/blogue/comment-fonctionne-la-couche-de-donnees/) passe en revue chaque champ.
+Vous pouvez le voir en direct : chaque page a un bouton **Journal** dans le coin inférieur droit, qui montre les deux tableaux se remplir en temps réel. [Comment fonctionne la couche de données de ce site](/fr/mise-en-oeuvre/comment-fonctionne-la-couche-de-donnees/) passe en revue chaque champ.
 
 ## Pourquoi deux couches de données?
 

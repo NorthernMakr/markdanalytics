@@ -1,3 +1,5 @@
+import { SECTIONS as CONTENT_SECTIONS } from './sections';
+
 // ---------------------------------------------------------------------------
 // Analytics conventions for this site: the allowed values every page and event
 // must use. Base.astro checks each page against these at build time, so a page
@@ -25,9 +27,11 @@ export const PAGE_TYPES = [
 
 /** page.section: the top-level area of the site. Lowercase, from this list only. */
 export const SECTIONS = [
-  'home', 'blog', 'practice', 'contact', 'error', 'shop', 'media',
-  'site', // pages about the site itself (development notes)
-] as const;
+  'home',
+  ...CONTENT_SECTIONS.map((s) => s.id), // content sections, from src/config/sections.ts
+  'contact', 'error', 'shop', 'media',
+  'site', // pages about the site itself (development notes, sitemap)
+];
 
 /** page.name: lowercase, colon-separated hierarchy, e.g. "shop:product:tidepool-daypack". */
 export const PAGE_NAME_PATTERN = /^[a-z0-9-]+(:[a-z0-9-]+)*$/;

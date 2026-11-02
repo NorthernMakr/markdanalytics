@@ -27,15 +27,15 @@ Tout le site est offert en anglais et en français. Le français suit l’usage 
 - **Une page, deux routes.** Chaque route française affiche le même composant de page que la route anglaise, et la page déduit sa langue et sa jumelle anglaise de sa propre adresse. Les gabarits communs portent les menus et libellés traduits : une nouvelle page n’a besoin que de son texte dans les deux langues.
 - **Les moteurs de recherche** reçoivent des liens `hreflang` entre les deux versions (et `x-default` vers l’anglais), `og:locale` pour les aperçus de partage, `inLanguage` dans les données structurées, et les deux versions dans le [plan du site XML](/sitemap.xml).
 - **L’analytique** consigne deux langues distinctes sur chaque page : `page.language`, la version lue (`en-CA` ou `fr-CA`), et `user.browserLanguage`, la langue préférée du navigateur du visiteur, plus `user.languageMatch` quand les deux concordent. Dans GA4, ce sont `page_language`, `browser_language` et `language_match`; dans Adobe, `eVar3`, `eVar4` et `eVar5`, envoyées sur chaque requête (les eVars décrivent le contexte sur chaque hit; les props comptent des choses). Le sélecteur de langue envoie `language_switch` (GA4) et `language switched` (Adobe).
-- **L’analytique est en anglais, sauf l’adresse.** Noms de page, titres de contenu, noms de produits, de listes et de promotions, titres de vidéo et texte des liens sont en anglais dans les deux versions : un analyste qui travaille dans une seule langue comprend chaque rapport, et une page forme une seule ligne dans le palmarès des pages. L’URL est la vraie adresse française, comme l’URL de page d’Adobe à côté d’un `pageName` anglais. GA4 n’a pas de `pageName` : son `page_title` reçoit donc le nom de page anglais. Les variables de langue servent à séparer les deux versions. [Mesurer un site multilingue](/fr/pratique/sites-multilingues/) explique l’approche.
+- **L’analytique est en anglais, sauf l’adresse.** Noms de page, titres de contenu, noms de produits, de listes et de promotions, titres de vidéo et texte des liens sont en anglais dans les deux versions : un analyste qui travaille dans une seule langue comprend chaque rapport, et une page forme une seule ligne dans le palmarès des pages. L’URL est la vraie adresse française, comme l’URL de page d’Adobe à côté d’un `pageName` anglais. GA4 n’a pas de `pageName` : son `page_title` reçoit donc le nom de page anglais. Les variables de langue servent à séparer les deux versions. [Mesurer un site multilingue](/fr/processus/sites-multilingues/) explique l’approche.
 
 ## Analytique
 
-L’analytique est la raison d’être de ce site; l’implémentation suit donc les normes de la page [pratique d’analytique](/fr/pratique/) :
+L’analytique est la raison d’être de ce site; l’implémentation suit donc les normes de la page [pratique d’analytique](/fr/processus/) :
 
-- Chaque page se décrit dans un seul objet de données, envoyé à la fois dans `dataLayer` (Google) et `adobeDataLayer` (Adobe) avant tout gestionnaire de balises. [Comment fonctionne la couche de données de ce site](/fr/blogue/comment-fonctionne-la-couche-de-donnees/) l’explique.
+- Chaque page se décrit dans un seul objet de données, envoyé à la fois dans `dataLayer` (Google) et `adobeDataLayer` (Adobe) avant tout gestionnaire de balises. [Comment fonctionne la couche de données de ce site](/fr/mise-en-oeuvre/comment-fonctionne-la-couche-de-donnees/) l’explique.
 - Les conventions sont appliquées, pas seulement documentées. Les types de page, sections, formats de noms de page, langues et noms d’événements permis vivent dans un seul fichier, et la construction échoue si une page y déroge. Hors production, chaque envoi dans la couche de données est aussi vérifié pour repérer les événements non enregistrés et les clés qui évoquent des données personnelles.
-- L’Adobe Web SDK fonctionne pour vrai contre une doublure de l’Edge Network sur ce domaine. [Tester l’Adobe Web SDK sans compte Adobe](/fr/blogue/tester-adobe-web-sdk-sans-compte-adobe/) explique comment.
+- L’Adobe Web SDK fonctionne pour vrai contre une doublure de l’Edge Network sur ce domaine. [Tester l’Adobe Web SDK sans compte Adobe](/fr/qualite-des-donnees/tester-adobe-web-sdk-sans-compte-adobe/) explique comment.
 - GA4 est configuré par Google Tag Manager, et la configuration du conteneur est conservée dans le dépôt du site pour que ses changements soient versionnés aussi.
 
 ## Appareils mobiles
@@ -107,9 +107,10 @@ Les assistants IA répondent de plus en plus directement aux questions au lieu d
 - Publier la configuration GA4 dans Google Tag Manager.
 - Soumettre le plan du site à Google Search Console et à Bing Webmaster Tools.
 - Ajouter une page À propos avec mon parcours, pour que les lecteurs et les assistants IA puissent juger de l’expertise derrière les textes.
-- Rédiger les pages prévues de la [pratique d’analytique](/fr/pratique/).
+- Rédiger les pages prévues de la [pratique d’analytique](/fr/processus/).
 
 ## Journal des modifications
 
+- **2 novembre 2026 :** le site devient Mark D. Analytics et se réorganise en sections : Notions de base, Processus, Livrables de mise en œuvre, Surveillance de la qualité des données, Études de cas et À propos. Les billets sont intégrés aux sections; les anciennes adresses redirigent.
 - **29 octobre 2026, plus tard :** versions françaises de toutes les pages, sélecteur de langue EN | FR, et variables de langue (langue de la page et langue du navigateur) dans les deux couches de données, GA4 et l’Adobe Web SDK.
 - **29 octobre 2026 :** lancement du site avec le blogue, la boutique démo et le site de nouvelles démo, les deux couches de données et le journal des événements. Adobe Web SDK avec doublure de l’Edge Network; configuration de Google Tag Manager et de GA4; section pratique d’analytique; page de contact; conventions d’analytique appliquées; plan du site, données structurées et autre travail de SEO et d’AEO; correction des zones tactiles sur mobile; cette page.

@@ -154,7 +154,7 @@ window.lab.adobe({
 });
 ```
 
-You can watch this happen: every page has an **Event log** button in the bottom-right corner that shows both arrays filling in real time. [How this site's data layer works](/blog/how-this-sites-data-layer-works/) goes through every field.
+You can watch this happen: every page has an **Event log** button in the bottom-right corner that shows both arrays filling in real time. [How this site's data layer works](/implementation/how-this-sites-data-layer-works/) goes through every field.
 
 ## Why two data layers?
 

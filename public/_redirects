@@ -1,0 +1,19 @@
+# Old addresses → new ones (301 = moved permanently). Cloudflare applies these
+# to static pages. Format: <old path> <new path> <status>
+# Kept so links shared before the November 2026 restructure still work.
+
+# Blog posts moved into sections
+/blog/ / 301
+/blog/what-is-a-data-layer/ /basics/what-is-a-data-layer/ 301
+/blog/how-this-sites-data-layer-works/ /implementation/how-this-sites-data-layer-works/ 301
+/blog/testing-adobe-web-sdk-without-an-adobe-account/ /data-quality/testing-adobe-web-sdk-without-an-adobe-account/ 301
+/fr/blogue/ /fr/ 301
+/fr/blogue/quest-ce-quune-couche-de-donnees/ /fr/notions-de-base/quest-ce-quune-couche-de-donnees/ 301
+/fr/blogue/comment-fonctionne-la-couche-de-donnees/ /fr/mise-en-oeuvre/comment-fonctionne-la-couche-de-donnees/ 301
+/fr/blogue/tester-adobe-web-sdk-sans-compte-adobe/ /fr/qualite-des-donnees/tester-adobe-web-sdk-sans-compte-adobe/ 301
+
+# The practice section became "Process"
+/practice/ /process/ 301
+/practice/multilingual-sites/ /process/multilingual-sites/ 301
+/fr/pratique/ /fr/processus/ 301
+/fr/pratique/sites-multilingues/ /fr/processus/sites-multilingues/ 301

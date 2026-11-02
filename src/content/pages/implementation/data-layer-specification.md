@@ -6,6 +6,7 @@ category: Analytics practice
 tags: [specifications, data layer, dataLayer, ACDL, developers]
 platform: Both
 order: 2
+draft: true
 ---
 
 | | |

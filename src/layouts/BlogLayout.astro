@@ -2,6 +2,7 @@
 import Base, { type PageData } from './Base.astro';
 import LangSwitch from '../components/LangSwitch.astro';
 import { siteMeta } from '../config/tags';
+import { NAV } from '../config/sections';
 import { langFromPath, basePath, localize, tr } from '../i18n';
 import '../styles/blog.css';
 
@@ -14,15 +15,9 @@ const { title, description, pageData, ...seo } = Astro.props;
 const lang = langFromPath(Astro.url.pathname);
 const base = basePath(Astro.url.pathname);
 const l = (p: string) => localize(p, lang);
-const nav = [
-  { href: '/', label: tr(lang, 'Home', 'Accueil') },
-  { href: '/blog/', label: tr(lang, 'Notes', 'Notes') },
-  { href: '/practice/', label: tr(lang, 'Practice', 'Pratique') },
-  { href: '/shop/', label: tr(lang, 'Demo store', 'Boutique démo') },
-  { href: '/media/', label: tr(lang, 'Demo media site', 'Site média démo') },
-  { href: '/contact/', label: tr(lang, 'Contact', 'Contact') },
-];
-const isCurrent = (href: string) => (href === '/' ? base === '/' : base.startsWith(href));
+// Menu items come from src/config/sections.ts (NAV).
+const nav = NAV.map((n) => ({ href: n.href, label: tr(lang, n.label.en, n.label.fr) }));
+const isCurrent = (href: string) => base.startsWith(href);
 ---
 <Base title={title} description={description} pageData={pageData} bodyClass="blog" {...seo}>
   <header class="blog-nav">
@@ -51,6 +46,7 @@ const isCurrent = (href: string) => (href === '/' ? base === '/' : base.startsWi
       <p>© {new Date().getFullYear()} {siteMeta.owner}. {tr(lang, 'Independent notes, not affiliated with Adobe or Google.', 'Notes indépendantes, sans lien avec Adobe ni Google.')}</p>
       <nav aria-label={tr(lang, 'Footer', 'Pied de page')}>
         <ul class="footer-links">
+          <li><a href={l('/contact/')}>{tr(lang, 'Contact', 'Contact')}</a></li>
           <li><a href={l('/site-notes/')}>{tr(lang, 'How this site was built', 'Comment ce site a été construit')}</a></li>
           <li><a href={l('/sitemap/')}>{tr(lang, 'Sitemap', 'Plan du site')}</a></li>
           <li><a href={l('/rss.xml')}>RSS</a></li>

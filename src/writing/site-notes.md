@@ -27,15 +27,15 @@ The whole site is available in English and French. The French follows Quebec usa
 - **One page, two routes.** Each French route renders the same page component as the English one, and the page works out its language and its English twin from its own address. Shared layouts carry the translated menus and labels, so a new page needs its text in both languages and nothing else.
 - **Search engines** get `hreflang` links between the two versions (plus `x-default` pointing to English), `og:locale` for sharing previews, `inLanguage` in the structured data, and both versions in the [XML sitemap](/sitemap.xml).
 - **Analytics** records two separate languages on every page: `page.language`, the version being read (`en-CA` or `fr-CA`), and `user.browserLanguage`, the visitor's preferred browser language, plus `user.languageMatch` when the two agree. In GA4 they're `page_language`, `browser_language` and `language_match`; in Adobe, `eVar3`, `eVar4` and `eVar5`, sent on every request (eVars describe context on every hit; props count things). Using the language switch sends `language_switch` (GA4) and `language switched` (Adobe).
-- **Analytics is in English, except the address.** Page names, content titles, product, list and promotion names, video titles and link text are English on both versions, so an analyst working in one language can read every report, and a page is one row in a top-pages list. The URL is the real, French address, like Adobe's Page URL beside an English `pageName`. GA4 has no `pageName`, so its `page_title` is set to the English page name. The language variables are how analysts split the two versions. [Measuring a multilingual site](/practice/multilingual-sites/) explains the approach.
+- **Analytics is in English, except the address.** Page names, content titles, product, list and promotion names, video titles and link text are English on both versions, so an analyst working in one language can read every report, and a page is one row in a top-pages list. The URL is the real, French address, like Adobe's Page URL beside an English `pageName`. GA4 has no `pageName`, so its `page_title` is set to the English page name. The language variables are how analysts split the two versions. [Measuring a multilingual site](/process/multilingual-sites/) explains the approach.
 
 ## Analytics
 
-Analytics is the point of this site, so the implementation follows the standards on the [analytics practice](/practice/) page:
+Analytics is the point of this site, so the implementation follows the standards on the [analytics practice](/process/) page:
 
-- Every page describes itself in one data object, pushed to both `dataLayer` (Google) and `adobeDataLayer` (Adobe) before any tag manager loads. [How this site's data layer works](/blog/how-this-sites-data-layer-works/) explains it.
+- Every page describes itself in one data object, pushed to both `dataLayer` (Google) and `adobeDataLayer` (Adobe) before any tag manager loads. [How this site's data layer works](/implementation/how-this-sites-data-layer-works/) explains it.
 - The conventions are enforced, not just documented. Allowed page types, sections, page-name formats and event names live in one file, and the build fails if any page breaks them. Outside production, every data layer push is also checked for unregistered events and for keys that suggest personal data.
-- The Adobe Web SDK runs for real against a stand-in Edge Network on this domain. [Testing the Adobe Web SDK without an Adobe account](/blog/testing-adobe-web-sdk-without-an-adobe-account/) explains how.
+- The Adobe Web SDK runs for real against a stand-in Edge Network on this domain. [Testing the Adobe Web SDK without an Adobe account](/data-quality/testing-adobe-web-sdk-without-an-adobe-account/) explains how.
 - GA4 is set up through Google Tag Manager, with the container configuration kept in the site's repository so changes are versioned too.
 
 ## Mobile
@@ -105,9 +105,10 @@ AI assistants increasingly answer questions directly instead of sending people t
 - Publish the GA4 configuration in Google Tag Manager.
 - Submit the sitemap to Google Search Console and Bing Webmaster Tools.
 - Add an About page with my background, so readers and AI assistants can judge the expertise behind the writing.
-- Write the planned [analytics practice](/practice/) pages.
+- Write the planned [analytics practice](/process/) pages.
 
 ## Change log
 
+- **2 November 2026:** Site renamed Mark D. Analytics and restructured into sections: Digital analytics basics, Process, Implementation artifacts, Data quality monitoring, Analysis case studies, and About. Blog posts moved into the sections; old addresses redirect.
 - **29 October 2026, later:** French versions of every page, the EN | FR language switch, and language variables (page language and browser language) in both data layers, GA4 and the Adobe Web SDK.
 - **29 October 2026:** Site launched with the blog, demo store and demo news site, both data layers, and the Event log. Adobe Web SDK with stand-in Edge Network; Google Tag Manager and GA4 configuration; analytics practice section; contact page; enforced analytics conventions; sitemap, structured data and other SEO and AEO work; mobile tap-target fixes; this page.

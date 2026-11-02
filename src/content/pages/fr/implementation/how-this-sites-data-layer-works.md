@@ -8,7 +8,7 @@ tags: [dataLayer, ACDL, GA4, GTM, Adobe Tags]
 platform: Both
 ---
 
-Chaque page de ce site se décrit une seule fois, et cette description est transmise aux outils de Google comme à ceux d’Adobe. Ce billet explique la mise en place, pour que les pages de test aient du sens. Nouveau venu dans les couches de données? Commencez par [Qu’est-ce qu’une couche de données, et pourquoi ce site en a deux](/fr/blogue/quest-ce-quune-couche-de-donnees/).
+Chaque page de ce site se décrit une seule fois, et cette description est transmise aux outils de Google comme à ceux d’Adobe. Ce billet explique la mise en place, pour que les pages de test aient du sens. Nouveau venu dans les couches de données? Commencez par [Qu’est-ce qu’une couche de données, et pourquoi ce site en a deux](/fr/notions-de-base/quest-ce-quune-couche-de-donnees/).
 
 ## Un objet de page, construit à la publication
 
@@ -17,11 +17,11 @@ Au moment de la construction du site, chaque page reçoit un petit objet qui la 
 ```json
 {
   "page": {
-    "name": "blog:how-this-sites-data-layer-works",
+    "name": "implementation:how-this-sites-data-layer-works",
     "type": "article",
-    "section": "blog",
+    "section": "implementation",
     "siteName": "Mark D. Analytics",
-    "path": "/fr/blogue/comment-fonctionne-la-couche-de-donnees/",
+    "path": "/fr/mise-en-oeuvre/comment-fonctionne-la-couche-de-donnees/",
     "language": "fr-CA",
     "environment": "production"
   },
@@ -45,7 +45,7 @@ Le site existe en anglais et en français, et l’objet de page consigne deux ch
 - `page.language` est la langue de la page (`en-CA` ou `fr-CA`), fixée à la construction.
 - `user.browserLanguage` est la langue préférée du navigateur du visiteur, lue dans `navigator.languages` au chargement. `user.languageMatch` indique si les deux concordent.
 
-Un visiteur francophone qui lit la page anglaise apparaît avec `languageMatch: false` : c’est l’auditoire visé par une invitation à changer de langue. Tout le reste reste en anglais dans les deux versions : noms de page, titres de contenu, noms de produits et de listes, titres de vidéo, texte des liens. Un analyste qui travaille dans une seule langue comprend donc tout ce qu’il voit, et une page forme une seule ligne dans les rapports. Seule l’adresse est dans la langue de la page (`/fr/blogue/…`), comme l’URL de page d’Adobe côtoie un `pageName` anglais. GA4 n’a pas de `pageName` : la balise Google envoie donc le nom de page comme `page_title`, que GA4 lirait autrement dans l’onglet (en français) du navigateur. Le sélecteur EN | FR en haut de chaque page envoie `language_switch` / `language switched` quand quelqu’un change de langue.
+Un visiteur francophone qui lit la page anglaise apparaît avec `languageMatch: false` : c’est l’auditoire visé par une invitation à changer de langue. Tout le reste reste en anglais dans les deux versions : noms de page, titres de contenu, noms de produits et de listes, titres de vidéo, texte des liens. Un analyste qui travaille dans une seule langue comprend donc tout ce qu’il voit, et une page forme une seule ligne dans les rapports. Seule l’adresse est dans la langue de la page (`/fr/mise-en-oeuvre/…`), comme l’URL de page d’Adobe côtoie un `pageName` anglais. GA4 n’a pas de `pageName` : la balise Google envoie donc le nom de page comme `page_title`, que GA4 lirait autrement dans l’onglet (en français) du navigateur. Le sélecteur EN | FR en haut de chaque page envoie `language_switch` / `language switched` quand quelqu’un change de langue.
 
 ## Envoyé dans les deux couches, avant tout gestionnaire de balises
 

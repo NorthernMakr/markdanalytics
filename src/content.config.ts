@@ -2,8 +2,8 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-// Shared frontmatter for blog posts and practice pages. These fields also feed
-// each page's dataLayer `content` object.
+// Frontmatter for every content page. These fields also feed each page's
+// dataLayer `content` object (always from the English version).
 const articleSchema = z.object({
   title: z.string(),
   description: z.string(),
@@ -13,21 +13,18 @@ const articleSchema = z.object({
   tags: z.array(z.string()).default([]),
   platform: z.enum(['Adobe', 'Google', 'Both', 'Other']).default('Both'),
   draft: z.boolean().default(false),
-  /** Position in the practice section menu (lower first); unordered pages follow by date. */
+  /** Position on the section's hub page (lower first); unordered pages follow by date. */
   order: z.number().optional(),
 });
 
-// Blog posts: src/content/blog/*.md → /blog/<file-name>/
-const blog = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
+// Every content page: src/content/pages/<section>/<file>.md
+//   index.md  → /<section>/          (the section's hub page)
+//   other.md  → /<section>/other/
+// French versions: src/content/pages/fr/<section>/<same file name>.md
+// Sections are defined in src/config/sections.ts.
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/pages' }),
   schema: articleSchema,
 });
 
-// Analytics practice section: src/content/practice/*.md
-// index.md → /practice/, any other file → /practice/<file-name>/
-const practice = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/practice' }),
-  schema: articleSchema,
-});
-
-export const collections = { blog, practice };
+export const collections = { pages };

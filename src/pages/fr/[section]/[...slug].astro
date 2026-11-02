@@ -1,0 +1,14 @@
+---
+// French route for every content page: French versions from
+// src/content/pages/fr/, French addresses from FR_SEGMENTS (src/i18n).
+import Page from '../../[section]/[...slug].astro';
+import { getPages, parseId } from '../../../lib/content';
+import { frSlug } from '../../../i18n';
+export async function getStaticPaths() {
+  return (await getPages('fr')).map((entry) => {
+    const { section, slug } = parseId(entry.id);
+    return { params: { section: frSlug(section), slug: slug === 'index' ? undefined : frSlug(slug) }, props: { entry } };
+  });
+}
+---
+<Page {...Astro.props} />

@@ -79,7 +79,7 @@ Une documentation introuvable n’existe pas. Trois habitudes aident :
 - **Classifications et valeurs Adobe :** minuscules, hiérarchies séparées par des deux-points pour les noms de page (`shop:product:tidepool-daypack`).
 - **Noms affichés :** majuscule initiale seulement, aucune abréviation qu’une nouvelle recrue ne connaîtrait pas.
 
-Sur ce site bilingue, tout ce qui part vers l’analytique est en anglais, quelle que soit la langue de la page : noms et chemins de page, titres, produits, listes, promotions, vidéos, texte des liens. Les analystes travaillent habituellement dans une seule langue, et les données de Workspace ou de GA4 doivent leur rester compréhensibles; une page forme aussi une seule ligne dans le palmarès des pages. Pour séparer les langues, on segmente sur `page.language` et `user.browserLanguage`. [Mesurer un site multilingue](/fr/pratique/sites-multilingues/) traite du sujet en détail.
+Sur ce site bilingue, tout ce qui part vers l’analytique est en anglais, quelle que soit la langue de la page : noms et chemins de page, titres, produits, listes, promotions, vidéos, texte des liens. Les analystes travaillent habituellement dans une seule langue, et les données de Workspace ou de GA4 doivent leur rester compréhensibles; une page forme aussi une seule ligne dans le palmarès des pages. Pour séparer les langues, on segmente sur `page.language` et `user.browserLanguage`. [Mesurer un site multilingue](/fr/processus/sites-multilingues/) traite du sujet en détail.
 
 ## Ajouter ou modifier une variable
 
@@ -120,7 +120,7 @@ La spécification est le contrat. L’assurance qualité teste selon elle, pas s
 
 ## Une base standard : couche de données et balises
 
-Chaque propriété de la pratique part de la même base, pour que les équipes ne réinventent pas le suivi des pages et que les analystes puissent comparer les sites. Ce site applique exactement cette base; le [billet sur la couche de données](/fr/blogue/comment-fonctionne-la-couche-de-donnees/) la présente en détail.
+Chaque propriété de la pratique part de la même base, pour que les équipes ne réinventent pas le suivi des pages et que les analystes puissent comparer les sites. Ce site applique exactement cette base; le [billet sur la couche de données](/fr/mise-en-oeuvre/comment-fonctionne-la-couche-de-donnees/) la présente en détail.
 
 ### La couche de données
 
@@ -198,9 +198,8 @@ Les normes qui reposent sur la mémoire dérivent. Sur ce site, les conventions 
 
 La [boutique](/fr/boutique/) de ce site est prévue pour s’exercer à ces cas. Le journal, sur chaque page, montre les deux couches de données en direct, et la page de confirmation ne renvoie volontairement pas `purchase` au rechargement.
 
-## À venir dans cette section
+## Où vivent les documents
 
-- Un gabarit de plan de marquage, rempli avec les variables de ce site
-- Rédiger une spécification d’implémentation que les développeurs liront vraiment
-- Un plan de tests d’assurance qualité pour un parcours d’achat
-- Mener une revue des variables : repérer et retirer les variables mortes
+Les documents que décrit cette page sont remplis, pour la boutique et le site de nouvelles démo de ce site, dans [Livrables de mise en œuvre](/fr/mise-en-oeuvre/) (besoins, SDR, spécifications) et [Surveillance de la qualité des données](/fr/qualite-des-donnees/) (documents d’assurance qualité et vérifications automatisées).
+
+**Prévu pour cette section :** mener une revue des variables (repérer et retirer les variables mortes), et recevoir les demandes des parties prenantes sans perdre le plan.

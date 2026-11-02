@@ -90,9 +90,16 @@
 @media (max-width: 640px) { .post-body table { display: block; overflow-x: auto; } }
 
 .post-head .crumbs { margin: 0 0 10px; font-size: 15px; }
-.practice-pages { max-width: 68ch; margin: 48px auto 0; padding-top: 20px; border-top: 1px solid var(--rule); }
-.practice-pages h2 { font: 700 22px/1.3 var(--serif); margin: 0 0 10px; }
-.practice-pages ul { margin: 0; padding-left: 20px; }
+.section-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.blog a.section-card { display: block; padding: 20px 22px; border: 1px solid var(--rule); border-radius: 12px; text-decoration: none; background: #fff; }
+.blog a.section-card:hover { border-color: var(--ink); }
+.section-card h3 { font: 700 20px/1.3 var(--serif); margin: 0 0 6px; }
+.section-card p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.5; }
+.section-pages { max-width: 68ch; margin: 48px auto 0; padding-top: 20px; border-top: 1px solid var(--rule); }
+.section-pages h2 { font: 700 22px/1.3 var(--serif); margin: 0 0 14px; }
+.section-pages ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.section-pages li a { font: 700 19px/1.35 var(--serif); }
+.section-pages li p { margin: 4px 0 0; color: var(--muted); font-size: 16px; }
 
 /* Contact page */
 .contact { padding: 56px 0 40px; }

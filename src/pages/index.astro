@@ -1,13 +1,21 @@
 ---
 import BlogLayout from '../layouts/BlogLayout.astro';
 import { siteMeta } from '../config/tags';
-import { getPosts, formatDate, isoDate, slugOf } from '../lib/blog';
+import { getPages, parseId, pagePath, formatDate, isoDate } from '../lib/content';
+import { SECTIONS } from '../config/sections';
 import { graph } from '../lib/seo';
 import { LOCALE, langFromPath, localize, tr } from '../i18n';
 
 const lang = langFromPath(Astro.url.pathname);
 const l = (p: string) => localize(p, lang);
-const posts = (await getPosts(lang)).slice(0, 5);
+const pages = await getPages(lang);
+// One card per section, using each hub page's own title and description
+const hubs = SECTIONS.map((sec) => ({ sec, hub: pages.find((p) => p.id === (lang === 'fr' ? `fr/${sec.id}` : sec.id)) }))
+  .filter((h) => h.hub);
+// Most recently published or updated pages inside sections
+const recent = pages.filter((p) => parseId(p.id).slug !== 'index')
+  .sort((a, b) => (b.data.updatedDate ?? b.data.pubDate).valueOf() - (a.data.updatedDate ?? a.data.pubDate).valueOf())
+  .slice(0, 5);
 
 const pageData = {
   page: { name: 'home', type: 'home', section: 'home', siteName: siteMeta.blogName },
@@ -32,7 +40,7 @@ const highlighted = JSON.stringify(specimen, null, 2)
   <section class="hub-hero">
     <div class="blog-wrap">
       <div>
-        <h1>{tr(lang, 'Analytics implementation, worked out in public.', 'L’implémentation en analytique, travaillée au grand jour.')}</h1>
+        <h1>{tr(lang, 'Process, implementation, analysis.', 'Processus, mise en œuvre, analyse.')}</h1>
         <p>{tr(lang, siteMeta.blogTagline, siteMeta.blogTaglineFr)}</p>
       </div>
       <figure style="margin:0">
@@ -46,17 +54,34 @@ const highlighted = JSON.stringify(specimen, null, 2)
 
   <section class="hub-section">
     <div class="blog-wrap">
-      <h2>{tr(lang, 'Latest notes', 'Dernières notes')}</h2>
-      <ul class="post-list">
-        {posts.map((p) => (
-          <li>
-            <time datetime={isoDate(p.data.pubDate)}>{formatDate(p.data.pubDate, lang)}</time>
-            <div>
-              <h3><a href={l(`/blog/${slugOf(p.id)}/`)}>{p.data.title}</a></h3>
-              <p>{p.data.description}</p>
-            </div>
-          </li>
+      <h2>{tr(lang, 'Sections', 'Sections')}</h2>
+      <div class="section-cards">
+        {hubs.map(({ sec, hub }) => (
+          <a class="section-card" href={l(`/${sec.id}/`)}>
+            <h3>{tr(lang, sec.title.en, sec.title.fr)}</h3>
+            <p>{hub!.data.description}</p>
+          </a>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="hub-section">
+    <div class="blog-wrap">
+      <h2>{tr(lang, 'Recently updated', 'Mis à jour récemment')}</h2>
+      <ul class="post-list">
+        {recent.map((p) => {
+          const { section, slug } = parseId(p.id);
+          return (
+            <li>
+              <time datetime={isoDate(p.data.updatedDate ?? p.data.pubDate)}>{formatDate(p.data.updatedDate ?? p.data.pubDate, lang)}</time>
+              <div>
+                <h3><a href={l(pagePath(section, slug))}>{p.data.title}</a></h3>
+                <p>{p.data.description}</p>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   </section>
@@ -96,7 +121,7 @@ const highlighted = JSON.stringify(specimen, null, 2)
       </div>
       <p class="lab-note">{tr(lang,
         'Both sites also run Adobe’s Web SDK against a stand-in Edge Network on this domain.',
-        'Les deux sites font aussi tourner le Web SDK d’Adobe contre une doublure de l’Edge Network sur ce domaine.')} <a href={l('/blog/testing-adobe-web-sdk-without-an-adobe-account/')}>{tr(lang, 'How the mock Web SDK setup works', 'Comment fonctionne le Web SDK simulé')}</a>.</p>
+        'Les deux sites font aussi tourner le Web SDK d’Adobe contre une doublure de l’Edge Network sur ce domaine.')} <a href={l('/data-quality/testing-adobe-web-sdk-without-an-adobe-account/')}>{tr(lang, 'How the mock Web SDK setup works', 'Comment fonctionne le Web SDK simulé')}</a>.</p>
     </div>
   </section>
 

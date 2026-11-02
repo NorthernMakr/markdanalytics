@@ -1,5 +1,6 @@
-// Languages for the whole site. English lives at the root (/shop/), French
-// under /fr/ with the same structure (/fr/shop/). Every page works out its
+import { SECTIONS } from '../config/sections';
+// Languages for the whole site. English lives at the root (/shop/cart/), French
+// under /fr/ with French addresses (/fr/boutique/panier/, see FR_SEGMENTS). Every page works out its
 // language from its own URL, so a page component can serve both routes.
 
 export const LANGS = ['en', 'fr'] as const;
@@ -24,15 +25,16 @@ export const LANG_LABEL: Record<Lang, { short: string; long: string }> = {
 // Add its French slug here. `npm run test:languages` fails if a French page has
 // no English twin or the reverse.
 export const FR_SEGMENTS: Record<string, string> = {
-  // Sections and pages
+  // Content sections (from src/config/sections.ts)
+  ...Object.fromEntries(SECTIONS.map((s) => [s.id, s.fr])),
+  // Demo sites and site pages
   shop: 'boutique', catalog: 'catalogue', product: 'produit', cart: 'panier',
-  checkout: 'caisse', payment: 'paiement', media: 'medias', blog: 'blogue',
-  practice: 'pratique', 'site-notes': 'notes-du-site', sitemap: 'plan-du-site',
-  // Blog posts
+  checkout: 'caisse', payment: 'paiement', media: 'medias',
+  'site-notes': 'notes-du-site', sitemap: 'plan-du-site',
+  // Pages in the content sections (src/content/pages/<section>/<file>.md)
   'how-this-sites-data-layer-works': 'comment-fonctionne-la-couche-de-donnees',
   'testing-adobe-web-sdk-without-an-adobe-account': 'tester-adobe-web-sdk-sans-compte-adobe',
   'what-is-a-data-layer': 'quest-ce-quune-couche-de-donnees',
-  // Practice pages
   'multilingual-sites': 'sites-multilingues',
   'data-layer-specification': 'specification-couche-de-donnees',
   'tracking-plan': 'plan-de-marquage',

@@ -79,7 +79,7 @@ Agree these once and enforce them in review:
 - **Adobe classifications and values:** lowercase, colon-separated hierarchies for page names (`shop:product:tidepool-daypack`).
 - **Display names:** sentence case, no abbreviations a new hire wouldn't know.
 
-On a multilingual site, everything sent to analytics is in one language (English here), whatever language the page is in: page names and paths, titles, products, lists, promotions, videos, link text. Analysts usually work in one language, and the data in Workspace or GA4 has to make sense to them; it also keeps each page as one row in a top-pages report. To split by language, segment on `page.language` and `user.browserLanguage`. [Measuring a multilingual site](/practice/multilingual-sites/) covers this in full.
+On a multilingual site, everything sent to analytics is in one language (English here), whatever language the page is in: page names and paths, titles, products, lists, promotions, videos, link text. Analysts usually work in one language, and the data in Workspace or GA4 has to make sense to them; it also keeps each page as one row in a top-pages report. To split by language, segment on `page.language` and `user.browserLanguage`. [Measuring a multilingual site](/process/multilingual-sites/) covers this in full.
 
 ## Adding or changing a variable
 
@@ -120,7 +120,7 @@ The spec is the contract. QA tests against it, not against what the tools happen
 
 ## A standard base: data layer and tags
 
-Every property in the practice starts from the same base, so teams aren't reinventing page tracking and analysts can compare sites. This site runs exactly this base; the [data layer post](/blog/how-this-sites-data-layer-works/) walks through it.
+Every property in the practice starts from the same base, so teams aren't reinventing page tracking and analysts can compare sites. This site runs exactly this base; the [data layer post](/implementation/how-this-sites-data-layer-works/) walks through it.
 
 ### The data layer
 
@@ -198,9 +198,8 @@ Standards that rely on memory drift. On this site the conventions live in one fi
 
 This site's [store](/shop/) is set up to practise these cases. The Event log on every page shows both data layers live, and the confirmation page deliberately doesn't re-send `purchase` on reload.
 
-## Coming next in this section
+## Where the documents live
 
-- A tracking plan template, with this site's variables filled in
-- Writing an implementation spec developers will actually read
-- A QA test plan for an ecommerce purchase path
-- Running a variable review: finding and retiring dead variables
+The documents this page describes are filled in, for this site's demo store and news site, in [Implementation artifacts](/implementation/) (requirements, SDR, specifications) and [Data quality monitoring](/data-quality/) (QA documents and automated checks).
+
+**Planned for this section:** running a variable review (finding and retiring dead variables), and how to take requests from stakeholders without losing the plan.

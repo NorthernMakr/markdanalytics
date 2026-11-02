@@ -5,6 +5,7 @@ import BlogLayout from '../layouts/BlogLayout.astro';
 import { siteMeta } from '../config/tags';
 import { getIndexablePages } from '../lib/indexable';
 import { graph, breadcrumbs } from '../lib/seo';
+import { SECTIONS } from '../config/sections';
 import { products, productText } from '../data/products';
 import { articles, articleText } from '../data/articles';
 import { langFromPath, localize, tr } from '../i18n';
@@ -12,8 +13,6 @@ import { langFromPath, localize, tr } from '../i18n';
 const lang = langFromPath(Astro.url.pathname);
 const l = (p: string) => localize(p, lang);
 const pages = (await getIndexablePages()).filter((p) => p.lang === lang);
-const practice = pages.filter((p) => p.kind === 'practice');
-const posts = pages.filter((p) => p.kind === 'post');
 const title = tr(lang, 'Sitemap', 'Plan du site');
 
 const pageData = {
@@ -22,8 +21,8 @@ const pageData = {
 ---
 <BlogLayout title={`${title} — ${siteMeta.blogName}`}
   description={tr(lang,
-    'Every page on markdanalytics.ca: notes, the analytics practice section, and the demo store and news site used for testing.',
-    'Toutes les pages de markdanalytics.ca : notes, section pratique d’analytique, et la boutique et le site de nouvelles démo qui servent aux tests.')}
+    'Every page on markdanalytics.ca, section by section, plus the demo store and news site used for testing.',
+    'Toutes les pages de markdanalytics.ca, section par section, plus la boutique et le site de nouvelles démo qui servent aux tests.')}
   pageData={pageData} jsonLd={graph(breadcrumbs([{ name: tr(lang, 'Home', 'Accueil'), path: l('/') }, { name: title, path: l('/sitemap/') }]))}>
   <article class="post">
     <div class="blog-wrap">
@@ -34,18 +33,20 @@ const pageData = {
         <h2>{tr(lang, 'Main pages', 'Pages principales')}</h2>
         <ul>
           <li><a href={l('/')}>{tr(lang, 'Home', 'Accueil')}</a></li>
-          <li><a href={l('/blog/')}>Notes</a></li>
-          <li><a href={l('/practice/')}>{tr(lang, 'Analytics practice', 'Pratique d’analytique')}</a></li>
           <li><a href={l('/contact/')}>Contact</a></li>
           <li><a href={l('/site-notes/')}>{tr(lang, 'Notes on this site’s development', 'Notes sur la conception de ce site')}</a></li>
           <li><a href={localize('/sitemap/', lang === 'en' ? 'fr' : 'en')} hreflang={lang === 'en' ? 'fr-CA' : 'en-CA'}>{tr(lang, 'Plan du site (français)', 'Sitemap (English)')}</a></li>
         </ul>
 
-        <h2>{tr(lang, 'Analytics practice', 'Pratique d’analytique')}</h2>
-        <ul>{practice.map((p) => <li><a href={p.path}>{p.title}</a></li>)}</ul>
-
-        <h2>Notes</h2>
-        <ul>{posts.map((p) => <li><a href={p.path}>{p.title}</a></li>)}</ul>
+        {SECTIONS.map((sec) => {
+          const list = pages.filter((p) => p.section === sec.id);
+          return list.length > 0 && (
+            <>
+              <h2>{tr(lang, sec.title.en, sec.title.fr)}</h2>
+              <ul>{list.map((p) => <li><a href={p.path}>{p.title}</a></li>)}</ul>
+            </>
+          );
+        })}
 
         <h2>{tr(lang, 'Demo store: Taiga Supply Co.', 'Boutique démo : Taiga Supply Co.')}</h2>
         <p>{tr(lang, 'A fictional store for testing ecommerce tracking. Not listed in search engines.', 'Une boutique fictive pour tester le suivi du commerce en ligne. Absente des moteurs de recherche.')}</p>

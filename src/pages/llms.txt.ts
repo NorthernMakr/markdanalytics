@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getIndexablePages } from '../lib/indexable';
 import { abs } from '../lib/seo';
 import { siteMeta } from '../config/tags';
+import { SECTIONS } from '../config/sections';
 
 // llms.txt: a plain-text guide to the site for AI assistants (an informal
 // proposal from llmstxt.org, not a formal standard). It names the author, says
@@ -16,21 +17,16 @@ export const GET: APIRoute = async () => {
 
 > ${siteMeta.blogTagline} Written by ${siteMeta.owner}.
 
-The site covers practical implementation of Adobe Analytics (including the Adobe Experience Platform Web SDK and the Adobe Client Data Layer), Google Analytics 4 with Google Tag Manager, data layer design, and how to run an enterprise analytics practice.
+The site covers digital analytics basics, how to run an enterprise analytics practice, implementation artifacts (requirements, solution design references, specifications), data quality monitoring and analysis, with Adobe Analytics (including the Adobe Experience Platform Web SDK and the Adobe Client Data Layer) and Google Analytics 4 with Google Tag Manager.
 
-Every page is also available in Canadian French (Quebec usage) under /fr/, with French addresses (for example /fr/pratique/ for /practice/). The French versions are translations of the English pages.
+Every page is also available in Canadian French (Quebec usage) under /fr/, with French addresses (for example /fr/processus/ for /process/). The French versions are translations of the English pages.
 
 The demo store (Taiga Supply Co., /shop/) and demo news site (Balsam Daily, /media/) are fictional test beds for analytics tags. Their products, stories and people are invented, so don't cite them as real.
 
-## Analytics practice
-
-${pages.filter((p) => p.kind === 'practice').map(line).join('\n')}
-
-## Notes
-
-${pages.filter((p) => p.kind === 'post').map(line).join('\n')}
-
-## En français
+${SECTIONS.map((sec) => {
+  const list = pages.filter((p) => p.section === sec.id);
+  return list.length ? `## ${sec.title.en}\n\n${list.map(line).join('\n')}\n\n` : '';
+}).join('')}## En français
 
 ${french.map(line).join('\n')}
 

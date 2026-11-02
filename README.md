@@ -2,12 +2,14 @@
 
 *Notes on digital measurement, implementation, and analysis.*
 
-A blog for analytics implementation notes, plus two demo sites for testing
-Adobe and Google tags against a realistic data layer:
+A site about digital analytics process, implementation and analysis, plus two
+demo sites for testing Adobe and Google tags against a realistic data layer.
+The content sections (Basics, Process, Implementation artifacts, Data quality,
+Case studies, About) are defined in `src/config/sections.ts`.
 
 | Section | Pages | What it's for |
 |---|---|---|
-| Blog | `/`, `/blog/`, `/blog/<post>/` | Your implementation advice |
+| Content sections | `/<section>/`, `/<section>/<page>/` | Markdown pages in `src/content/pages/<section>/` |
 | Demo store (Taiga Supply Co.) | `/shop/`, `/shop/catalog/`, `/shop/product/<item>/`, `/shop/cart/`, `/shop/checkout/`, `/shop/checkout/payment/`, `/shop/checkout/confirmation/` | Full ecommerce funnel. Nothing is sold and no details are collected. |
 | Demo media site (Balsam Daily) | `/media/`, `/media/article/<story>/` | Article tracking and HTML5 video tracking |
 
@@ -228,7 +230,7 @@ One-time setup in Cloudflare:
 Every page exists in English (at the root) and French (under `/fr/`, with
 French addresses: `/shop/cart/` is `/fr/boutique/panier/`). The word list in
 `FR_SEGMENTS` (`src/i18n/index.ts`) drives every French address; add a French
-slug there when you add a post, practice page, product or story. French route files in `src/pages/fr/` render the English page
+slug there when you add a content page, product or story. French route files in `src/pages/fr/` render the English page
 component, which reads its language from the URL; strings are picked with
 `tr(lang, 'English', 'Français')` from `src/i18n/index.ts`.
 
@@ -269,18 +271,20 @@ To add a language (say `zh-CN` under `/zh/`): add it to `LANGS` and `LOCALE`
 in `src/i18n/index.ts` and `PAGE_LANGUAGES` in `src/config/analytics.ts`, then
 add the translated text. Nothing in the analytics changes.
 
-## Writing a blog post
+## Adding a page
 
-1. Copy `src/content/blog/_post-template.md` and rename it. The file name
-   becomes the URL, e.g. `adobe-props-vs-evars.md` gives `/blog/adobe-props-vs-evars/`.
-2. Fill in the frontmatter and set `draft: false`.
-3. Commit and push. Cloudflare publishes it automatically.
+1. Copy `src/content/pages/_page-template.md` into a section folder, e.g.
+   `src/content/pages/basics/props-vs-evars.md` → `/basics/props-vs-evars/`.
+2. Fill in the frontmatter and set `draft: false`. `order` sets its place on
+   the section's hub page.
+3. French version: same file name in `src/content/pages/fr/basics/`, and its
+   French address in `FR_SEGMENTS` (`src/i18n/index.ts`).
+4. Commit and push. Cloudflare publishes it automatically.
 
-Files starting with `_` and posts with `draft: true` are never published.
-
-For the French version, put a file with the **same name** in `src/content/blog/fr/`,
-and add its French address to `FR_SEGMENTS` in `src/i18n/index.ts`.
-Practice pages work the same way (`src/content/practice/fr/`).
+The hub page, menu, sitemap, RSS and llms.txt pick it up on their own.
+Files starting with `_` and pages with `draft: true` are never published.
+To add a whole section, see `src/config/sections.ts`. Old addresses that move
+get a line in `public/_redirects`.
 
 ## Where things live
 
@@ -294,7 +298,9 @@ src/data/products.ts       Demo store catalog
 src/data/articles.ts       Demo news stories (with French text)
 src/i18n/index.ts          Languages and translation helpers
 src/pages/fr/              French routes
-tests/check-languages.cjs  Both-language crawl test
-src/content/blog/          Your blog posts (Markdown); French in fr/
+tests/                     Language, purchase and Adobe variable tests
+src/config/sections.ts     Content sections: menu, addresses, hubs
+src/content/pages/         Content pages by section (Markdown); French in fr/
+public/_redirects          Old addresses → new ones
 public/media/              Demo video and poster
 ```
