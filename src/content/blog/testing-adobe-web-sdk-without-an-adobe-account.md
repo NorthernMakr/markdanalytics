@@ -61,7 +61,7 @@ Commerce events use the standard XDM `commerce` fields, which Adobe Analytics ma
 | `wishlist add` | `commerce.saveForLaters` | (custom event) |
 | everything else | `web.webinteraction.linkClicks` | link call named after the event |
 
-Products travel in `productListItems` (`SKU`, `name`, `quantity`, `priceTotal`, `productCategories`). Page views also set a few Analytics variables directly through `data.__adobe.analytics` (`prop1` and `eVar1` for page type, `prop2` for site section, `prop3` and `eVar2` for page language, `prop4` and `eVar3` for browser language, `prop5` for whether they match), to show that path.
+Products travel in `productListItems` (`SKU`, `name`, `quantity`, `priceTotal`, `productCategories`). Every request also sets Analytics variables directly through `data.__adobe.analytics`, to show that path. The eVars describe the context and go on **every** request, page views and interactions alike: `eVar1` page type, `eVar2` site section, `eVar3` page language, `eVar4` browser language, `eVar5` whether they match. The props count things on the hit where they happen: `prop1` page name on page views, `prop2` the interaction on every other request (`cart add`, `media start`…), `prop3` the video name, `prop4` the link name. Because each request carries its own context, no report depends on how long an eVar persists.
 
 ## Seeing it work
 
@@ -89,6 +89,7 @@ A mock Edge validates the client side of an implementation: payload shape, event
 - **No reports.** Nothing reaches Analytics, Customer Journey Analytics or Platform.
 - **No personalization.** Target and Journey Optimizer decisions need the real Edge.
 - **Fake identity.** The ECID is random and only meaningful to this site.
+- **Variable settings.** eVar expiration and allocation, prop pathing and classifications are report suite settings. The mock shows what each request carries, not how Adobe credits or reports it. The intended settings (eVar1–5: Hit expiry, Most recent allocation) still need checking in a real report suite.
 - **Video is simplified.** Media events go as link calls, not through Adobe's Streaming Media collection.
 
 For those, the same bridge works unchanged in `live` mode once there's a real datastream to send to.

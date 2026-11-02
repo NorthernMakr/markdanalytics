@@ -109,8 +109,14 @@ XDM mapping: `page loaded` → `web.webpagedetails.pageViews`; `product viewed` 
 `commerce.productListRemovals`; `cart viewed` → `commerce.productListViews`;
 `checkout started` → `commerce.checkouts`; `purchase` → `commerce.purchases` +
 `commerce.order`; `wishlist add` → `commerce.saveForLaters`; everything else →
-`web.webinteraction.linkClicks` named after the event. Page views also set
-`data.__adobe.analytics` (prop1/eVar1 = page type, prop2 = section) as an example.
+`web.webinteraction.linkClicks` named after the event.
+
+Every request also sets `data.__adobe.analytics`. **eVars describe context and go on
+every hit** (eVar1 page type, eVar2 section, eVar3 page language, eVar4 browser
+language, eVar5 language match; intended settings: Hit expiry, Most recent
+allocation). **Props count things on their hit** (prop1 page name on page views,
+prop2 interaction, prop3 video name, prop4 link name). Adobe-side settings can't
+be checked against the mock; verify them in a real report suite.
 
 ### Load order (in every page's `<head>`)
 
@@ -233,9 +239,9 @@ top-pages report. The language variables are how you split them:
 
 | Data layer | GA4 parameter | Adobe (Web SDK) |
 |---|---|---|
-| `page.language` | `page_language` | `prop3`, `eVar2` |
-| `user.browserLanguage` | `browser_language` | `prop4`, `eVar3` |
-| `user.languageMatch` | `language_match` (`match` / `mismatch`) | `prop5` |
+| `page.language` | `page_language` | `eVar3` |
+| `user.browserLanguage` | `browser_language` | `eVar4` |
+| `user.languageMatch` | `language_match` (`match` / `mismatch`) | `eVar5` |
 | language switch click | `language_switch` (`language_from`, `language_to`) | `language switched` |
 
 GA4 has no `pageName`, so the GTM container sends the English page name as
@@ -255,6 +261,9 @@ page name, path or title from its English twin.
 `npm run test:purchase` buys in both languages and checks the purchase payloads:
 GA4 `value` is the item subtotal (no tax or shipping, per Google), while Adobe's
 XDM `order.priceTotal` is the full total including tax and shipping.
+
+`npm run test:adobe` checks every Web SDK request in both languages: eVar1–5 on
+every hit, prop1 only on page views, prop2–4 on the interactions they count.
 
 To add a language (say `zh-CN` under `/zh/`): add it to `LANGS` and `LOCALE`
 in `src/i18n/index.ts` and `PAGE_LANGUAGES` in `src/config/analytics.ts`, then

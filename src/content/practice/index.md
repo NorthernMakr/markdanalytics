@@ -49,15 +49,18 @@ Every variable gets one record in the tracking plan, with the same fields every 
 | Definition | The template of the page: home, article, product detail, cart, checkout, order confirmation |
 | Data layer source | `page.type` |
 | Allowed values and format | Lowercase, from a fixed list; no free text |
-| Adobe Analytics | `prop1` and `eVar1` (hit expiry); via Web SDK, `data.__adobe.analytics` |
+| Adobe Analytics | `eVar1`, expiration Hit, allocation Most recent; via Web SDK, `data.__adobe.analytics` |
 | GA4 | Event parameter `page_type`, event-scoped custom dimension "Page type" |
-| Set on | Every page view; persists on events from that page |
+| Set on | Every hit from the page: the page view and every interaction on it. Each hit carries its own value; nothing relies on persistence |
 | Privacy classification | Not personal data |
 | Owner | Analytics lead |
 | Status | Live since 2026-10-29 |
-| Notes and history | (empty) |
+| Verified | Client payloads in the mock Edge Network; Adobe-side processing not yet verified in a report suite |
+| Notes and history | 2026-11-02: moved from `prop1` + `eVar1` on page views only to `eVar1` on every hit |
 
 Two fields do most of the work. **Business question** stops variables being created "just in case". **Data layer source** separates what the site exposes from how each tool stores it, so a tool migration doesn't change the site.
+
+**Set on** is where Adobe implementations most often go quietly wrong. A prop applies only to the hit it's set on ([Adobe: props](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/prop)), and whether an eVar gets credit for later events depends on its expiration and allocation, which are report suite settings that default to visit and last ([Adobe: eVars](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/evar)). So the record says exactly which hits carry the value and what the settings are, and **Verified** says whether that's been checked in Adobe itself or only in the browser.
 
 ### Sharing it
 
@@ -153,16 +156,23 @@ These are collected on every property from day one. The two language variables a
 
 | Data layer | Adobe Analytics | GA4 |
 |---|---|---|
-| `page.name` | `pageName` (`web.webPageDetails.name`) | `page_name` |
-| `page.type` | `prop1`, `eVar1` | `page_type` |
-| `page.section` | `prop2`, channel | `site_section` |
+| `page.name` | `pageName` (`web.webPageDetails.name`), `prop1` | `page_name` |
+| `page.type` | `eVar1` | `page_type` |
+| `page.section` | `eVar2`, channel | `site_section` |
 | `page.siteName` | report suite or `eVar` | `site_name` |
 | `page.environment` | `eVar` | `site_environment` |
-| `page.language` | `prop3`, `eVar2` | `page_language` |
-| `user.browserLanguage` | `prop4`, `eVar3` | `browser_language` |
-| `user.languageMatch` | `prop5` (`match` / `mismatch`) | `language_match` |
+| `page.language` | `eVar3` | `page_language` |
+| `user.browserLanguage` | `eVar4` | `browser_language` |
+| `user.languageMatch` | `eVar5` (`match` / `mismatch`) | `language_match` |
 | `user.loginStatus` | `eVar` (visit expiry) | `login_status` (user-scoped) |
 | `content.*` | `eVar`s per content field | `content_*` parameters |
+
+**How the Adobe variables are laid out.** eVars *describe* the context; props *count* things.
+
+- **eVars** hold the descriptive values above and are sent on **every hit from the page**: the page view and every interaction (product, cart, video and click events). They're set to expire on the hit, so each hit carries its own context and no report depends on how long a value persists. eVar expiration and allocation are report suite settings, not page code, so they're part of the spec: here, Hit expiry and Most recent allocation.
+- **Props** count things on the hit where they happen, and never persist: `prop1` page name (page views), `prop2` interaction (every other hit, such as `cart add`, `purchase` or `media start`), `prop3` video name, `prop4` link name.
+
+GA4 needs no equivalent rule: the Google tag's shared parameters go on every event it sends.
 
 ## QA standards
 
