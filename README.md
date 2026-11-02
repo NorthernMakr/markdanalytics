@@ -1,4 +1,6 @@
-# Tag & Layer: markdanalytics.ca
+# Mark D. Analytics: markdanalytics.ca
+
+*Notes on digital measurement, implementation, and analysis.*
 
 A blog for analytics implementation notes, plus two demo sites for testing
 Adobe and Google tags against a realistic data layer:

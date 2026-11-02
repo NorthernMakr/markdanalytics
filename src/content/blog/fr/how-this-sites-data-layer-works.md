@@ -20,7 +20,7 @@ Au moment de la construction du site, chaque page reçoit un petit objet qui la 
     "name": "blog:how-this-sites-data-layer-works",
     "type": "article",
     "section": "blog",
-    "siteName": "Tag & Layer",
+    "siteName": "Mark D. Analytics",
     "path": "/fr/blogue/comment-fonctionne-la-couche-de-donnees/",
     "language": "fr-CA",
     "environment": "production"
