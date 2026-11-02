@@ -1,0 +1,82 @@
+---
+// Renders the requirements and SDR from src/data/sdr.json, in the page's
+// language. One data file, four views:
+//   requirements  business requirements, with the variables that answer each
+//   full          the solution design reference (analyst view)
+//   developers    what the page must expose, and why, in brief
+//   business      what each variable means, what to pair it with, eVar or prop
+// Used from MDX pages: <SdrTable view="full" />
+import sdr from '../../data/sdr.json';
+import { langFromPath, tr, type Lang } from '../../i18n';
+
+interface Props { view: 'requirements' | 'full' | 'developers' | 'business' }
+const { view } = Astro.props;
+const lang: Lang = langFromPath(Astro.url.pathname);
+const t = (o: { en: string; fr: string }) => o[lang];
+const status = (s: string) => (s === 'live' ? tr(lang, 'Live', 'En production') : tr(lang, 'Proposed', 'Proposé'));
+const reqById = Object.fromEntries(sdr.requirements.map((r) => [r.id, r]));
+const varsFor = (id: string) => sdr.variables.filter((v) => v.reqs.includes(id)).map((v) => v.adobe);
+const purpose = (v: (typeof sdr.variables)[number]) => t(reqById[v.reqs[0]].question).replace(/^Constraint: |^Contrainte : /, '');
+const site = (s: string) => ({ both: tr(lang, 'Both', 'Les deux'), store: tr(lang, 'Store', 'Boutique'), media: tr(lang, 'Media', 'Médias') }[s] ?? s);
+---
+<div class="table-wrap" tabindex="0" role="region" aria-label={tr(lang, 'Scrollable table', 'Tableau défilant')}>
+{view === 'requirements' && (
+  <table class="sdr">
+    <thead><tr>
+      <th>ID</th><th>{tr(lang, 'Question', 'Question')}</th><th>{tr(lang, 'Decision it informs', 'Décision éclairée')}</th>
+      <th>{tr(lang, 'KPIs', 'Indicateurs')}</th><th>{tr(lang, 'Site', 'Site')}</th><th>{tr(lang, 'Priority', 'Priorité')}</th>
+      <th>{tr(lang, 'Owner', 'Responsable')}</th><th>{tr(lang, 'Answered by', 'Variables')}</th>
+    </tr></thead>
+    <tbody>{sdr.requirements.map((r) => (
+      <tr id={r.id.toLowerCase()}>
+        <td><strong>{r.id}</strong></td><td>{t(r.question)}</td><td>{t(r.decision)}</td><td>{t(r.kpis)}</td>
+        <td>{site(r.site)}</td><td>{r.priority === 'High' ? tr(lang, 'High', 'Haute') : tr(lang, 'Medium', 'Moyenne')}</td>
+        <td>{t(r.owner)}</td><td><code>{varsFor(r.id).join(', ') || tr(lang, 'All variables', 'Toutes les variables')}</code></td>
+      </tr>))}</tbody>
+  </table>
+)}
+{view === 'full' && (
+  <table class="sdr">
+    <thead><tr>
+      <th>{tr(lang, 'Variable', 'Variable')}</th><th>{tr(lang, 'Name', 'Nom')}</th><th>{tr(lang, 'Req.', 'Besoin')}</th>
+      <th>{tr(lang, 'Data layer source', 'Source (couche de données)')}</th><th>{tr(lang, 'Example', 'Exemple')}</th>
+      <th>{tr(lang, 'Expiry / allocation', 'Expiration / attribution')}</th><th>{tr(lang, 'Set on', 'Fixée sur')}</th>
+      <th>GA4</th><th>{tr(lang, 'Status', 'Statut')}</th>
+    </tr></thead>
+    <tbody>{sdr.variables.map((v) => (
+      <tr>
+        <td><code>{v.adobe}</code></td><td>{t(v.name)}</td><td>{v.reqs.join(', ')}</td><td><code>{v.dl}</code></td>
+        <td><code>{v.example}</code></td><td>{v.expiry} / {v.allocation}</td><td>{t(v.setOn)}</td>
+        <td><code>{v.ga4.name}</code> ({v.ga4.scope})</td><td class={`status-${v.status}`}>{status(v.status)}</td>
+      </tr>))}</tbody>
+  </table>
+)}
+{view === 'developers' && (
+  <table class="sdr">
+    <thead><tr>
+      <th>{tr(lang, 'Expose in the data layer', 'À exposer dans la couche de données')}</th><th>{tr(lang, 'Why (brief)', 'Pourquoi (en bref)')}</th>
+      <th>{tr(lang, 'Example', 'Exemple')}</th><th>{tr(lang, 'Send on', 'Envoyer sur')}</th><th>{tr(lang, 'Status', 'Statut')}</th>
+    </tr></thead>
+    <tbody>{sdr.variables.filter((v) => v.type !== 'prop').map((v) => (
+      <tr>
+        <td><code>{v.dl}</code></td><td>{purpose(v)}</td><td><code>{v.example}</code></td><td>{t(v.setOn)}</td>
+        <td class={`status-${v.status}`}>{status(v.status)}</td>
+      </tr>))}</tbody>
+  </table>
+)}
+{view === 'business' && (
+  <table class="sdr">
+    <thead><tr>
+      <th>{tr(lang, 'Name', 'Nom')}</th><th>{tr(lang, 'What it means', 'Ce que ça signifie')}</th>
+      <th>{tr(lang, 'Pair it with', 'À associer à')}</th><th>{tr(lang, 'Why this kind of variable', 'Pourquoi ce type de variable')}</th>
+      <th>Adobe</th><th>GA4</th><th>{tr(lang, 'Status', 'Statut')}</th>
+    </tr></thead>
+    <tbody>{sdr.variables.map((v) => (
+      <tr>
+        <td><strong>{t(v.name)}</strong></td><td>{t(v.meaning)}</td><td>{t(v.metrics)}</td><td>{t(v.why)}</td>
+        <td><code>{v.adobe}</code></td><td><code>{v.ga4.name}</code></td><td class={`status-${v.status}`}>{status(v.status)}</td>
+      </tr>))}</tbody>
+  </table>
+)}
+</div>
+<p class="sdr-meta">{tr(lang, `SDR version ${sdr.version}, updated ${sdr.updated}.`, `SDR version ${sdr.version}, mise à jour le ${sdr.updated}.`)}</p>

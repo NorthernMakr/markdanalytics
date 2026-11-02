@@ -1,0 +1,26 @@
+---
+title: "SDR for developers"
+description: "The developer's view of the solution design reference: what each page must expose in the data layer, when to send it, and a one-line reason for each."
+pubDate: 2026-11-02
+category: Implementation artifacts
+tags: [SDR, developers, data layer]
+platform: Both
+order: 3
+---
+import SdrTable from '../../../components/sdr/SdrTable.astro';
+
+**Developers don't need to know what an eVar is.** They need to know what to expose, when, and why it's worth the effort. This view of the [SDR](/implementation/sdr/) leaves out the Adobe and GA4 configuration (tag management handles that) and keeps each reason to one line, taken from the [business requirement](/implementation/business-requirements/) it serves.
+
+## Ground rules
+
+- Push the page object **before** any tag manager loads; push events **when the action happens**, not on a timer.
+- **English values on every language version.** Use the stable English source (SKU, slug, English title), never translated display text.
+- **No personal information**, ever: no names, emails, addresses or typed text.
+- Numbers as numbers (`129`, not `"129"`); prices are unit prices.
+- Exact names, types and examples for every key are in the [data layer specification](/implementation/data-layer-specification/).
+
+## What to expose
+
+<SdrTable view="developers" />
+
+Props aren't listed separately: they're filled from the same data layer keys by tag management.

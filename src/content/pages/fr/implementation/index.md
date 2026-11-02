@@ -24,6 +24,6 @@ Chaque document alimente le suivant. Un changement descend habituellement la cha
 
 La SDR existe sous deux formes : une page web pour la lecture et un classeur Excel pour le travail, puisque c’est là que la plupart des équipes tiennent la leur.
 
-## Déjà disponible
+## Par où commencer
 
-Les pages ci-dessous sont prêtes. Les besoins, la SDR, ses deux versions lisibles et la spécification type sont en cours de rédaction, en commençant par la boutique démo.
+Lisez-les dans l’ordre : [besoins d’affaires](/fr/mise-en-oeuvre/besoins-d-affaires/) → [SDR](/fr/mise-en-oeuvre/sdr/) ([Excel](/downloads/markdanalytics-sdr-fr.xlsx)) → [pour les développeurs](/fr/mise-en-oeuvre/sdr-developpeurs/) et [pour les utilisateurs d’affaires](/fr/mise-en-oeuvre/sdr-utilisateurs-d-affaires/) → [spécification de la fiche produit](/fr/mise-en-oeuvre/specification-fiche-produit/). Les besoins, la SDR et ses deux versions lisibles sont générés à partir d’un seul fichier de données : ils concordent toujours.

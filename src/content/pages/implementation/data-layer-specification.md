@@ -2,25 +2,24 @@
 title: "Sample spec: data layer specification"
 description: "The data layer specification for markdanalytics.ca and its demo sites: every object, key, type and allowed value, with load order, naming rules and how the spec is enforced."
 pubDate: 2026-11-02
-category: Analytics practice
+category: Implementation artifacts
 tags: [specifications, data layer, dataLayer, ACDL, developers]
 platform: Both
-order: 2
-draft: true
+order: 6
 ---
 
-| | |
+| Property | Value |
 |---|---|
 | **Document** | Data layer specification, markdanalytics.ca |
-| **Version** | 1.2, 2 November 2026 |
+| **Version** | 1.3, 2 November 2026 |
 | **Status** | Live |
 | **Owner** | Mark Dykeman, analytics lead |
 | **Audience** | Developers building pages; analysts mapping tags |
-| **Related** | [Tracking plan](/practice/tracking-plan/), [store spec](/practice/implementation-spec-store/), [media spec](/practice/implementation-spec-media/) |
+| **Related** | [SDR](/implementation/sdr/), [SDR for developers](/implementation/sdr-developers/), [product page spec](/implementation/product-page-specification/) |
 
 ## 1. Purpose
 
-This document defines what every page on markdanalytics.ca, the Taiga Supply Co. demo store and the Balsam Daily demo news site must expose to analytics. It's written in terms of the data layer only. How each value reaches Adobe Analytics or GA4 is in the [tracking plan](/practice/tracking-plan/), so a change of analytics tool doesn't change this document.
+This document defines what every page on markdanalytics.ca, the Taiga Supply Co. demo store and the Balsam Daily demo news site must expose to analytics. It's written in terms of the data layer only. How each value reaches Adobe Analytics or GA4 is in the [SDR](/implementation/sdr/), so a change of analytics tool doesn't change this document.
 
 ## 2. The two arrays
 
@@ -56,7 +55,7 @@ Pushed once per page, before tag managers load.
 |---|---|---|---|---|---|
 | `page.name` | string | Yes | Lowercase, colon-separated, starts with the section | `shop:product:tidepool-daypack` | Template + slug |
 | `page.type` | string | Yes | `home`, `article list`, `article`, `section front`, `contact`, `error`, `product listing`, `product detail`, `cart`, `checkout`, `order confirmation` | `product detail` | Template |
-| `page.section` | string | Yes | `home`, `blog`, `practice`, `contact`, `error`, `shop`, `media`, `site` | `shop` | Template |
+| `page.section` | string | Yes | `home`, `basics`, `process`, `implementation`, `data-quality`, `case-studies`, `about`, `contact`, `error`, `shop`, `media`, `site` | `shop` | Template |
 | `page.siteName` | string | Yes | One per site | `Taiga Supply Co. (demo)` | Site config |
 | `page.path` | string | Yes | The real path, in the page's language | `/fr/boutique/produit/sac-de-jour-tidepool/` | URL |
 | `page.language` | string | Yes | `en-CA`, `fr-CA` | `fr-CA` | URL (`/fr/` = French) |
@@ -85,7 +84,7 @@ Example, French product page:
 
 Added to the page object on the page types listed. Values are English on both language versions.
 
-### 6.1 `content` on blog posts and practice pages (`page.type` = `article`, `section front`)
+### 6.1 `content` on content-section pages (`page.type` = `article`, `section front`)
 
 | Key | Type | Req. | Format | Example |
 |---|---|---|---|---|
@@ -97,7 +96,7 @@ Added to the page object on the page types listed. Values are English on both la
 | `content.publishDate` | string | Yes | ISO date | `2026-10-29` |
 | `content.updatedDate` | string | No | ISO date | `2026-10-29` |
 | `content.author` | string | Yes | Author's public name | `Mark Dykeman` |
-| `content.wordCount` | number | Yes | Words in this version | `560` |
+| `content.wordCount` | number | Yes | Words in this version | `564` |
 
 ### 6.2 `content` on news stories (`page.name` = `media:article:*`)
 
@@ -110,7 +109,7 @@ Added to the page object on the page types listed. Values are English on both la
 | `content.publishDate` | string | Yes | ISO date | `2026-10-28` |
 | `content.hasVideo` | boolean | Yes | | `true` |
 | `content.videoId` | string | If video | Video ID | `vid-ferry-001` |
-| `content.wordCount` | number | Yes | English word count | `146` |
+| `content.wordCount` | number | Yes | English word count | `128` |
 
 ### 6.3 `product` on product pages (`page.type` = `product detail`)
 
@@ -163,18 +162,18 @@ Every ecommerce event uses the same item shape, so a product looks identical in 
 
 ## 8. Events
 
-The full list of allowed events. Payloads, triggers and timing are in the implementation specs.
+The full list of allowed events. Payloads, triggers and timing for the product page are in the [product page specification](/implementation/product-page-specification/); specs for other pages follow the same format.
 
 | Area | `dataLayer` (GA4) | `adobeDataLayer` | Spec |
 |---|---|---|---|
 | Page | `page_data_ready` | `page loaded` | This document |
-| Product lists | `view_item_list`, `select_item` | `product list viewed`, `product clicked` | [Store](/practice/implementation-spec-store/) |
-| Product page | `view_item`, `add_to_cart`, `add_to_wishlist` | `product viewed`, `cart add`, `wishlist add` | Store |
+| Product lists | `view_item_list`, `select_item` | `product list viewed`, `product clicked` | Store |
+| Product page | `view_item`, `add_to_cart`, `add_to_wishlist` | `product viewed`, `cart add`, `wishlist add` | [Product page](/implementation/product-page-specification/) |
 | Cart | `view_cart`, `add_to_cart`, `remove_from_cart` | `cart viewed`, `cart add`, `cart remove` | Store |
 | Checkout | `begin_checkout`, `add_shipping_info`, `add_payment_info`, `purchase` | `checkout started`, `checkout step`, `purchase` | Store |
 | Promotions | `view_promotion`, `select_promotion` | `promotion viewed`, `promotion clicked` | Store |
 | Catalog filter | `filter_applied` | `search filtered` | Store |
-| Video | `video_start`, `video_progress`, `video_pause`, `video_seek`, `video_complete` | `media start`, `media milestone`, `media pause`, `media seek`, `media complete` | [Media](/practice/implementation-spec-media/) |
+| Video | `video_start`, `video_progress`, `video_pause`, `video_seek`, `video_complete` | `media start`, `media milestone`, `media pause`, `media seek`, `media complete` | Media |
 | Reading | `scroll_depth` | `content scrolled` | Media |
 | Teaser clicks | `content_click` | `content clicked` | Media |
 | Contact form | `form_start`, `generate_lead`, `form_error` | `form started`, `form submitted`, `form error` | Contact page |
@@ -188,12 +187,13 @@ Before every `dataLayer` push that contains an `ecommerce` object, push `{ ecomm
 - **In the browser, outside production,** every push is checked: an event name not listed in section 8, or a forbidden key from section 4, logs a warning in the console.
 - **Site-wide,** a test loads every page in both languages and checks that each French page sends the same `page.name` and `content.title` as its English twin.
 
-To add a value or event: add it to the allowed list first, then to this document and the tracking plan, then use it.
+To add a value or event: add it to the allowed list first, then to this document and the SDR, then use it.
 
 ## 10. Change history
 
 | Version | Date | Change |
 |---|---|---|
+| 1.3 | 2026-11-02 | Sections renamed (basics, process, implementation, data-quality, case-studies, about) |
 | 1.2 | 2026-11-02 | `page.path` is the real address in the page's language; French addresses introduced |
 | 1.1 | 2026-10-29 | Added `page.language`, `user.browserLanguage`, `user.languageMatch` and the language switch event |
 | 1.0 | 2026-10-29 | First version |

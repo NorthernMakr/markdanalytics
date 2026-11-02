@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import { rename, rmdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import mdx from '@astrojs/mdx';
 import rehypeExternalLinks from './src/lib/rehype-external-links.mjs';
 
 // Astro only writes the root 404 page as 404.html; the French one comes out as
@@ -24,5 +25,5 @@ export default defineConfig({
   build: { format: 'directory' },
   // Links to other websites open in a new window and show where they go.
   markdown: { rehypePlugins: [rehypeExternalLinks] },
-  integrations: [frenchNotFound],
+  integrations: [mdx(), frenchNotFound],
 });

@@ -37,9 +37,10 @@ export const FR_SEGMENTS: Record<string, string> = {
   'what-is-a-data-layer': 'quest-ce-quune-couche-de-donnees',
   'multilingual-sites': 'sites-multilingues',
   'data-layer-specification': 'specification-couche-de-donnees',
-  'tracking-plan': 'plan-de-marquage',
-  'implementation-spec-store': 'specification-implementation-boutique',
-  'implementation-spec-media': 'specification-implementation-medias',
+  'business-requirements': 'besoins-d-affaires',
+  'sdr-developers': 'sdr-developpeurs',
+  'sdr-business-users': 'sdr-utilisateurs-d-affaires',
+  'product-page-specification': 'specification-fiche-produit',
   // Demo store products
   'tidepool-daypack': 'sac-de-jour-tidepool',
   'breakwater-dry-bag': 'sac-etanche-breakwater',

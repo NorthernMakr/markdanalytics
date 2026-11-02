@@ -1,0 +1,133 @@
+---
+title: "Sample specification: product page"
+description: "A Confluence-style implementation spec for the demo store's product page: numbered wireframe, every tracked element with its link name, the link naming convention, payloads and acceptance criteria."
+pubDate: 2026-11-02
+category: Implementation artifacts
+tags: [specification, wireframe, link names, Confluence, developers, QA]
+platform: Both
+order: 5
+---
+
+| Property | Value |
+|---|---|
+| **Status** | <span class="lozenge yellow">Ready for development</span> |
+| **Ticket** | TAIGA-142 (illustrative) |
+| **Owner** | Mark Dykeman, analytics lead |
+| **Developer** | Store front-end team |
+| **Version** | 0.9, 2 November 2026 |
+| **Page** | Product detail: `/shop/product/{slug}/` and `/fr/boutique/produit/{slug}/` |
+| **Requirements** | [BR-02, BR-03, BR-04, BR-05, BR-08](/implementation/business-requirements/) |
+| **Related** | [SDR](/implementation/sdr/) · [SDR for developers](/implementation/sdr-developers/) · [data layer specification](/implementation/data-layer-specification/) |
+
+<div class="panel info">
+
+**What this page is.** The ticket-ready spec for one page. It says exactly what to build, numbered against a wireframe, with the name every tracked link must send. QA tests against this document, line by line. The spec is kept as Markdown in the site's Git repository and published here, so the version developers read is the version under change control.
+
+</div>
+
+## 1. Scope
+
+- **In scope:** the product page in both languages, its page-load data, and every interactive element in the wireframe below.
+- **Out of scope:** the cart and checkout (separate spec), the site-wide demo banner, and the Event log button.
+- **Already live:** page-load data, `view_item`, `add_to_cart`, `add_to_wishlist`, `select_item` and the language switch event. **New in this spec:** a link name on every tracked element (rows marked *Proposed*).
+
+## 2. Wireframe
+
+<figure class="wireframe">
+  <img src="/images/specs/pdp-wireframe-en.svg" alt="Wireframe of the product page with numbered markers 1 to 11 on: logo, category menu, cart, language switch, breadcrumb, colour swatches, quantity, add to cart, save to wishlist, related products and footer links." width="1240" height="1100" />
+  <figcaption>Each number marks an element that gets analytics. Numbers match the table in section 3.</figcaption>
+</figure>
+
+## 3. Tracked elements
+
+| # | Element | Link name | Example | On click | Status |
+|---|---|---|---|---|---|
+| 1 | Logo | `header:logo` | `header:logo` | Link click | <span class="lozenge grey">Proposed</span> |
+| 2 | Category menu | `header:nav:{link_text}` | `header:nav:packs-and-bags` | Link click | <span class="lozenge grey">Proposed</span> |
+| 3 | Cart | `header:cart` | `header:cart` | Link click | <span class="lozenge grey">Proposed</span> |
+| 4 | Language switch | `header:language:{to_language}` | `header:language:fr` | `language_switch` / `language switched` | <span class="lozenge green">Event live</span> name proposed |
+| 5 | Breadcrumb | `pdp:breadcrumb:{link_text}` | `pdp:breadcrumb:packs-and-bags` | Link click | <span class="lozenge grey">Proposed</span> |
+| 6 | Colour swatch | `pdp:colour:{colour}:{sku}` | `pdp:colour:buoy:tg-pk-101` | Link click | <span class="lozenge grey">Proposed</span> |
+| 7 | Quantity | none (not a link; read by #8) | — | Nothing on change | — |
+| 8 | Add to cart | `pdp:add-to-cart:{product_name}:{sku}` | `pdp:add-to-cart:tidepool-daypack:tg-pk-101` | `add_to_cart` / `cart add` | <span class="lozenge green">Event live</span> name proposed |
+| 9 | Save to wishlist | `pdp:wishlist:{product_name}:{sku}` | `pdp:wishlist:tidepool-daypack:tg-pk-101` | `add_to_wishlist` / `wishlist add` | <span class="lozenge green">Event live</span> name proposed |
+| 10 | Related product | `pdp:related:{position}:{product_name}` | `pdp:related:2:squall-rain-shell` | `select_item` / `product clicked` | <span class="lozenge green">Event live</span> name proposed |
+| 11 | Footer links | `footer:{link_text}` | `footer:sitemap` | Link click | <span class="lozenge grey">Proposed</span> |
+
+**Link click** is a new event: `link_click` in `dataLayer` and `link clicked` in `adobeDataLayer` (section 5). Where an element already has its own event (#4, #8, #9, #10), the link name is added to that event instead of sending a second one.
+
+## 4. Link naming convention
+
+Links are named automatically from their **link text**, so the process scales without a list maintained by hand. Link text alone isn't enough: "Shop all" appears in both the menu and the breadcrumb, and every "Add to cart" says the same thing. So each name adds **context**: where the link is, and what it acts on.
+
+**Format:** `region:element:detail…`
+
+<div class="panel note">
+
+**Fixed or changeable?** In this spec, plain words are **fixed**: typed exactly as shown, the same on every page (`pdp`, `add-to-cart`). Words in `{braces}` are **variables**: filled in when the page is built or clicked (`{sku}` → `tg-pk-101`). A developer never invents a fixed part, and never hard-codes a variable.
+
+</div>
+
+| Variable | Filled with | Example |
+|---|---|---|
+| `{link_text}` | The link's **English** text: lowercase, spaces and symbols to hyphens, `&` to `and` | `packs-and-bags` |
+| `{product_name}` | English product name, same rules | `tidepool-daypack` |
+| `{sku}` | SKU, lowercase | `tg-pk-101` |
+| `{colour}` | English colour name, lowercase | `buoy` |
+| `{position}` | Position within its module, counting from 1 | `2` |
+| `{to_language}` | Language being switched to | `fr` |
+
+Rules:
+
+- **Regions** come from a fixed list: `header`, `pdp` (product page body), `footer`; other page specs add their own.
+- **English on every language version.** On French pages, the English text comes from a `data-link-name` attribute rendered with the page; on English pages, the visible text is used directly.
+- **Position only where items repeat** (product grids, lists). Positions shift when layouts change, so a name never depends on position alone.
+- **Lowercase, hyphens, colons between parts, 100 characters at most.** Adobe truncates props at [100 bytes](https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/page-vars/prop); the name goes in `prop4`.
+
+## 5. Payloads
+
+**Page load** (already live, unchanged): `page_data_ready` / `page loaded` with the page and `product` objects, then `view_item` / `product viewed`, then `view_item_list` / `product list viewed` for the related products (list `pdp_related`).
+
+**Link click** (new):
+
+```js
+// #2, menu link "Packs & bags", on the French page as on the English one
+window.lab.ga4({ event: 'link_click', link_name: 'header:nav:packs-and-bags',
+                 link_region: 'header', link_url: '/shop/catalog/?category=packs' });
+window.lab.adobe({ event: 'link clicked',
+                   link: { name: 'header:nav:packs-and-bags', region: 'header', url: '/shop/catalog/?category=packs' } });
+```
+
+**Add to cart** (#8: existing event, plus the link name):
+
+```js
+window.lab.ga4({ event: 'add_to_cart', link_name: 'pdp:add-to-cart:tidepool-daypack:tg-pk-101',
+  ecommerce: { currency: 'CAD', value: 129, items: [{ item_id: 'TG-PK-101', item_name: 'Tidepool daypack',
+    item_variant: 'Buoy', price: 129, quantity: 1 }] } });
+window.lab.adobe({ event: 'cart add', link: { name: 'pdp:add-to-cart:tidepool-daypack:tg-pk-101' },
+  productListItems: [{ SKU: 'TG-PK-101', name: 'Tidepool daypack', quantity: 1, priceTotal: 129 }] });
+```
+
+Tag management maps `link.name` / `link_name` to `prop4` and GA4 `link_text`, per the [SDR](/implementation/sdr/). `link_click` and `link clicked` must be added to the site's list of allowed events before they're pushed; the build rejects unregistered names.
+
+## 6. Acceptance criteria
+
+- [ ] Every numbered element except #7 sends exactly one push per click, with the link name in the format above.
+- [ ] Link names are identical on `/shop/product/tidepool-daypack/` and `/fr/boutique/produit/sac-de-jour-tidepool/`.
+- [ ] #8 sends `add_to_cart` with `value` = price × quantity, and `item_variant` = the selected colour in English.
+- [ ] #10 sends `select_item` with `index` and `item_list_id: pdp_related`, and its link name uses the same position, counting from 1.
+- [ ] No link name exceeds 100 characters or contains capitals, spaces or accented letters.
+- [ ] Nothing is pushed on page load beyond section 5's three events.
+
+QA records the result of each criterion, with the date, in the QA document for this page (in [Data quality](/data-quality/)).
+
+## 7. Open questions
+
+- Should colour swatches (#6) count as interactions at all, or only the colour chosen at add to cart? *Owner: merchandising.*
+- Is `header` enough context for the menu, or do we need `header:nav` vs `header:utility` when more links are added? *Owner: analytics lead.*
+
+## Change history
+
+| Version | Date | Change |
+|---|---|---|
+| 0.9 | 2026-11-02 | First draft for development review |

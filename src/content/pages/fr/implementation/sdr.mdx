@@ -1,0 +1,38 @@
+---
+title: "Référence de conception de la solution (SDR)"
+description: "La référence de conception de la solution des sites démo, pensée d’abord pour Adobe : chaque variable, le besoin auquel elle répond, sa source dans la couche de données, son expiration, son attribution et son équivalent GA4. Aussi en classeur Excel."
+pubDate: 2026-11-02
+category: Livrables de mise en œuvre
+tags: [SDR, Adobe Analytics, eVars, props, GA4, plan de marquage]
+platform: Both
+order: 2
+---
+import SdrTable from '../../../../components/sdr/SdrTable.astro';
+
+| Propriété | Valeur |
+|---|---|
+| **Document** | Référence de conception de la solution, sites démo de markdanalytics.ca |
+| **Version** | 1.0, 2 novembre 2026 |
+| **Statut** | En production, avec 5 variables proposées |
+| **Responsable** | Mark Dykeman, responsable de l’analytique |
+| **Téléchargement** | [Classeur Excel (français)](/downloads/markdanalytics-sdr-fr.xlsx) · [Excel (English)](/downloads/markdanalytics-sdr-en.xlsx) |
+| **Construite à partir des** | [Besoins d’affaires](/fr/mise-en-oeuvre/besoins-d-affaires/) |
+
+**La SDR traduit chaque besoin d’affaires en variables.** Elle est pensée d’abord pour Adobe : chaque ligne est une variable Adobe Analytics, avec son équivalent GA4 à côté. C’est le document de travail des analystes et du responsable de l’analytique; la [version pour les développeurs](/fr/mise-en-oeuvre/sdr-developpeurs/) et la [version pour les utilisateurs d’affaires](/fr/mise-en-oeuvre/sdr-utilisateurs-d-affaires/) sont des vues lisibles des mêmes lignes.
+
+## Règles de conception
+
+- **Les eVars décrivent le contexte; les props comptent des choses.** Les valeurs descriptives (type de page, section, langue) sont des eVars envoyées sur chaque hit, avec expiration au hit : aucun rapport ne dépend de la persistance. Les props comptent les actions sur leur propre hit : nom de page, interaction, nom de la vidéo, nom du lien.
+- **Le marchandisage et les promotions persistent exprès.** L’eVar proposée de liste de produits garde le crédit avec chaque produit jusqu’à l’achat; l’eVar de promotion dure la visite. Ce sont les seules variables où la persistance est le but.
+- **Chaque valeur est en anglais**, quelle que soit la langue de la page. La langue de la page a sa propre variable.
+- **L’expiration et l’attribution font partie de la conception.** Ce sont des réglages de la suite de rapports, pas du code de page; la SDR est donc l’endroit où on les consigne ([Adobe : eVars](https://experienceleague.adobe.com/fr/docs/analytics/components/dimensions/evar), [props](https://experienceleague.adobe.com/fr/docs/analytics/components/dimensions/prop)).
+
+## Les variables
+
+<SdrTable view="full" />
+
+**En production** signifie que la valeur est envoyée aujourd’hui et vérifiée par les tests automatisés du site contre l’Edge Network simulé. Cela prouve ce qu’envoie le navigateur, pas la façon dont Adobe le traite : les réglages de la suite de rapports restent à vérifier dans un vrai environnement Adobe. **Proposé** signifie conçue et convenue, pas encore construite.
+
+## Une source, trois vues, un classeur
+
+Les besoins et les variables vivent dans un seul fichier de données, dans le dépôt du site. Cette page, les versions pour les développeurs et pour les utilisateurs d’affaires et les deux classeurs Excel en sont générés : ils ne peuvent pas diverger. Une variable se modifie à un seul endroit.

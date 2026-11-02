@@ -1,0 +1,38 @@
+---
+title: "Solution design reference (SDR)"
+description: "The Adobe-first solution design reference for the demo sites: every variable, the requirement it answers, its data layer source, expiry and allocation, and its GA4 equivalent. Also as an Excel workbook."
+pubDate: 2026-11-02
+category: Implementation artifacts
+tags: [SDR, Adobe Analytics, eVars, props, GA4, tracking plan]
+platform: Both
+order: 2
+---
+import SdrTable from '../../../components/sdr/SdrTable.astro';
+
+| Property | Value |
+|---|---|
+| **Document** | Solution design reference, markdanalytics.ca demo sites |
+| **Version** | 1.0, 2 November 2026 |
+| **Status** | Live, with 5 variables proposed |
+| **Owner** | Mark Dykeman, analytics lead |
+| **Download** | [Excel workbook (English)](/downloads/markdanalytics-sdr-en.xlsx) · [Excel (français)](/downloads/markdanalytics-sdr-fr.xlsx) |
+| **Built from** | [Business requirements](/implementation/business-requirements/) |
+
+**The SDR translates each business requirement into variables.** It's Adobe-first: every row is an Adobe Analytics variable, with its GA4 equivalent alongside. It's the document analysts and the analytics lead work from; the [developer version](/implementation/sdr-developers/) and [business-user version](/implementation/sdr-business-users/) are readable views of the same rows.
+
+## Design rules
+
+- **eVars describe context; props count things.** Descriptive values (page type, section, language) are eVars sent on every hit with Hit expiry, so no report depends on persistence. Props count actions on their own hit: page name, interaction, video name, link name.
+- **Merchandising and promotions persist on purpose.** The proposed product-list eVar keeps credit with each product until purchase; the promotion eVar lasts the visit. Those are the only variables where persistence is the point.
+- **Every value is English**, whatever the page language. Page language is its own variable.
+- **Expiry and allocation are part of the design.** They're report suite settings, not page code, so the SDR is where they're recorded ([Adobe: eVars](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/evar), [props](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/prop)).
+
+## The variables
+
+<SdrTable view="full" />
+
+**Live** means the value is sent today and checked by the site's automated tests against the mock Edge Network. That proves what the browser sends, not how Adobe processes it: the report suite settings still need verifying in a real Adobe environment. **Proposed** means designed and agreed, not yet built.
+
+## One source, three views, one workbook
+
+The requirements and variables live in a single data file in the site's repository. This page, the developer and business-user versions, and both Excel workbooks are generated from it, so they can't drift apart. A change to a variable is made once.

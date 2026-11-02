@@ -1,0 +1,45 @@
+---
+title: "Mock business requirements document"
+description: "The business questions behind the demo store and news site's tracking: what each stakeholder needs to know, the decision it informs, the KPIs, and which variables answer it."
+pubDate: 2026-11-02
+category: Implementation artifacts
+tags: [requirements, BRD, KPIs, stakeholders]
+platform: Both
+order: 1
+---
+import SdrTable from '../../../components/sdr/SdrTable.astro';
+
+| Property | Value |
+|---|---|
+| **Document** | Business requirements: Taiga Supply Co. (store) and Balsam Daily (news) |
+| **Version** | 1.0, 2 November 2026 |
+| **Status** | Approved (illustrative: both organisations are fictional) |
+| **Owner** | Mark Dykeman, analytics lead |
+| **Next step** | [Solution design reference](/implementation/sdr/) |
+
+**Every variable starts as a question someone needs answered.** This document records those questions before anyone thinks about eVars or GA4 parameters. Each requirement names the decision it will inform, so a request without a decision ("track everything, just in case") has nowhere to go.
+
+## How the requirements were gathered
+
+- A short interview with each owner: *what do you decide, how often, and what would change your mind?*
+- Each answer rewritten as one question, with the decision and the KPIs that would answer it.
+- Priorities agreed with the digital lead: **High** = needed for launch reporting, **Medium** = needed within a quarter.
+- One constraint recorded alongside the questions: no personal information in analytics.
+
+## The requirements
+
+The last column is filled in from the [solution design reference](/implementation/sdr/), so every requirement traces to the variables that answer it, and every variable traces back to a requirement.
+
+<SdrTable view="requirements" />
+
+## Out of scope
+
+- Logged-in behaviour (neither site has accounts).
+- Marketing channel attribution (campaign parameters are collected by default; attribution models are an analysis question, not an implementation one).
+- Personal information of any kind (BR-10).
+
+## Change history
+
+| Version | Date | Change |
+|---|---|---|
+| 1.0 | 2026-11-02 | First approved version |

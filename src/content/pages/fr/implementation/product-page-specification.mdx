@@ -1,0 +1,133 @@
+---
+title: "Spécification type : fiche produit"
+description: "Une spécification de mise en œuvre de style Confluence pour la fiche produit de la boutique démo : maquette numérotée, chaque élément suivi avec son nom de lien, la convention de nommage, les données envoyées et les critères d’acceptation."
+pubDate: 2026-11-02
+category: Livrables de mise en œuvre
+tags: [spécification, maquette, noms de liens, Confluence, développeurs, assurance qualité]
+platform: Both
+order: 5
+---
+
+| Propriété | Valeur |
+|---|---|
+| **Statut** | <span class="lozenge yellow">Prête pour le développement</span> |
+| **Billet** | TAIGA-142 (illustratif) |
+| **Responsable** | Mark Dykeman, responsable de l’analytique |
+| **Développement** | Équipe front-end de la boutique |
+| **Version** | 0.9, 2 novembre 2026 |
+| **Page** | Fiche produit : `/shop/product/{slug}/` et `/fr/boutique/produit/{slug}/` |
+| **Besoins** | [BR-02, BR-03, BR-04, BR-05, BR-08](/fr/mise-en-oeuvre/besoins-d-affaires/) |
+| **Voir aussi** | [SDR](/fr/mise-en-oeuvre/sdr/) · [SDR pour les développeurs](/fr/mise-en-oeuvre/sdr-developpeurs/) · [spécification de la couche de données](/fr/mise-en-oeuvre/specification-couche-de-donnees/) |
+
+<div class="panel info">
+
+**À quoi sert cette page.** La spécification prête pour un billet, pour une seule page. Elle dit exactement quoi construire, numéroté sur une maquette, avec le nom que chaque lien suivi doit envoyer. L’assurance qualité la vérifie ligne par ligne. La spécification est conservée en Markdown dans le dépôt Git du site et publiée ici : la version que lisent les développeurs est celle qui est sous contrôle des changements.
+
+</div>
+
+## 1. Portée
+
+- **Dans la portée :** la fiche produit dans les deux langues, ses données au chargement, et chaque élément interactif de la maquette ci-dessous.
+- **Hors de la portée :** le panier et la caisse (spécification distincte), le bandeau démo du site et le bouton Journal.
+- **Déjà en production :** les données au chargement, `view_item`, `add_to_cart`, `add_to_wishlist`, `select_item` et l’événement du sélecteur de langue. **Nouveau dans cette spécification :** un nom de lien sur chaque élément suivi (lignes marquées *Proposé*).
+
+## 2. Maquette
+
+<figure class="wireframe">
+  <img src="/images/specs/pdp-wireframe-fr.svg" alt="Maquette de la fiche produit avec des marqueurs numérotés de 1 à 11 sur : logo, menu des catégories, panier, sélecteur de langue, fil d’Ariane, pastilles de couleur, quantité, ajouter au panier, ajouter aux favoris, produits suggérés et liens du pied de page." width="1240" height="1100" />
+  <figcaption>Chaque numéro marque un élément qui reçoit de l’analytique. Les numéros correspondent au tableau de la section 3.</figcaption>
+</figure>
+
+## 3. Éléments suivis
+
+| # | Élément | Nom de lien | Exemple | Au clic | Statut |
+|---|---|---|---|---|---|
+| 1 | Logo | `header:logo` | `header:logo` | Clic de lien | <span class="lozenge grey">Proposé</span> |
+| 2 | Menu des catégories | `header:nav:{link_text}` | `header:nav:packs-and-bags` | Clic de lien | <span class="lozenge grey">Proposé</span> |
+| 3 | Panier | `header:cart` | `header:cart` | Clic de lien | <span class="lozenge grey">Proposé</span> |
+| 4 | Sélecteur de langue | `header:language:{to_language}` | `header:language:en` | `language_switch` / `language switched` | <span class="lozenge green">Événement en production</span> nom proposé |
+| 5 | Fil d’Ariane | `pdp:breadcrumb:{link_text}` | `pdp:breadcrumb:packs-and-bags` | Clic de lien | <span class="lozenge grey">Proposé</span> |
+| 6 | Pastille de couleur | `pdp:colour:{colour}:{sku}` | `pdp:colour:buoy:tg-pk-101` | Clic de lien | <span class="lozenge grey">Proposé</span> |
+| 7 | Quantité | aucun (pas un lien; lue par le #8) | — | Rien au changement | — |
+| 8 | Ajouter au panier | `pdp:add-to-cart:{product_name}:{sku}` | `pdp:add-to-cart:tidepool-daypack:tg-pk-101` | `add_to_cart` / `cart add` | <span class="lozenge green">Événement en production</span> nom proposé |
+| 9 | Ajouter aux favoris | `pdp:wishlist:{product_name}:{sku}` | `pdp:wishlist:tidepool-daypack:tg-pk-101` | `add_to_wishlist` / `wishlist add` | <span class="lozenge green">Événement en production</span> nom proposé |
+| 10 | Produit suggéré | `pdp:related:{position}:{product_name}` | `pdp:related:2:squall-rain-shell` | `select_item` / `product clicked` | <span class="lozenge green">Événement en production</span> nom proposé |
+| 11 | Liens du pied de page | `footer:{link_text}` | `footer:sitemap` | Clic de lien | <span class="lozenge grey">Proposé</span> |
+
+Le **clic de lien** est un nouvel événement : `link_click` dans `dataLayer` et `link clicked` dans `adobeDataLayer` (section 5). Quand un élément a déjà son propre événement (#4, #8, #9, #10), le nom de lien est ajouté à cet événement plutôt que d’en envoyer un second. Les noms restent en anglais sur la page française : c’est la langue de rapport du site.
+
+## 4. Convention de nommage des liens
+
+Les liens sont nommés automatiquement à partir de leur **texte**, pour que le processus suive la croissance du site sans liste tenue à la main. Le texte seul ne suffit pas : « Tout voir » paraît à la fois dans le menu et dans le fil d’Ariane, et chaque « Ajouter au panier » dit la même chose. Chaque nom ajoute donc du **contexte** : où se trouve le lien, et sur quoi il agit.
+
+**Format :** `zone:élément:détail…`
+
+<div class="panel note">
+
+**Fixe ou variable?** Dans cette spécification, les mots ordinaires sont **fixes** : tapés exactement comme indiqué, identiques sur chaque page (`pdp`, `add-to-cart`). Les mots entre `{accolades}` sont des **variables** : remplies à la construction de la page ou au clic (`{sku}` → `tg-pk-101`). Un développeur n’invente jamais une partie fixe et ne code jamais une variable en dur.
+
+</div>
+
+| Variable | Remplie avec | Exemple |
+|---|---|---|
+| `{link_text}` | Le texte **anglais** du lien : en minuscules, espaces et symboles changés en traits d’union, `&` en `and` | `packs-and-bags` |
+| `{product_name}` | Le nom anglais du produit, mêmes règles | `tidepool-daypack` |
+| `{sku}` | Le SKU, en minuscules | `tg-pk-101` |
+| `{colour}` | Le nom anglais de la couleur, en minuscules | `buoy` |
+| `{position}` | La position dans son module, à partir de 1 | `2` |
+| `{to_language}` | La langue vers laquelle on passe | `en` |
+
+Règles :
+
+- **Les zones** viennent d’une liste fixe : `header`, `pdp` (corps de la fiche produit), `footer`; les autres spécifications ajoutent les leurs.
+- **En anglais dans chaque version linguistique.** Sur les pages françaises, le texte anglais vient d’un attribut `data-link-name` rendu avec la page; sur les pages anglaises, le texte visible sert directement.
+- **La position seulement là où les éléments se répètent** (grilles de produits, listes). Les positions changent quand la mise en page change : un nom ne dépend donc jamais de la position seule.
+- **Minuscules, traits d’union, deux-points entre les parties, 100 caractères au plus.** Adobe tronque les props à [100 octets](https://experienceleague.adobe.com/fr/docs/analytics/implementation/vars/page-vars/prop); le nom va dans `prop4`.
+
+## 5. Données envoyées
+
+**Chargement de la page** (déjà en production, inchangé) : `page_data_ready` / `page loaded` avec les objets de page et `product`, puis `view_item` / `product viewed`, puis `view_item_list` / `product list viewed` pour les produits suggérés (liste `pdp_related`).
+
+**Clic de lien** (nouveau) :
+
+```js
+// #2, lien de menu « Sacs » sur la page française : le nom reste en anglais
+window.lab.ga4({ event: 'link_click', link_name: 'header:nav:packs-and-bags',
+                 link_region: 'header', link_url: '/fr/boutique/catalogue/?category=packs' });
+window.lab.adobe({ event: 'link clicked',
+                   link: { name: 'header:nav:packs-and-bags', region: 'header', url: '/fr/boutique/catalogue/?category=packs' } });
+```
+
+**Ajouter au panier** (#8 : événement existant, plus le nom de lien) :
+
+```js
+window.lab.ga4({ event: 'add_to_cart', link_name: 'pdp:add-to-cart:tidepool-daypack:tg-pk-101',
+  ecommerce: { currency: 'CAD', value: 129, items: [{ item_id: 'TG-PK-101', item_name: 'Tidepool daypack',
+    item_variant: 'Buoy', price: 129, quantity: 1 }] } });
+window.lab.adobe({ event: 'cart add', link: { name: 'pdp:add-to-cart:tidepool-daypack:tg-pk-101' },
+  productListItems: [{ SKU: 'TG-PK-101', name: 'Tidepool daypack', quantity: 1, priceTotal: 129 }] });
+```
+
+La gestion des balises associe `link.name` / `link_name` à `prop4` et au `link_text` de GA4, selon la [SDR](/fr/mise-en-oeuvre/sdr/). `link_click` et `link clicked` doivent être ajoutés à la liste des événements permis du site avant d’être envoyés; la construction rejette les noms non enregistrés.
+
+## 6. Critères d’acceptation
+
+- [ ] Chaque élément numéroté sauf le #7 envoie exactement un envoi par clic, avec le nom de lien au format ci-dessus.
+- [ ] Les noms de liens sont identiques sur `/shop/product/tidepool-daypack/` et `/fr/boutique/produit/sac-de-jour-tidepool/`.
+- [ ] Le #8 envoie `add_to_cart` avec `value` = prix × quantité, et `item_variant` = la couleur choisie, en anglais.
+- [ ] Le #10 envoie `select_item` avec `index` et `item_list_id: pdp_related`, et son nom de lien utilise la même position, comptée à partir de 1.
+- [ ] Aucun nom de lien ne dépasse 100 caractères ni ne contient de majuscules, d’espaces ou de lettres accentuées.
+- [ ] Rien n’est envoyé au chargement au-delà des trois événements de la section 5.
+
+L’assurance qualité consigne le résultat de chaque critère, avec la date, dans le document d’assurance qualité de cette page (dans [Qualité des données](/fr/qualite-des-donnees/)).
+
+## 7. Questions ouvertes
+
+- Les pastilles de couleur (#6) doivent-elles compter comme des interactions, ou seulement la couleur choisie à l’ajout au panier? *Responsable : marchandisage.*
+- `header` suffit-il comme contexte pour le menu, ou faut-il distinguer `header:nav` et `header:utility` quand d’autres liens s’ajouteront? *Responsable : responsable de l’analytique.*
+
+## Historique des modifications
+
+| Version | Date | Modification |
+|---|---|---|
+| 0.9 | 2026-11-02 | Première ébauche pour la revue de développement |

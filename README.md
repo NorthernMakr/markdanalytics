@@ -283,7 +283,12 @@ add the translated text. Nothing in the analytics changes.
 
 The hub page, menu, sitemap, RSS and llms.txt pick it up on their own.
 Files starting with `_` and pages with `draft: true` are never published.
-To add a whole section, see `src/config/sections.ts`. Old addresses that move
+To add a whole section, see `src/config/sections.ts`.
+
+The requirements and SDR pages, and the Excel workbooks in `public/downloads/`,
+all come from `src/data/sdr.json`. After editing it, run
+`python3 scripts/build-sdr-xlsx.py`. The spec wireframe comes from
+`python3 scripts/build-wireframes.py`. Old addresses that move
 get a line in `public/_redirects`.
 
 ## Where things live

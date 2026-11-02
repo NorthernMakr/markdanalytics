@@ -1,0 +1,26 @@
+---
+title: "SDR pour les développeurs"
+description: "La vue développeur de la référence de conception de la solution : ce que chaque page doit exposer dans la couche de données, quand l’envoyer, et une raison en une ligne pour chaque élément."
+pubDate: 2026-11-02
+category: Livrables de mise en œuvre
+tags: [SDR, développeurs, couche de données]
+platform: Both
+order: 3
+---
+import SdrTable from '../../../../components/sdr/SdrTable.astro';
+
+**Les développeurs n’ont pas besoin de savoir ce qu’est une eVar.** Ils doivent savoir quoi exposer, quand, et pourquoi l’effort en vaut la peine. Cette vue de la [SDR](/fr/mise-en-oeuvre/sdr/) laisse de côté la configuration d’Adobe et de GA4 (la gestion des balises s’en charge) et limite chaque raison à une ligne, tirée du [besoin d’affaires](/fr/mise-en-oeuvre/besoins-d-affaires/) qu’elle sert.
+
+## Règles de base
+
+- Envoyer l’objet de page **avant** tout gestionnaire de balises; envoyer les événements **au moment de l’action**, pas sur une minuterie.
+- **Des valeurs en anglais dans chaque version linguistique.** Utiliser la source anglaise stable (SKU, slug, titre anglais), jamais le texte affiché traduit.
+- **Aucun renseignement personnel**, jamais : ni nom, ni courriel, ni adresse, ni texte tapé.
+- Les nombres en nombres (`129`, pas `"129"`); les prix sont des prix unitaires.
+- Les noms, types et exemples exacts de chaque clé sont dans la [spécification de la couche de données](/fr/mise-en-oeuvre/specification-couche-de-donnees/).
+
+## Quoi exposer
+
+<SdrTable view="developers" />
+
+Les props ne sont pas listées à part : la gestion des balises les remplit à partir des mêmes clés de la couche de données.

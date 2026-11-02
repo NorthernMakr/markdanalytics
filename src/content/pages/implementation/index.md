@@ -24,6 +24,6 @@ Each document feeds the next. A change usually travels down the chain in this or
 
 The SDR comes in two forms: a web page for reading and an Excel workbook for working in, since that's where most teams maintain theirs.
 
-## Available now
+## Start here
 
-The pages listed below are ready. The requirements, SDR, the two readable SDR versions and the sample specification are being written now, for the demo store first.
+Read them in order: [business requirements](/implementation/business-requirements/) → [SDR](/implementation/sdr/) ([Excel](/downloads/markdanalytics-sdr-en.xlsx)) → [for developers](/implementation/sdr-developers/) and [for business users](/implementation/sdr-business-users/) → [product page specification](/implementation/product-page-specification/). The requirements, SDR and both readable versions are generated from one data file, so they always agree.

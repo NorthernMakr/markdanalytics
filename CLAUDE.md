@@ -20,6 +20,8 @@ Read this first; open other files only when the task needs them.
 | Adobe Web SDK mapping (eVars/props/XDM) | `public/lab/websdk-bridge.js` |
 | GA4 container | `gtm/build-container.py` → regenerate JSON with `python3 gtm/build-container.py` |
 | Demo products / stories (with French text) | `src/data/products.ts`, `src/data/articles.ts` |
+| Requirements + SDR (web pages AND Excel) | `src/data/sdr.json` → pages render it via `src/components/sdr/SdrTable.astro`; Excel: `python3 scripts/build-sdr-xlsx.py` then recalc (xlsx skill `recalc.py`) |
+| Spec wireframe (numbered, EN/FR) | `python3 scripts/build-wireframes.py` → `public/images/specs/` |
 | Old URL → new URL | `public/_redirects` |
 | Sitemap, RSS, llms.txt | generated from sections via `src/lib/indexable.ts`; no manual edits |
 
@@ -54,15 +56,14 @@ npm run test:adobe                   # eVars/props on every Web SDK hit (uses la
 (Playwright: `npm install --no-save playwright && npx playwright install chromium`.)
 Commit as Mark Dykeman <mark.toronto@gmail.com>.
 
-## Work in progress (Nov 2026 restructure)
+## Status (Nov 2026)
 
 Structure follows Mark's site map: Basics, Process, Implementation artifacts, Data quality,
-Case studies, Store, Media site, About. Still to build:
-- Implementation: mock business requirements → Adobe SDR (web + Excel) → developer and
-  business-user versions → Confluence-style spec with numbered wireframe + link-name table.
-  Link names = link text + context (e.g. `buy-now:<product_name>:<sku>`); spec must state which
-  parts are fixed vs variable. `implementation/data-layer-specification.md` is a draft.
-- Data quality: why QA matters; QA docs = spec tables + checked/date/method columns, quarterly
-  cadence, automated checks listed, illustrative history; spider design page (build later,
-  downloadable for visitors, possibly a Claude agent).
-- About (résumé, what Mark is looking for) and Case studies are placeholders until Mark supplies content.
+Case studies, Store, Media site, About.
+- Implementation artifacts: DONE (requirements, SDR + Excel, developer/business views,
+  product-page spec with wireframe + link naming convention, data layer spec). Link names
+  (`link_click` / `link clicked`, region:element:{variables}) are SPECIFIED but not built.
+- Data quality: TODO: why QA matters; QA docs = spec tables + checked/date/method columns,
+  quarterly cadence, automated checks listed, illustrative history; spider design page
+  (build later, downloadable for visitors, possibly a Claude agent).
+- About (résumé, what Mark is looking for) and Case studies: placeholders until Mark supplies content.

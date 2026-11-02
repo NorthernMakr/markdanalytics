@@ -1,0 +1,45 @@
+---
+title: "Document type de besoins d’affaires"
+description: "Les questions d’affaires derrière le marquage de la boutique et du site de nouvelles démo : ce que chaque partie prenante doit savoir, la décision éclairée, les indicateurs et les variables qui y répondent."
+pubDate: 2026-11-02
+category: Livrables de mise en œuvre
+tags: [besoins, BRD, indicateurs, parties prenantes]
+platform: Both
+order: 1
+---
+import SdrTable from '../../../../components/sdr/SdrTable.astro';
+
+| Propriété | Valeur |
+|---|---|
+| **Document** | Besoins d’affaires : Taiga Supply Co. (boutique) et Balsam Daily (nouvelles) |
+| **Version** | 1.0, 2 novembre 2026 |
+| **Statut** | Approuvé (illustratif : les deux organisations sont fictives) |
+| **Responsable** | Mark Dykeman, responsable de l’analytique |
+| **Étape suivante** | [Référence de conception de la solution](/fr/mise-en-oeuvre/sdr/) |
+
+**Chaque variable commence par une question à laquelle quelqu’un a besoin d’une réponse.** Ce document consigne ces questions avant que quiconque pense aux eVars ou aux paramètres GA4. Chaque besoin nomme la décision qu’il éclairera : une demande sans décision (« tout suivre, au cas où ») n’a donc nulle part où aller.
+
+## Comment les besoins ont été recueillis
+
+- Une courte entrevue avec chaque responsable : *que décidez-vous, à quelle fréquence, et qu’est-ce qui vous ferait changer d’avis?*
+- Chaque réponse reformulée en une question, avec la décision et les indicateurs qui y répondraient.
+- Priorités convenues avec le responsable du numérique : **Haute** = nécessaire aux rapports de lancement, **Moyenne** = nécessaire d’ici un trimestre.
+- Une contrainte consignée avec les questions : aucun renseignement personnel dans l’analytique.
+
+## Les besoins
+
+La dernière colonne est remplie à partir de la [référence de conception de la solution](/fr/mise-en-oeuvre/sdr/) : chaque besoin mène aux variables qui y répondent, et chaque variable remonte à un besoin.
+
+<SdrTable view="requirements" />
+
+## Hors de la portée
+
+- Le comportement des utilisateurs connectés (aucun des deux sites n’a de comptes).
+- L’attribution des canaux marketing (les paramètres de campagne sont recueillis par défaut; les modèles d’attribution relèvent de l’analyse, pas de la mise en œuvre).
+- Tout renseignement personnel (BR-10).
+
+## Historique des modifications
+
+| Version | Date | Modification |
+|---|---|---|
+| 1.0 | 2026-11-02 | Première version approuvée |

@@ -1,0 +1,24 @@
+---
+title: "SDR pour les utilisateurs d’affaires"
+description: "La vue de l’utilisateur des rapports : ce que signifie chaque variable en langage clair, à quelles mesures l’associer, et pourquoi c’est une eVar ou une prop, pour les utilisateurs d’Adobe et de GA4."
+pubDate: 2026-11-02
+category: Livrables de mise en œuvre
+tags: [SDR, utilisateurs d’affaires, Analysis Workspace, rapports GA4]
+platform: Both
+order: 4
+---
+import SdrTable from '../../../../components/sdr/SdrTable.astro';
+
+**Une variable n’est utile que si les gens savent la lire.** Cette vue de la [SDR](/fr/mise-en-oeuvre/sdr/) s’adresse à quiconque construit des rapports dans Analysis Workspace d’Adobe ou dans GA4 : ce que signifie chaque variable, à côté de quoi la placer, et pourquoi elle a été configurée ainsi.
+
+## Trois choses à savoir d’abord
+
+- **Les eVars décrivent; les props comptent.** Utilisez les eVars (type de page, section, langue) pour ventiler les commandes, les revenus et les autres conversions. Utilisez les props (nom de page, interaction, nom de la vidéo, nom du lien) pour compter combien de fois une chose s’est produite, et pour les rapports de cheminement.
+- **Chaque valeur est en anglais**, même sur les pages françaises. Pour comparer les langues, ajoutez **Langue de la page** comme ventilation ou segment.
+- **Les revenus viennent des produits.** Dans Adobe, les revenus sont la somme des produits de chaque commande; les taxes et la livraison sont consignées à part. Dans GA4, la `value` de l’achat exclut aussi les taxes et la livraison.
+
+## Les variables
+
+<SdrTable view="business" />
+
+Les lignes marquées **Proposé** ne sont pas encore recueillies : ne construisez pas de rapports dessus avant leur mise en production.
