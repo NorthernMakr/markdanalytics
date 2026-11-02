@@ -180,7 +180,9 @@ export function purchase(order: Order): boolean {
     ecommerce: {
       ...c.ga4,
       transaction_id: order.id,
-      value: order.totals.total,
+      // value stays the item subtotal (sum of price × quantity) from cartPayload:
+      // Google says value excludes tax and shipping, which have their own fields.
+      // (Adobe's XDM order.priceTotal below is the opposite: it includes tax.)
       tax: order.totals.tax,
       shipping: order.totals.shipping,
       shipping_tier: order.tier,
