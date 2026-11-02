@@ -28,7 +28,7 @@ const highlighted = JSON.stringify(specimen, null, 2)
   .replace('<span class="s">"…"</span>', '<span class="s" data-bl>"…"</span>')
   .replace(/("languageMatch"<\/span>: )true/, '$1<span data-lm>true</span>');
 ---
-<BlogLayout title={`${siteMeta.blogName} — ${tr(lang, 'analytics implementation notes', 'notes d’implémentation en analytique')}`} pageData={pageData} jsonLd={graph()}>
+<BlogLayout title={`${siteMeta.blogName} — ${tr(lang, siteMeta.blogTagline, siteMeta.blogTaglineFr).replace(/\.$/, '')}`} pageData={pageData} jsonLd={graph()}>
   <section class="hub-hero">
     <div class="blog-wrap">
       <div>

@@ -20,7 +20,7 @@ When the site is built, each page gets a small object describing it:
     "name": "blog:how-this-sites-data-layer-works",
     "type": "article",
     "section": "blog",
-    "siteName": "Tag & Layer",
+    "siteName": "Mark D. Analytics",
     "path": "/blog/how-this-sites-data-layer-works/",
     "language": "en-CA",
     "environment": "production"

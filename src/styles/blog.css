@@ -1,4 +1,4 @@
-/* Tag & Layer — the blog and site hub */
+/* Mark D. Analytics — the blog and site hub */
 .blog {
   --paper: #F5F7FA;
   --ink: #14213D;
@@ -29,6 +29,7 @@
 /* Hub hero: the page's own data object is the hero image */
 .hub-hero { padding: 64px 0 48px; }
 .hub-hero .blog-wrap { display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; }
+.hub-hero .blog-wrap > * { min-width: 0; } /* long code lines scroll inside the specimen instead of widening the page */
 .hub-hero h1 { font: 700 clamp(38px, 5.5vw, 60px)/1.05 var(--serif); letter-spacing: -0.015em; margin: 0 0 18px; }
 .hub-hero p { font-size: 19px; color: var(--muted); max-width: 34ch; margin: 0; }
 .specimen {

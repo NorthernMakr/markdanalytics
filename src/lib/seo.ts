@@ -6,7 +6,7 @@ import { siteMeta } from '../config/tags';
 export const SITE_URL = (import.meta.env.SITE ?? 'https://markdanalytics.ca').replace(/\/$/, '');
 export const abs = (path: string) => SITE_URL + path;
 
-export const DEFAULT_IMAGE = { url: '/og-default.png', width: 1200, height: 630, alt: `${siteMeta.blogName}: analytics implementation notes by ${siteMeta.owner}` };
+export const DEFAULT_IMAGE = { url: '/og-default.png', width: 1200, height: 630, alt: `${siteMeta.blogName}: ${siteMeta.blogTagline} By ${siteMeta.owner}.` };
 
 const PERSON_ID = abs('/#person');
 const SITE_ID = abs('/#website');
