@@ -66,7 +66,7 @@
   var webPage = function () {
     var p = page();
     // name (pageName) is English on every version; URL is the real address,
-    // in the page's language. Page language is in prop3/eVar2.
+    // in the page's language. Page language is in eVar4.
     return { webPageDetails: { name: p.name, URL: location.href, siteSection: p.section } };
   };
   var items = function (e) { return e.productListItems ? clone(e.productListItems) : undefined; };
@@ -86,10 +86,10 @@
   //
   // eVars DESCRIBE the context. They're sent on EVERY request (the page view
   // and every interaction), so each hit carries its own context and no report
-  // depends on persistence. Intended report suite settings: eVar1-5 expire on
+  // depends on persistence. Intended report suite settings: eVar1-6 expire on
   // Hit, allocation Most recent (last).
-  //   eVar1 page type, eVar2 site section, eVar3 page language,
-  //   eVar4 browser language, eVar5 language match
+  //   eVar1 page name, eVar2 page type, eVar3 site section, eVar4 page language,
+  //   eVar5 browser language, eVar6 language match
   //
   // Props COUNT things, on the hit where they happen (props never persist):
   //   prop1 page name (page views), prop2 interaction (every non-page-view hit,
@@ -99,11 +99,12 @@
     var p = page();
     var u = (window.labPage && window.labPage.user) || {};
     return {
-      eVar1: p.type,
-      eVar2: p.section,
-      eVar3: p.language,                         // e.g. fr-CA
-      eVar4: u.browserLanguage,                  // e.g. en-US
-      eVar5: u.languageMatch ? 'match' : 'mismatch',
+      eVar1: p.name,                             // e.g. shop:product:tidepool-daypack
+      eVar2: p.type,
+      eVar3: p.section,
+      eVar4: p.language,                         // e.g. fr-CA
+      eVar5: u.browserLanguage,                  // e.g. en-US
+      eVar6: u.languageMatch ? 'match' : 'mismatch',
     };
   }
   function countVars(e) {

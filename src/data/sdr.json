@@ -1,195 +1,872 @@
 {
   "_about": "Single source for the business requirements and the solution design reference (SDR). Rendered by src/components/sdr/*.astro on the Implementation pages and exported to Excel by scripts/build-sdr-xlsx.py (public/downloads/). Edit here, then run: python3 scripts/build-sdr-xlsx.py",
-  "version": "1.0",
+  "version": "1.1",
   "updated": "2026-11-02",
   "requirements": [
-    { "id": "BR-01", "site": "both", "priority": "High",
-      "owner": { "en": "Digital lead", "fr": "Responsable du numérique" },
-      "question": { "en": "Which pages, page types and sections draw visitors and keep them engaged?", "fr": "Quelles pages, quels types de pages et quelles sections attirent les visiteurs et les retiennent?" },
-      "decision": { "en": "Where to invest content and design effort.", "fr": "Où investir les efforts de contenu et de design." },
-      "kpis": { "en": "Page views, visits, entries and exits by page and page type", "fr": "Pages vues, visites, entrées et sorties par page et type de page" } },
-    { "id": "BR-02", "site": "store", "priority": "High",
-      "owner": { "en": "E-commerce manager", "fr": "Gestionnaire du commerce en ligne" },
-      "question": { "en": "How does the purchase funnel perform, from product view to order, and where do visitors drop off?", "fr": "Comment se comporte l’entonnoir d’achat, de la fiche produit à la commande, et où les visiteurs décrochent-ils?" },
-      "decision": { "en": "Which checkout step to fix first.", "fr": "Quelle étape de la caisse corriger en premier." },
-      "kpis": { "en": "Product views, cart additions, checkouts, orders; step-to-step conversion", "fr": "Vues de produits, ajouts au panier, passages à la caisse, commandes; conversion d’une étape à l’autre" } },
-    { "id": "BR-03", "site": "store", "priority": "High",
-      "owner": { "en": "Merchandising", "fr": "Marchandisage" },
-      "question": { "en": "Which products, categories and colours sell?", "fr": "Quels produits, catégories et couleurs se vendent?" },
-      "decision": { "en": "Stock, pricing and what to feature.", "fr": "Stocks, prix et produits à mettre en vedette." },
-      "kpis": { "en": "Revenue, units and orders by product, category and colour", "fr": "Revenus, unités et commandes par produit, catégorie et couleur" } },
-    { "id": "BR-04", "site": "store", "priority": "Medium",
-      "owner": { "en": "Merchandising", "fr": "Marchandisage" },
-      "question": { "en": "Which product lists and internal promotions lead to product views and sales?", "fr": "Quelles listes de produits et promotions internes mènent à des vues de produits et à des ventes?" },
-      "decision": { "en": "Which placements to keep, change or remove.", "fr": "Quels emplacements garder, modifier ou retirer." },
-      "kpis": { "en": "List and promotion clicks, click-through rate, revenue by list", "fr": "Clics sur les listes et les promotions, taux de clics, revenus par liste" } },
-    { "id": "BR-05", "site": "both", "priority": "High",
-      "owner": { "en": "Digital lead", "fr": "Responsable du numérique" },
-      "question": { "en": "How do English and French visitors behave differently, and are visitors reading in the language their browser prefers?", "fr": "En quoi les visiteurs anglophones et francophones se comportent-ils différemment, et lisent-ils dans la langue que préfère leur navigateur?" },
-      "decision": { "en": "Translation priorities and whether to suggest a language switch.", "fr": "Priorités de traduction et pertinence d’une invitation à changer de langue." },
-      "kpis": { "en": "Conversion and engagement by page language; language mismatch rate", "fr": "Conversion et engagement par langue de page; taux de non-concordance de langue" } },
-    { "id": "BR-06", "site": "media", "priority": "High",
-      "owner": { "en": "Editor-in-chief", "fr": "Rédacteur en chef" },
-      "question": { "en": "Which stories and sections hold readers to the end?", "fr": "Quels articles et quelles rubriques retiennent les lecteurs jusqu’à la fin?" },
-      "decision": { "en": "Assignment and story length.", "fr": "Affectation des sujets et longueur des articles." },
-      "kpis": { "en": "Article views, articles read (75% scroll), read rate by section", "fr": "Vues d’articles, articles lus (défilement de 75 %), taux de lecture par rubrique" } },
-    { "id": "BR-07", "site": "media", "priority": "Medium",
-      "owner": { "en": "Video producer", "fr": "Réalisateur vidéo" },
-      "question": { "en": "How much of each video is watched?", "fr": "Quelle part de chaque vidéo est regardée?" },
-      "decision": { "en": "Video length and where to place video in stories.", "fr": "Durée des vidéos et place de la vidéo dans les articles." },
-      "kpis": { "en": "Video starts, completes, completion rate, milestones reached", "fr": "Démarrages, visionnements complets, taux de complétion, jalons atteints" } },
-    { "id": "BR-08", "site": "both", "priority": "Medium",
-      "owner": { "en": "UX designer", "fr": "Conceptrice UX" },
-      "question": { "en": "Which links, buttons and modules do visitors use?", "fr": "Quels liens, boutons et modules les visiteurs utilisent-ils?" },
-      "decision": { "en": "Layout changes and what to remove.", "fr": "Changements de mise en page et éléments à retirer." },
-      "kpis": { "en": "Clicks by link name and module; clicks per page view", "fr": "Clics par nom de lien et par module; clics par page vue" } },
-    { "id": "BR-09", "site": "both", "priority": "Medium",
-      "owner": { "en": "Site owner", "fr": "Propriétaire du site" },
-      "question": { "en": "How many enquiries come through the contact form, on which topics, and how many fail?", "fr": "Combien de demandes arrivent par le formulaire de contact, sur quels sujets, et combien échouent?" },
-      "decision": { "en": "Follow-up capacity and form fixes.", "fr": "Capacité de suivi et correctifs au formulaire." },
-      "kpis": { "en": "Form starts, leads, errors by field, completion rate", "fr": "Débuts de formulaire, demandes, erreurs par champ, taux de complétion" } },
-    { "id": "BR-10", "site": "both", "priority": "High",
-      "owner": { "en": "Privacy officer", "fr": "Responsable de la protection des renseignements personnels" },
-      "question": { "en": "Constraint: no personal information may be collected in analytics.", "fr": "Contrainte : aucun renseignement personnel ne peut être recueilli dans l’analytique." },
-      "decision": { "en": "Applies to every variable below.", "fr": "S’applique à chaque variable ci-dessous." },
-      "kpis": { "en": "Zero personal-data keys found in automated checks", "fr": "Aucune clé de données personnelles trouvée par les vérifications automatisées" } }
+    {
+      "id": "BR-01",
+      "site": "both",
+      "priority": "High",
+      "owner": {
+        "en": "Digital lead",
+        "fr": "Responsable du numérique"
+      },
+      "question": {
+        "en": "Which pages, page types and sections draw visitors and keep them engaged?",
+        "fr": "Quelles pages, quels types de pages et quelles sections attirent les visiteurs et les retiennent?"
+      },
+      "decision": {
+        "en": "Where to invest content and design effort.",
+        "fr": "Où investir les efforts de contenu et de design."
+      },
+      "kpis": {
+        "en": "Page views, visits, entries and exits by page and page type",
+        "fr": "Pages vues, visites, entrées et sorties par page et type de page"
+      }
+    },
+    {
+      "id": "BR-02",
+      "site": "store",
+      "priority": "High",
+      "owner": {
+        "en": "E-commerce manager",
+        "fr": "Gestionnaire du commerce en ligne"
+      },
+      "question": {
+        "en": "How does the purchase funnel perform, from product view to order, and where do visitors drop off?",
+        "fr": "Comment se comporte l’entonnoir d’achat, de la fiche produit à la commande, et où les visiteurs décrochent-ils?"
+      },
+      "decision": {
+        "en": "Which checkout step to fix first.",
+        "fr": "Quelle étape de la caisse corriger en premier."
+      },
+      "kpis": {
+        "en": "Product views, cart additions, checkouts, orders; step-to-step conversion",
+        "fr": "Vues de produits, ajouts au panier, passages à la caisse, commandes; conversion d’une étape à l’autre"
+      }
+    },
+    {
+      "id": "BR-03",
+      "site": "store",
+      "priority": "High",
+      "owner": {
+        "en": "Merchandising",
+        "fr": "Marchandisage"
+      },
+      "question": {
+        "en": "Which products, categories and colours sell?",
+        "fr": "Quels produits, catégories et couleurs se vendent?"
+      },
+      "decision": {
+        "en": "Stock, pricing and what to feature.",
+        "fr": "Stocks, prix et produits à mettre en vedette."
+      },
+      "kpis": {
+        "en": "Revenue, units and orders by product, category and colour",
+        "fr": "Revenus, unités et commandes par produit, catégorie et couleur"
+      }
+    },
+    {
+      "id": "BR-04",
+      "site": "store",
+      "priority": "Medium",
+      "owner": {
+        "en": "Merchandising",
+        "fr": "Marchandisage"
+      },
+      "question": {
+        "en": "Which product lists and internal promotions lead to product views and sales?",
+        "fr": "Quelles listes de produits et promotions internes mènent à des vues de produits et à des ventes?"
+      },
+      "decision": {
+        "en": "Which placements to keep, change or remove.",
+        "fr": "Quels emplacements garder, modifier ou retirer."
+      },
+      "kpis": {
+        "en": "List and promotion clicks, click-through rate, revenue by list",
+        "fr": "Clics sur les listes et les promotions, taux de clics, revenus par liste"
+      }
+    },
+    {
+      "id": "BR-05",
+      "site": "both",
+      "priority": "High",
+      "owner": {
+        "en": "Digital lead",
+        "fr": "Responsable du numérique"
+      },
+      "question": {
+        "en": "How do English and French visitors behave differently, and are visitors reading in the language their browser prefers?",
+        "fr": "En quoi les visiteurs anglophones et francophones se comportent-ils différemment, et lisent-ils dans la langue que préfère leur navigateur?"
+      },
+      "decision": {
+        "en": "Translation priorities and whether to suggest a language switch.",
+        "fr": "Priorités de traduction et pertinence d’une invitation à changer de langue."
+      },
+      "kpis": {
+        "en": "Conversion and engagement by page language; language mismatch rate",
+        "fr": "Conversion et engagement par langue de page; taux de non-concordance de langue"
+      }
+    },
+    {
+      "id": "BR-06",
+      "site": "media",
+      "priority": "High",
+      "owner": {
+        "en": "Editor-in-chief",
+        "fr": "Rédacteur en chef"
+      },
+      "question": {
+        "en": "Which stories and sections hold readers to the end?",
+        "fr": "Quels articles et quelles rubriques retiennent les lecteurs jusqu’à la fin?"
+      },
+      "decision": {
+        "en": "Assignment and story length.",
+        "fr": "Affectation des sujets et longueur des articles."
+      },
+      "kpis": {
+        "en": "Article views, articles read (75% scroll), read rate by section",
+        "fr": "Vues d’articles, articles lus (défilement de 75 %), taux de lecture par rubrique"
+      }
+    },
+    {
+      "id": "BR-07",
+      "site": "media",
+      "priority": "Medium",
+      "owner": {
+        "en": "Video producer",
+        "fr": "Réalisateur vidéo"
+      },
+      "question": {
+        "en": "How much of each video is watched?",
+        "fr": "Quelle part de chaque vidéo est regardée?"
+      },
+      "decision": {
+        "en": "Video length and where to place video in stories.",
+        "fr": "Durée des vidéos et place de la vidéo dans les articles."
+      },
+      "kpis": {
+        "en": "Video starts, completes, completion rate, milestones reached",
+        "fr": "Démarrages, visionnements complets, taux de complétion, jalons atteints"
+      }
+    },
+    {
+      "id": "BR-08",
+      "site": "both",
+      "priority": "Medium",
+      "owner": {
+        "en": "UX designer",
+        "fr": "Conceptrice UX"
+      },
+      "question": {
+        "en": "Which links, buttons and modules do visitors use?",
+        "fr": "Quels liens, boutons et modules les visiteurs utilisent-ils?"
+      },
+      "decision": {
+        "en": "Layout changes and what to remove.",
+        "fr": "Changements de mise en page et éléments à retirer."
+      },
+      "kpis": {
+        "en": "Clicks by link name and module; clicks per page view",
+        "fr": "Clics par nom de lien et par module; clics par page vue"
+      }
+    },
+    {
+      "id": "BR-09",
+      "site": "both",
+      "priority": "Medium",
+      "owner": {
+        "en": "Site owner",
+        "fr": "Propriétaire du site"
+      },
+      "question": {
+        "en": "How many enquiries come through the contact form, on which topics, and how many fail?",
+        "fr": "Combien de demandes arrivent par le formulaire de contact, sur quels sujets, et combien échouent?"
+      },
+      "decision": {
+        "en": "Follow-up capacity and form fixes.",
+        "fr": "Capacité de suivi et correctifs au formulaire."
+      },
+      "kpis": {
+        "en": "Form starts, leads, errors by field, completion rate",
+        "fr": "Débuts de formulaire, demandes, erreurs par champ, taux de complétion"
+      }
+    },
+    {
+      "id": "BR-10",
+      "site": "both",
+      "priority": "High",
+      "owner": {
+        "en": "Privacy officer",
+        "fr": "Responsable de la protection des renseignements personnels"
+      },
+      "question": {
+        "en": "Constraint: no personal information may be collected in analytics.",
+        "fr": "Contrainte : aucun renseignement personnel ne peut être recueilli dans l’analytique."
+      },
+      "decision": {
+        "en": "Applies to every variable below.",
+        "fr": "S’applique à chaque variable ci-dessous."
+      },
+      "kpis": {
+        "en": "Zero personal-data keys found in automated checks",
+        "fr": "Aucune clé de données personnelles trouvée par les vérifications automatisées"
+      }
+    }
   ],
   "variables": [
-    { "adobe": "pageName", "type": "page", "status": "live", "reqs": ["BR-01"],
-      "name": { "en": "Page name", "fr": "Nom de page" },
-      "dl": "page.name", "example": "shop:product:tidepool-daypack", "expiry": "Hit", "allocation": "—",
-      "setOn": { "en": "Page views", "fr": "Pages vues" },
-      "meaning": { "en": "Which page was viewed. Lowercase, colon-separated, English on every language version.", "fr": "La page vue. En minuscules, séparée par des deux-points, en anglais dans chaque version linguistique." },
-      "metrics": { "en": "Page views, visits, entries, exits, bounce rate", "fr": "Pages vues, visites, entrées, sorties, taux de rebond" },
-      "why": { "en": "Adobe's built-in page dimension; every report starts here.", "fr": "La dimension de page native d’Adobe; tout rapport commence ici." },
-      "ga4": { "name": "page_title (overridden) + page_name", "scope": "Event" } },
-    { "adobe": "eVar1", "type": "eVar", "status": "live", "reqs": ["BR-01", "BR-02"],
-      "name": { "en": "Page type", "fr": "Type de page" },
-      "dl": "page.type", "example": "product detail", "expiry": "Hit", "allocation": "Most recent",
-      "setOn": { "en": "Every hit", "fr": "Chaque hit" },
-      "meaning": { "en": "The template of the page: home, article, product detail, cart, checkout…", "fr": "Le gabarit de la page : accueil, article, fiche produit, panier, caisse…" },
-      "metrics": { "en": "Page views, orders, revenue, cart additions", "fr": "Pages vues, commandes, revenus, ajouts au panier" },
-      "why": { "en": "eVar: describes context, and can be paired with conversion metrics because it's sent on every hit.", "fr": "eVar : décrit le contexte, et s’associe aux mesures de conversion puisqu’elle part sur chaque hit." },
-      "ga4": { "name": "page_type", "scope": "Event" } },
-    { "adobe": "eVar2", "type": "eVar", "status": "live", "reqs": ["BR-01"],
-      "name": { "en": "Site section", "fr": "Section du site" },
-      "dl": "page.section", "example": "shop", "expiry": "Hit", "allocation": "Most recent",
-      "setOn": { "en": "Every hit", "fr": "Chaque hit" },
-      "meaning": { "en": "The top-level area of the site: shop, media, process, implementation…", "fr": "La grande zone du site : boutique, médias, processus, mise en œuvre…" },
-      "metrics": { "en": "Visits, page views, orders", "fr": "Visites, pages vues, commandes" },
-      "why": { "en": "eVar: descriptive context, sent on every hit.", "fr": "eVar : contexte descriptif, envoyé sur chaque hit." },
-      "ga4": { "name": "site_section", "scope": "Event" } },
-    { "adobe": "eVar3", "type": "eVar", "status": "live", "reqs": ["BR-05"],
-      "name": { "en": "Page language", "fr": "Langue de la page" },
-      "dl": "page.language", "example": "fr-CA", "expiry": "Hit", "allocation": "Most recent",
-      "setOn": { "en": "Every hit", "fr": "Chaque hit" },
-      "meaning": { "en": "The language version of the page being read.", "fr": "La version linguistique de la page lue." },
-      "metrics": { "en": "Orders, revenue, conversion rate, articles read", "fr": "Commandes, revenus, taux de conversion, articles lus" },
-      "why": { "en": "eVar: the main language breakdown for every report.", "fr": "eVar : la ventilation par langue de tous les rapports." },
-      "ga4": { "name": "page_language", "scope": "Event" } },
-    { "adobe": "eVar4", "type": "eVar", "status": "live", "reqs": ["BR-05"],
-      "name": { "en": "Browser language", "fr": "Langue du navigateur" },
-      "dl": "user.browserLanguage", "example": "en-US", "expiry": "Hit", "allocation": "Most recent",
-      "setOn": { "en": "Every hit", "fr": "Chaque hit" },
-      "meaning": { "en": "The language the visitor's browser asks for.", "fr": "La langue que demande le navigateur du visiteur." },
-      "metrics": { "en": "Visits, conversion rate", "fr": "Visites, taux de conversion" },
-      "why": { "en": "eVar: describes the audience; Adobe's own Language dimension uses a different format.", "fr": "eVar : décrit l’auditoire; la dimension Langue d’Adobe utilise un autre format." },
-      "ga4": { "name": "browser_language", "scope": "Event" } },
-    { "adobe": "eVar5", "type": "eVar", "status": "live", "reqs": ["BR-05"],
-      "name": { "en": "Language match", "fr": "Concordance de langue" },
-      "dl": "user.languageMatch", "example": "mismatch", "expiry": "Hit", "allocation": "Most recent",
-      "setOn": { "en": "Every hit", "fr": "Chaque hit" },
-      "meaning": { "en": "match / mismatch: is the visitor reading in their browser's language?", "fr": "match / mismatch : le visiteur lit-il dans la langue de son navigateur?" },
-      "metrics": { "en": "Visits, entries, language switches", "fr": "Visites, entrées, changements de langue" },
-      "why": { "en": "eVar: a segment-ready flag on every hit.", "fr": "eVar : un indicateur prêt à segmenter, sur chaque hit." },
-      "ga4": { "name": "language_match", "scope": "Event" } },
-    { "adobe": "eVar6", "type": "eVar", "status": "proposed", "reqs": ["BR-04"],
-      "name": { "en": "Product list (merchandising)", "fr": "Liste de produits (marchandisage)" },
-      "dl": "item_list_name / productList.name", "example": "Catalog: Packs & bags", "expiry": "Purchase", "allocation": "Most recent",
-      "setOn": { "en": "Product clicks from a list (product syntax)", "fr": "Clics sur un produit dans une liste (syntaxe produit)" },
-      "meaning": { "en": "Which list a product was found in, kept with that product until it's bought.", "fr": "La liste où un produit a été trouvé, conservée avec ce produit jusqu’à l’achat." },
-      "metrics": { "en": "Product views, cart additions, revenue", "fr": "Vues de produits, ajouts au panier, revenus" },
-      "why": { "en": "Merchandising eVar: credit has to follow each product to the purchase, which only an eVar can do.", "fr": "eVar de marchandisage : le crédit doit suivre chaque produit jusqu’à l’achat, ce que seule une eVar peut faire." },
-      "ga4": { "name": "item_list_name (item)", "scope": "Item" } },
-    { "adobe": "eVar7", "type": "eVar", "status": "proposed", "reqs": ["BR-04"],
-      "name": { "en": "Internal promotion", "fr": "Promotion interne" },
-      "dl": "promotion.id + promotion.name", "example": "P-FALL-SHIP:Free shipping on fall orders", "expiry": "Visit", "allocation": "Most recent",
-      "setOn": { "en": "Promotion clicks", "fr": "Clics sur une promotion" },
-      "meaning": { "en": "The last internal promotion clicked in the visit.", "fr": "La dernière promotion interne cliquée pendant la visite." },
-      "metrics": { "en": "Orders, revenue, promotion click-through", "fr": "Commandes, revenus, taux de clics des promotions" },
-      "why": { "en": "eVar with visit expiry: a promotion should get credit for an order later in the same visit.", "fr": "eVar à expiration à la visite : une promotion doit être créditée d’une commande plus tard dans la même visite." },
-      "ga4": { "name": "promotion_name", "scope": "Item" } },
-    { "adobe": "prop1", "type": "prop", "status": "live", "reqs": ["BR-01"],
-      "name": { "en": "Page name (count)", "fr": "Nom de page (compte)" },
-      "dl": "page.name", "example": "shop:cart", "expiry": "Hit", "allocation": "—",
-      "setOn": { "en": "Page views", "fr": "Pages vues" },
-      "meaning": { "en": "Counts page views per page, with pathing switched on.", "fr": "Compte les pages vues par page, avec le cheminement activé." },
-      "metrics": { "en": "Occurrences, page views, entries, exits", "fr": "Occurrences, pages vues, entrées, sorties" },
-      "why": { "en": "Prop: counts on its own hit only, and gives path reports.", "fr": "Prop : compte sur son propre hit seulement, et donne les rapports de cheminement." },
-      "ga4": { "name": "page_name", "scope": "Event" } },
-    { "adobe": "prop2", "type": "prop", "status": "live", "reqs": ["BR-02", "BR-08"],
-      "name": { "en": "Interaction", "fr": "Interaction" },
-      "dl": "event (adobeDataLayer)", "example": "cart add", "expiry": "Hit", "allocation": "—",
-      "setOn": { "en": "Every hit except page views", "fr": "Chaque hit sauf les pages vues" },
-      "meaning": { "en": "What the visitor did: cart add, purchase, media start, content clicked…", "fr": "Ce que le visiteur a fait : cart add, purchase, media start, content clicked…" },
-      "metrics": { "en": "Occurrences", "fr": "Occurrences" },
-      "why": { "en": "Prop: one count per action, never carried to the next hit.", "fr": "Prop : un compte par action, jamais reporté au hit suivant." },
-      "ga4": { "name": "event_name (built in)", "scope": "Event" } },
-    { "adobe": "prop3", "type": "prop", "status": "live", "reqs": ["BR-07"],
-      "name": { "en": "Video name", "fr": "Nom de la vidéo" },
-      "dl": "media.name", "example": "What the new ferry schedule means for commuters", "expiry": "Hit", "allocation": "—",
-      "setOn": { "en": "Video events", "fr": "Événements vidéo" },
-      "meaning": { "en": "Which video an event belongs to (English title).", "fr": "La vidéo à laquelle se rattache un événement (titre anglais)." },
-      "metrics": { "en": "Occurrences, video starts, video completes", "fr": "Occurrences, démarrages, visionnements complets" },
-      "why": { "en": "Prop: counts video actions where they happen.", "fr": "Prop : compte les actions vidéo là où elles surviennent." },
-      "ga4": { "name": "video_title", "scope": "Event" } },
-    { "adobe": "prop4", "type": "prop", "status": "live", "reqs": ["BR-08"],
-      "name": { "en": "Link name", "fr": "Nom du lien" },
-      "dl": "link.text (data-link-name)", "example": "Harbourfront night market returns…", "expiry": "Hit", "allocation": "—",
-      "setOn": { "en": "Tracked link clicks", "fr": "Clics de liens suivis" },
-      "meaning": { "en": "The clicked link, named by the convention in the specification.", "fr": "Le lien cliqué, nommé selon la convention de la spécification." },
-      "metrics": { "en": "Occurrences, clicks per page view", "fr": "Occurrences, clics par page vue" },
-      "why": { "en": "Prop: counts each click on the hit it happened.", "fr": "Prop : compte chaque clic sur le hit où il survient." },
-      "ga4": { "name": "link_text", "scope": "Event" } },
-    { "adobe": "products", "type": "products", "status": "live", "reqs": ["BR-02", "BR-03"],
-      "name": { "en": "Products", "fr": "Produits" },
-      "dl": "productListItems[] (SKU, name, quantity, priceTotal, categories, colour)", "example": "TG-PK-101, 1 × 129.00", "expiry": "—", "allocation": "—",
-      "setOn": { "en": "Commerce events", "fr": "Événements de commerce" },
-      "meaning": { "en": "The products in each commerce event, with quantity and price.", "fr": "Les produits de chaque événement de commerce, avec quantité et prix." },
-      "metrics": { "en": "Revenue, units, orders, product views, cart additions", "fr": "Revenus, unités, commandes, vues de produits, ajouts au panier" },
-      "why": { "en": "Adobe's product dimension; revenue comes from here, not from order totals.", "fr": "La dimension produit d’Adobe; les revenus viennent d’ici, pas des totaux de commande." },
-      "ga4": { "name": "items[]", "scope": "Item" } },
-    { "adobe": "prodView, scAdd, scRemove, scView, scCheckout, purchase", "type": "event", "status": "live", "reqs": ["BR-02"],
-      "name": { "en": "Commerce events", "fr": "Événements de commerce" },
-      "dl": "product viewed, cart add, cart remove, cart viewed, checkout started, purchase", "example": "scAdd", "expiry": "—", "allocation": "—",
-      "setOn": { "en": "The matching action (XDM commerce.*)", "fr": "L’action correspondante (XDM commerce.*)" },
-      "meaning": { "en": "The steps of the purchase funnel. purchaseID prevents double counting.", "fr": "Les étapes de l’entonnoir d’achat. purchaseID empêche le double comptage." },
-      "metrics": { "en": "Use with Products, Page type, Page language", "fr": "À utiliser avec Produits, Type de page, Langue de la page" },
-      "why": { "en": "Standard Adobe commerce events, mapped automatically from XDM.", "fr": "Événements de commerce standards d’Adobe, associés automatiquement à partir de XDM." },
-      "ga4": { "name": "view_item, add_to_cart, remove_from_cart, view_cart, begin_checkout, purchase", "scope": "Event" } },
-    { "adobe": "event1, event2", "type": "event", "status": "proposed", "reqs": ["BR-07"],
-      "name": { "en": "Video start, video complete", "fr": "Démarrage vidéo, visionnement complet" },
-      "dl": "media start, media complete", "example": "event1", "expiry": "—", "allocation": "—",
-      "setOn": { "en": "Video start and end", "fr": "Début et fin de la vidéo" },
-      "meaning": { "en": "Countable video metrics (today they're link calls counted through prop2).", "fr": "Des mesures vidéo comptables (aujourd’hui, des appels de lien comptés par prop2)." },
-      "metrics": { "en": "Use with Video name, Page language, Site section", "fr": "À utiliser avec Nom de la vidéo, Langue de la page, Section" },
-      "why": { "en": "Success events, so completion rate is a simple calculated metric.", "fr": "Événements de succès, pour que le taux de complétion soit une simple mesure calculée." },
-      "ga4": { "name": "video_start, video_complete", "scope": "Event" } },
-    { "adobe": "event3", "type": "event", "status": "proposed", "reqs": ["BR-06"],
-      "name": { "en": "Article read (75% scroll)", "fr": "Article lu (défilement de 75 %)" },
-      "dl": "content scrolled (scrollDepth = 75)", "example": "event3", "expiry": "—", "allocation": "—",
-      "setOn": { "en": "First time the article body reaches 75%", "fr": "La première fois que le corps de l’article atteint 75 %" },
-      "meaning": { "en": "A story was read, not just opened.", "fr": "Un article a été lu, pas seulement ouvert." },
-      "metrics": { "en": "Read rate = Article read ÷ article page views", "fr": "Taux de lecture = Article lu ÷ pages vues d’articles" },
-      "why": { "en": "Success event, so it can be divided by page views.", "fr": "Événement de succès, pour pouvoir le diviser par les pages vues." },
-      "ga4": { "name": "scroll_depth (percent_scrolled = 75)", "scope": "Event" } },
-    { "adobe": "event4", "type": "event", "status": "proposed", "reqs": ["BR-09"],
-      "name": { "en": "Lead (contact form sent)", "fr": "Demande (formulaire envoyé)" },
-      "dl": "form submitted", "example": "event4", "expiry": "—", "allocation": "—",
-      "setOn": { "en": "Successful contact form submission", "fr": "Envoi réussi du formulaire de contact" },
-      "meaning": { "en": "An enquiry was sent. Never carries what was typed.", "fr": "Une demande a été envoyée. Ne contient jamais ce qui a été tapé." },
-      "metrics": { "en": "Use with form topic, Page language", "fr": "À utiliser avec le sujet du formulaire, Langue de la page" },
-      "why": { "en": "Success event: the site's one lead conversion.", "fr": "Événement de succès : la seule conversion de type demande du site." },
-      "ga4": { "name": "generate_lead", "scope": "Event" } }
+    {
+      "adobe": "pageName",
+      "type": "page",
+      "status": "live",
+      "reqs": [
+        "BR-01"
+      ],
+      "name": {
+        "en": "Page name",
+        "fr": "Nom de page"
+      },
+      "dl": "page.name",
+      "example": "shop:product:tidepool-daypack",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Page views",
+        "fr": "Pages vues"
+      },
+      "meaning": {
+        "en": "Which page was viewed. Lowercase, colon-separated, English on every language version.",
+        "fr": "La page vue. En minuscules, séparée par des deux-points, en anglais dans chaque version linguistique."
+      },
+      "metrics": {
+        "en": "Page views, visits, entries, exits, bounce rate",
+        "fr": "Pages vues, visites, entrées, sorties, taux de rebond"
+      },
+      "why": {
+        "en": "Adobe's built-in page dimension; every report starts here.",
+        "fr": "La dimension de page native d’Adobe; tout rapport commence ici."
+      },
+      "ga4": {
+        "name": "page_title (overridden) + page_name",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar1",
+      "type": "eVar",
+      "status": "live",
+      "reqs": [
+        "BR-01",
+        "BR-02",
+        "BR-08"
+      ],
+      "name": {
+        "en": "Page name",
+        "fr": "Nom de page"
+      },
+      "dl": "page.name",
+      "example": "shop:product:tidepool-daypack",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit",
+        "fr": "Chaque hit"
+      },
+      "meaning": {
+        "en": "The page each hit happened on, so cart additions, orders and clicks can be broken down by page.",
+        "fr": "La page où chaque hit a eu lieu, pour ventiler les ajouts au panier, les commandes et les clics par page."
+      },
+      "metrics": {
+        "en": "Orders, revenue, cart additions, link clicks",
+        "fr": "Commandes, revenus, ajouts au panier, clics de liens"
+      },
+      "why": {
+        "en": "eVar copy of the page name, sent on every hit with explicit expiry and allocation, so it can be paired with conversion metrics as well as traffic.",
+        "fr": "Copie du nom de page en eVar, envoyée sur chaque hit avec une expiration et une attribution explicites, pour l’associer aux mesures de conversion comme aux mesures de trafic."
+      },
+      "ga4": {
+        "name": "page_name",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar2",
+      "type": "eVar",
+      "status": "live",
+      "reqs": [
+        "BR-01",
+        "BR-02"
+      ],
+      "name": {
+        "en": "Page type",
+        "fr": "Type de page"
+      },
+      "dl": "page.type",
+      "example": "product detail",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit",
+        "fr": "Chaque hit"
+      },
+      "meaning": {
+        "en": "The template of the page: home, article, product detail, cart, checkout…",
+        "fr": "Le gabarit de la page : accueil, article, fiche produit, panier, caisse…"
+      },
+      "metrics": {
+        "en": "Page views, orders, revenue, cart additions",
+        "fr": "Pages vues, commandes, revenus, ajouts au panier"
+      },
+      "why": {
+        "en": "eVar: describes context, and can be paired with conversion metrics because it's sent on every hit.",
+        "fr": "eVar : décrit le contexte, et s’associe aux mesures de conversion puisqu’elle part sur chaque hit."
+      },
+      "ga4": {
+        "name": "page_type",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar3",
+      "type": "eVar",
+      "status": "live",
+      "reqs": [
+        "BR-01"
+      ],
+      "name": {
+        "en": "Site section",
+        "fr": "Section du site"
+      },
+      "dl": "page.section",
+      "example": "shop",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit",
+        "fr": "Chaque hit"
+      },
+      "meaning": {
+        "en": "The top-level area of the site: shop, media, process, implementation…",
+        "fr": "La grande zone du site : boutique, médias, processus, mise en œuvre…"
+      },
+      "metrics": {
+        "en": "Visits, page views, orders",
+        "fr": "Visites, pages vues, commandes"
+      },
+      "why": {
+        "en": "eVar: descriptive context, sent on every hit.",
+        "fr": "eVar : contexte descriptif, envoyé sur chaque hit."
+      },
+      "ga4": {
+        "name": "site_section",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar4",
+      "type": "eVar",
+      "status": "live",
+      "reqs": [
+        "BR-05"
+      ],
+      "name": {
+        "en": "Page language",
+        "fr": "Langue de la page"
+      },
+      "dl": "page.language",
+      "example": "fr-CA",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit",
+        "fr": "Chaque hit"
+      },
+      "meaning": {
+        "en": "The language version of the page being read.",
+        "fr": "La version linguistique de la page lue."
+      },
+      "metrics": {
+        "en": "Orders, revenue, conversion rate, articles read",
+        "fr": "Commandes, revenus, taux de conversion, articles lus"
+      },
+      "why": {
+        "en": "eVar: the main language breakdown for every report.",
+        "fr": "eVar : la ventilation par langue de tous les rapports."
+      },
+      "ga4": {
+        "name": "page_language",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar5",
+      "type": "eVar",
+      "status": "live",
+      "reqs": [
+        "BR-05"
+      ],
+      "name": {
+        "en": "Browser language",
+        "fr": "Langue du navigateur"
+      },
+      "dl": "user.browserLanguage",
+      "example": "en-US",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit",
+        "fr": "Chaque hit"
+      },
+      "meaning": {
+        "en": "The language the visitor's browser asks for.",
+        "fr": "La langue que demande le navigateur du visiteur."
+      },
+      "metrics": {
+        "en": "Visits, conversion rate",
+        "fr": "Visites, taux de conversion"
+      },
+      "why": {
+        "en": "eVar: describes the audience; Adobe's own Language dimension uses a different format.",
+        "fr": "eVar : décrit l’auditoire; la dimension Langue d’Adobe utilise un autre format."
+      },
+      "ga4": {
+        "name": "browser_language",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar6",
+      "type": "eVar",
+      "status": "live",
+      "reqs": [
+        "BR-05"
+      ],
+      "name": {
+        "en": "Language match",
+        "fr": "Concordance de langue"
+      },
+      "dl": "user.languageMatch",
+      "example": "mismatch",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit",
+        "fr": "Chaque hit"
+      },
+      "meaning": {
+        "en": "match / mismatch: is the visitor reading in their browser's language?",
+        "fr": "match / mismatch : le visiteur lit-il dans la langue de son navigateur?"
+      },
+      "metrics": {
+        "en": "Visits, entries, language switches",
+        "fr": "Visites, entrées, changements de langue"
+      },
+      "why": {
+        "en": "eVar: a segment-ready flag on every hit.",
+        "fr": "eVar : un indicateur prêt à segmenter, sur chaque hit."
+      },
+      "ga4": {
+        "name": "language_match",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar7",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-04"
+      ],
+      "name": {
+        "en": "Product list (merchandising)",
+        "fr": "Liste de produits (marchandisage)"
+      },
+      "dl": "item_list_name / productList.name",
+      "example": "Catalog: Packs & bags",
+      "expiry": "Purchase",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Product clicks from a list (product syntax)",
+        "fr": "Clics sur un produit dans une liste (syntaxe produit)"
+      },
+      "meaning": {
+        "en": "Which list a product was found in, kept with that product until it's bought.",
+        "fr": "La liste où un produit a été trouvé, conservée avec ce produit jusqu’à l’achat."
+      },
+      "metrics": {
+        "en": "Product views, cart additions, revenue",
+        "fr": "Vues de produits, ajouts au panier, revenus"
+      },
+      "why": {
+        "en": "Merchandising eVar: credit has to follow each product to the purchase, which only an eVar can do.",
+        "fr": "eVar de marchandisage : le crédit doit suivre chaque produit jusqu’à l’achat, ce que seule une eVar peut faire."
+      },
+      "ga4": {
+        "name": "item_list_name (item)",
+        "scope": "Item"
+      }
+    },
+    {
+      "adobe": "eVar8",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-04"
+      ],
+      "name": {
+        "en": "Internal promotion",
+        "fr": "Promotion interne"
+      },
+      "dl": "promotion.id + promotion.name",
+      "example": "P-FALL-SHIP:Free shipping on fall orders",
+      "expiry": "Visit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Promotion clicks",
+        "fr": "Clics sur une promotion"
+      },
+      "meaning": {
+        "en": "The last internal promotion clicked in the visit.",
+        "fr": "La dernière promotion interne cliquée pendant la visite."
+      },
+      "metrics": {
+        "en": "Orders, revenue, promotion click-through",
+        "fr": "Commandes, revenus, taux de clics des promotions"
+      },
+      "why": {
+        "en": "eVar with visit expiry: a promotion should get credit for an order later in the same visit.",
+        "fr": "eVar à expiration à la visite : une promotion doit être créditée d’une commande plus tard dans la même visite."
+      },
+      "ga4": {
+        "name": "promotion_name",
+        "scope": "Item"
+      }
+    },
+    {
+      "adobe": "prop1",
+      "type": "prop",
+      "status": "live",
+      "reqs": [
+        "BR-01"
+      ],
+      "name": {
+        "en": "Page name (count)",
+        "fr": "Nom de page (compte)"
+      },
+      "dl": "page.name",
+      "example": "shop:cart",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Page views",
+        "fr": "Pages vues"
+      },
+      "meaning": {
+        "en": "Counts page views per page, with pathing switched on.",
+        "fr": "Compte les pages vues par page, avec le cheminement activé."
+      },
+      "metrics": {
+        "en": "Occurrences, page views, entries, exits",
+        "fr": "Occurrences, pages vues, entrées, sorties"
+      },
+      "why": {
+        "en": "Prop: counts on its own hit only, and gives path reports.",
+        "fr": "Prop : compte sur son propre hit seulement, et donne les rapports de cheminement."
+      },
+      "ga4": {
+        "name": "page_name",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop2",
+      "type": "prop",
+      "status": "live",
+      "reqs": [
+        "BR-02",
+        "BR-08"
+      ],
+      "name": {
+        "en": "Interaction",
+        "fr": "Interaction"
+      },
+      "dl": "event (adobeDataLayer)",
+      "example": "cart add",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Every hit except page views",
+        "fr": "Chaque hit sauf les pages vues"
+      },
+      "meaning": {
+        "en": "What the visitor did: cart add, purchase, media start, content clicked…",
+        "fr": "Ce que le visiteur a fait : cart add, purchase, media start, content clicked…"
+      },
+      "metrics": {
+        "en": "Occurrences",
+        "fr": "Occurrences"
+      },
+      "why": {
+        "en": "Prop: one count per action, never carried to the next hit.",
+        "fr": "Prop : un compte par action, jamais reporté au hit suivant."
+      },
+      "ga4": {
+        "name": "event_name (built in)",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop3",
+      "type": "prop",
+      "status": "live",
+      "reqs": [
+        "BR-07"
+      ],
+      "name": {
+        "en": "Video name",
+        "fr": "Nom de la vidéo"
+      },
+      "dl": "media.name",
+      "example": "What the new ferry schedule means for commuters",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "Which video an event belongs to (English title).",
+        "fr": "La vidéo à laquelle se rattache un événement (titre anglais)."
+      },
+      "metrics": {
+        "en": "Occurrences, video starts, video completes",
+        "fr": "Occurrences, démarrages, visionnements complets"
+      },
+      "why": {
+        "en": "Prop: counts video actions where they happen.",
+        "fr": "Prop : compte les actions vidéo là où elles surviennent."
+      },
+      "ga4": {
+        "name": "video_title",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop4",
+      "type": "prop",
+      "status": "live",
+      "reqs": [
+        "BR-08"
+      ],
+      "name": {
+        "en": "Link name",
+        "fr": "Nom du lien"
+      },
+      "dl": "link.text (data-link-name)",
+      "example": "Harbourfront night market returns…",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Tracked link clicks",
+        "fr": "Clics de liens suivis"
+      },
+      "meaning": {
+        "en": "The clicked link, named by the convention in the specification.",
+        "fr": "Le lien cliqué, nommé selon la convention de la spécification."
+      },
+      "metrics": {
+        "en": "Occurrences, clicks per page view",
+        "fr": "Occurrences, clics par page vue"
+      },
+      "why": {
+        "en": "Prop: counts each click on the hit it happened.",
+        "fr": "Prop : compte chaque clic sur le hit où il survient."
+      },
+      "ga4": {
+        "name": "link_text",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "products",
+      "type": "products",
+      "status": "live",
+      "reqs": [
+        "BR-02",
+        "BR-03"
+      ],
+      "name": {
+        "en": "Products",
+        "fr": "Produits"
+      },
+      "dl": "productListItems[] (SKU, name, quantity, priceTotal, categories, colour)",
+      "example": "TG-PK-101, 1 × 129.00",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "Commerce events",
+        "fr": "Événements de commerce"
+      },
+      "meaning": {
+        "en": "The products in each commerce event, with quantity and price.",
+        "fr": "Les produits de chaque événement de commerce, avec quantité et prix."
+      },
+      "metrics": {
+        "en": "Revenue, units, orders, product views, cart additions",
+        "fr": "Revenus, unités, commandes, vues de produits, ajouts au panier"
+      },
+      "why": {
+        "en": "Adobe's product dimension; revenue comes from here, not from order totals.",
+        "fr": "La dimension produit d’Adobe; les revenus viennent d’ici, pas des totaux de commande."
+      },
+      "ga4": {
+        "name": "items[]",
+        "scope": "Item"
+      }
+    },
+    {
+      "adobe": "prodView, scAdd, scRemove, scView, scCheckout, purchase",
+      "type": "event",
+      "status": "live",
+      "reqs": [
+        "BR-02"
+      ],
+      "name": {
+        "en": "Commerce events",
+        "fr": "Événements de commerce"
+      },
+      "dl": "product viewed, cart add, cart remove, cart viewed, checkout started, purchase",
+      "example": "scAdd",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "The matching action (XDM commerce.*)",
+        "fr": "L’action correspondante (XDM commerce.*)"
+      },
+      "meaning": {
+        "en": "The steps of the purchase funnel. purchaseID prevents double counting.",
+        "fr": "Les étapes de l’entonnoir d’achat. purchaseID empêche le double comptage."
+      },
+      "metrics": {
+        "en": "Use with Products, Page type, Page language",
+        "fr": "À utiliser avec Produits, Type de page, Langue de la page"
+      },
+      "why": {
+        "en": "Standard Adobe commerce events, mapped automatically from XDM.",
+        "fr": "Événements de commerce standards d’Adobe, associés automatiquement à partir de XDM."
+      },
+      "ga4": {
+        "name": "view_item, add_to_cart, remove_from_cart, view_cart, begin_checkout, purchase",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "event1, event2",
+      "type": "event",
+      "status": "proposed",
+      "reqs": [
+        "BR-07"
+      ],
+      "name": {
+        "en": "Video start, video complete",
+        "fr": "Démarrage vidéo, visionnement complet"
+      },
+      "dl": "media start, media complete",
+      "example": "event1",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "Video start and end",
+        "fr": "Début et fin de la vidéo"
+      },
+      "meaning": {
+        "en": "Countable video metrics (today they're link calls counted through prop2).",
+        "fr": "Des mesures vidéo comptables (aujourd’hui, des appels de lien comptés par prop2)."
+      },
+      "metrics": {
+        "en": "Use with Video name, Page language, Site section",
+        "fr": "À utiliser avec Nom de la vidéo, Langue de la page, Section"
+      },
+      "why": {
+        "en": "Success events, so completion rate is a simple calculated metric.",
+        "fr": "Événements de succès, pour que le taux de complétion soit une simple mesure calculée."
+      },
+      "ga4": {
+        "name": "video_start, video_complete",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "event3",
+      "type": "event",
+      "status": "proposed",
+      "reqs": [
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article read (75% scroll)",
+        "fr": "Article lu (défilement de 75 %)"
+      },
+      "dl": "content scrolled (scrollDepth = 75)",
+      "example": "event3",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "First time the article body reaches 75%",
+        "fr": "La première fois que le corps de l’article atteint 75 %"
+      },
+      "meaning": {
+        "en": "A story was read, not just opened.",
+        "fr": "Un article a été lu, pas seulement ouvert."
+      },
+      "metrics": {
+        "en": "Read rate = Article read ÷ article page views",
+        "fr": "Taux de lecture = Article lu ÷ pages vues d’articles"
+      },
+      "why": {
+        "en": "Success event, so it can be divided by page views.",
+        "fr": "Événement de succès, pour pouvoir le diviser par les pages vues."
+      },
+      "ga4": {
+        "name": "scroll_depth (percent_scrolled = 75)",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "event4",
+      "type": "event",
+      "status": "proposed",
+      "reqs": [
+        "BR-09"
+      ],
+      "name": {
+        "en": "Lead (contact form sent)",
+        "fr": "Demande (formulaire envoyé)"
+      },
+      "dl": "form submitted",
+      "example": "event4",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "Successful contact form submission",
+        "fr": "Envoi réussi du formulaire de contact"
+      },
+      "meaning": {
+        "en": "An enquiry was sent. Never carries what was typed.",
+        "fr": "Une demande a été envoyée. Ne contient jamais ce qui a été tapé."
+      },
+      "metrics": {
+        "en": "Use with form topic, Page language",
+        "fr": "À utiliser avec le sujet du formulaire, Langue de la page"
+      },
+      "why": {
+        "en": "Success event: the site's one lead conversion.",
+        "fr": "Événement de succès : la seule conversion de type demande du site."
+      },
+      "ga4": {
+        "name": "generate_lead",
+        "scope": "Event"
+      }
+    }
   ]
 }

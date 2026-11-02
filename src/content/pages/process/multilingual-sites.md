@@ -55,9 +55,9 @@ Both platforms already collect a browser language of their own. GA4's [Language 
 
 | Data layer | Adobe Analytics (Web SDK) | GA4 |
 |---|---|---|
-| `page.language` | `eVar3`, on every hit | `page_language` |
-| `user.browserLanguage` | `eVar4`, on every hit | `browser_language` |
-| `user.languageMatch` | `eVar5` (`match` / `mismatch`), on every hit | `language_match` (`match` / `mismatch`) |
+| `page.language` | `eVar4`, on every hit | `page_language` |
+| `user.browserLanguage` | `eVar5`, on every hit | `browser_language` |
+| `user.languageMatch` | `eVar6` (`match` / `mismatch`), on every hit | `language_match` (`match` / `mismatch`) |
 | Language switch click | `language switched` | `language_switch` with `language_from`, `language_to` |
 
 The match flag is sent as a word rather than `true`/`false`, so it reads clearly in a report. In GTM, a lookup table variable does the conversion.
@@ -72,8 +72,8 @@ The fix is to choose what GA4's page title means. This site's Google tag sends t
 |---|---|---|
 | `pageName` | `page_title` (overridden with the page name), plus `page_name` as a custom dimension | English on every version |
 | Page URL | `page_location` and page path (left as collected) | The page's language |
-| `eVar3` page language | `page_language` | `en-CA`, `fr-CA` |
-| `eVar4` browser language | `browser_language` | as the browser reports it |
+| `eVar4` page language | `page_language` | `en-CA`, `fr-CA` |
+| `eVar5` browser language | `browser_language` | as the browser reports it |
 
 The tab title visitors see is still French; only the value sent to GA4 changes. The trade-off is that GA4's "Page title" no longer shows the human-written title, which is why the page names on this site are readable (`shop:product:tidepool-daypack`) rather than codes.
 

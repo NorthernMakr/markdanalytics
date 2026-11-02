@@ -55,9 +55,9 @@ Les deux plateformes recueillent déjà leur propre langue de navigateur. La [di
 
 | Couche de données | Adobe Analytics (Web SDK) | GA4 |
 |---|---|---|
-| `page.language` | `eVar3`, sur chaque hit | `page_language` |
-| `user.browserLanguage` | `eVar4`, sur chaque hit | `browser_language` |
-| `user.languageMatch` | `eVar5` (`match` / `mismatch`), sur chaque hit | `language_match` (`match` / `mismatch`) |
+| `page.language` | `eVar4`, sur chaque hit | `page_language` |
+| `user.browserLanguage` | `eVar5`, sur chaque hit | `browser_language` |
+| `user.languageMatch` | `eVar6` (`match` / `mismatch`), sur chaque hit | `language_match` (`match` / `mismatch`) |
 | Clic sur le sélecteur de langue | `language switched` | `language_switch` avec `language_from`, `language_to` |
 
 L’indicateur de concordance est envoyé sous forme de mot plutôt que `true`/`false`, pour se lire clairement dans un rapport. Dans GTM, une variable de table de correspondance fait la conversion.
@@ -72,8 +72,8 @@ La solution consiste à choisir ce que signifie le titre de page dans GA4. La ba
 |---|---|---|
 | `pageName` | `page_title` (remplacé par le nom de page), plus `page_name` comme dimension personnalisée | Anglais dans chaque version |
 | URL de page | `page_location` et chemin de page (tels que recueillis) | Langue de la page |
-| `eVar3` langue de la page | `page_language` | `en-CA`, `fr-CA` |
-| `eVar4` langue du navigateur | `browser_language` | telle que le navigateur la donne |
+| `eVar4` langue de la page | `page_language` | `en-CA`, `fr-CA` |
+| `eVar5` langue du navigateur | `browser_language` | telle que le navigateur la donne |
 
 Le titre d’onglet que voient les visiteurs reste en français; seule la valeur envoyée à GA4 change. En contrepartie, le « titre de page » de GA4 n’affiche plus le titre rédigé, d’où des noms de page lisibles sur ce site (`shop:product:tidepool-daypack`) plutôt que des codes.
 

@@ -49,14 +49,14 @@ Every variable gets one record in the tracking plan, with the same fields every 
 | Definition | The template of the page: home, article, product detail, cart, checkout, order confirmation |
 | Data layer source | `page.type` |
 | Allowed values and format | Lowercase, from a fixed list; no free text |
-| Adobe Analytics | `eVar1`, expiration Hit, allocation Most recent; via Web SDK, `data.__adobe.analytics` |
+| Adobe Analytics | `eVar2`, expiration Hit, allocation Most recent; via Web SDK, `data.__adobe.analytics` |
 | GA4 | Event parameter `page_type`, event-scoped custom dimension "Page type" |
 | Set on | Every hit from the page: the page view and every interaction on it. Each hit carries its own value; nothing relies on persistence |
 | Privacy classification | Not personal data |
 | Owner | Analytics lead |
 | Status | Live since 2026-10-29 |
 | Verified | Client payloads in the mock Edge Network; Adobe-side processing not yet verified in a report suite |
-| Notes and history | 2026-11-02: moved from `prop1` + `eVar1` on page views only to `eVar1` on every hit |
+| Notes and history | 2026-11-02: moved from `prop1` + `eVar1` on page views only to `eVar2` on every hit (eVar1 is now the page name) |
 
 Two fields do most of the work. **Business question** stops variables being created "just in case". **Data layer source** separates what the site exposes from how each tool stores it, so a tool migration doesn't change the site.
 
@@ -156,14 +156,14 @@ These are collected on every property from day one. The two language variables a
 
 | Data layer | Adobe Analytics | GA4 |
 |---|---|---|
-| `page.name` | `pageName` (`web.webPageDetails.name`), `prop1` | `page_name` |
-| `page.type` | `eVar1` | `page_type` |
-| `page.section` | `eVar2`, channel | `site_section` |
+| `page.name` | `pageName` (`web.webPageDetails.name`), `eVar1`, `prop1` | `page_name` |
+| `page.type` | `eVar2` | `page_type` |
+| `page.section` | `eVar3`, channel | `site_section` |
 | `page.siteName` | report suite or `eVar` | `site_name` |
 | `page.environment` | `eVar` | `site_environment` |
-| `page.language` | `eVar3` | `page_language` |
-| `user.browserLanguage` | `eVar4` | `browser_language` |
-| `user.languageMatch` | `eVar5` (`match` / `mismatch`) | `language_match` |
+| `page.language` | `eVar4` | `page_language` |
+| `user.browserLanguage` | `eVar5` | `browser_language` |
+| `user.languageMatch` | `eVar6` (`match` / `mismatch`) | `language_match` |
 | `user.loginStatus` | `eVar` (visit expiry) | `login_status` (user-scoped) |
 | `content.*` | `eVar`s per content field | `content_*` parameters |
 

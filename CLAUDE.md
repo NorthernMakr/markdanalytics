@@ -33,8 +33,8 @@ sitemap, RSS and llms.txt update themselves. Template: `src/content/pages/_page-
 - **Every analytics value is English**, whatever the page language (page names, titles,
   products, link names, video titles). Only the address is in the page's language.
   `page.language` / `user.browserLanguage` let analysts split languages.
-- **Adobe:** eVars describe context and go on EVERY hit (eVar1 type, eVar2 section, eVar3 page
-  language, eVar4 browser language, eVar5 match; Hit expiry). Props count things on their own
+- **Adobe:** eVars describe context and go on EVERY hit (eVar1 page name, eVar2 type, eVar3 section, eVar4 page
+  language, eVar5 browser language, eVar6 match; Hit expiry). Props count things on their own
   hit (prop1 page name, prop2 interaction, prop3 video name, prop4 link name).
 - **GA4 purchase `value`** = sum of price × quantity (no tax/shipping). Adobe XDM
   `order.priceTotal` includes tax and shipping.

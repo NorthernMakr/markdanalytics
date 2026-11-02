@@ -61,7 +61,7 @@ Les événements de commerce utilisent les champs XDM `commerce` standards, qu�
 | `wishlist add` | `commerce.saveForLaters` | (événement personnalisé) |
 | tout le reste | `web.webinteraction.linkClicks` | appel de lien nommé d’après l’événement |
 
-Les produits voyagent dans `productListItems` (`SKU`, `name`, `quantity`, `priceTotal`, `productCategories`). Chaque requête fixe aussi des variables Analytics directement dans `data.__adobe.analytics`, pour illustrer cette voie. Les eVars décrivent le contexte et accompagnent **chaque** requête, pages vues comme interactions : `eVar1` type de page, `eVar2` section, `eVar3` langue de la page, `eVar4` langue du navigateur, `eVar5` leur concordance. Les props comptent des choses sur le hit où elles surviennent : `prop1` nom de page sur les pages vues, `prop2` l’interaction sur toutes les autres requêtes (`cart add`, `media start`…), `prop3` le nom de la vidéo, `prop4` le nom du lien. Comme chaque requête porte son propre contexte, aucun rapport ne dépend de la durée de persistance d’une eVar.
+Les produits voyagent dans `productListItems` (`SKU`, `name`, `quantity`, `priceTotal`, `productCategories`). Chaque requête fixe aussi des variables Analytics directement dans `data.__adobe.analytics`, pour illustrer cette voie. Les eVars décrivent le contexte et accompagnent **chaque** requête, pages vues comme interactions : `eVar1` nom de page, `eVar2` type de page, `eVar3` section, `eVar4` langue de la page, `eVar5` langue du navigateur, `eVar6` leur concordance. Les props comptent des choses sur le hit où elles surviennent : `prop1` nom de page sur les pages vues, `prop2` l’interaction sur toutes les autres requêtes (`cart add`, `media start`…), `prop3` le nom de la vidéo, `prop4` le nom du lien. Comme chaque requête porte son propre contexte, aucun rapport ne dépend de la durée de persistance d’une eVar.
 
 ## Le voir fonctionner
 
@@ -89,7 +89,7 @@ Un Edge simulé valide le côté client d’une implémentation : la forme des d
 - **Aucun rapport.** Rien n’atteint Analytics, Customer Journey Analytics ou Platform.
 - **Aucune personnalisation.** Les décisions de Target et de Journey Optimizer exigent le vrai Edge.
 - **Fausse identité.** L’ECID est aléatoire et n’a de sens que pour ce site.
-- **Réglages des variables.** L’expiration et l’attribution des eVars, le cheminement des props et les classifications sont des réglages de la suite de rapports. La simulation montre ce que porte chaque requête, pas comment Adobe l’attribue ou en fait rapport. Les réglages visés (eVar1 à 5 : expiration au hit, attribution à la plus récente) restent à vérifier dans une vraie suite de rapports.
+- **Réglages des variables.** L’expiration et l’attribution des eVars, le cheminement des props et les classifications sont des réglages de la suite de rapports. La simulation montre ce que porte chaque requête, pas comment Adobe l’attribue ou en fait rapport. Les réglages visés (eVar2 à 5 : expiration au hit, attribution à la plus récente) restent à vérifier dans une vraie suite de rapports.
 - **La vidéo est simplifiée.** Les événements média partent comme appels de lien, pas par la collecte Streaming Media d’Adobe.
 
 Pour tout cela, la même passerelle fonctionne telle quelle en mode `live`, dès qu’un vrai flux de données existe.

@@ -49,14 +49,14 @@ Chaque variable a une fiche dans le plan de marquage, toujours avec les mêmes c
 | Définition | Le gabarit de la page : accueil, article, fiche produit, panier, caisse, confirmation de commande |
 | Source dans la couche de données | `page.type` |
 | Valeurs permises et format | En minuscules, tirées d’une liste fixe; aucun texte libre |
-| Adobe Analytics | `eVar1`, expiration au hit, attribution à la plus récente; avec le Web SDK, `data.__adobe.analytics` |
+| Adobe Analytics | `eVar2`, expiration au hit, attribution à la plus récente; avec le Web SDK, `data.__adobe.analytics` |
 | GA4 | Paramètre d’événement `page_type`, dimension personnalisée de portée événement « Page type » |
 | Définie sur | Chaque hit de la page : la page vue et chaque interaction. Chaque hit porte sa propre valeur; rien ne dépend de la persistance |
 | Classification de confidentialité | Pas une donnée personnelle |
 | Responsable | Responsable de l’analytique |
 | Statut | En production depuis le 2026-10-29 |
 | Vérifiée | Envois côté client dans l’Edge Network simulé; traitement côté Adobe pas encore vérifié dans une suite de rapports |
-| Notes et historique | 2026-11-02 : passage de `prop1` + `eVar1` sur les pages vues seulement à `eVar1` sur chaque hit |
+| Notes et historique | 2026-11-02 : passage de `prop1` + `eVar1` sur les pages vues seulement à `eVar2` sur chaque hit (eVar1 est maintenant le nom de page) |
 
 Deux champs font l’essentiel du travail. La **question d’affaires** empêche de créer des variables « au cas où ». La **source dans la couche de données** sépare ce que le site expose de la façon dont chaque outil le stocke : une migration d’outil ne change donc pas le site.
 
@@ -156,14 +156,14 @@ Elles sont recueillies sur chaque propriété dès le premier jour. Les deux var
 
 | Couche de données | Adobe Analytics | GA4 |
 |---|---|---|
-| `page.name` | `pageName` (`web.webPageDetails.name`), `prop1` | `page_name` |
-| `page.type` | `eVar1` | `page_type` |
-| `page.section` | `eVar2`, canal | `site_section` |
+| `page.name` | `pageName` (`web.webPageDetails.name`), `eVar1`, `prop1` | `page_name` |
+| `page.type` | `eVar2` | `page_type` |
+| `page.section` | `eVar3`, canal | `site_section` |
 | `page.siteName` | suite de rapports ou `eVar` | `site_name` |
 | `page.environment` | `eVar` | `site_environment` |
-| `page.language` | `eVar3` | `page_language` |
-| `user.browserLanguage` | `eVar4` | `browser_language` |
-| `user.languageMatch` | `eVar5` (`match` / `mismatch`) | `language_match` |
+| `page.language` | `eVar4` | `page_language` |
+| `user.browserLanguage` | `eVar5` | `browser_language` |
+| `user.languageMatch` | `eVar6` (`match` / `mismatch`) | `language_match` |
 | `user.loginStatus` | `eVar` (expiration à la visite) | `login_status` (portée utilisateur) |
 | `content.*` | des `eVar` par champ de contenu | paramètres `content_*` |
 
