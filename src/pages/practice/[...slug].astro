@@ -27,7 +27,8 @@ const slug = slugOf(entry.id);
 const isIndex = slug === 'index';
 const pagePath = l(isIndex ? '/practice/' : `/practice/${slug}/`);
 const sectionName = tr(lang, 'Analytics practice', 'Pratique d’analytique');
-const others = pages.filter((p) => slugOf(p.id) !== 'index').sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+const others = pages.filter((p) => slugOf(p.id) !== 'index')
+  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999) || a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
 
 // Analytics values come from the English page (see the blog post page).
 const en = lang === 'fr' ? (await getEntry('practice', slug))?.data ?? d : d;

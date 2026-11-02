@@ -13,6 +13,8 @@ const articleSchema = z.object({
   tags: z.array(z.string()).default([]),
   platform: z.enum(['Adobe', 'Google', 'Both', 'Other']).default('Both'),
   draft: z.boolean().default(false),
+  /** Position in the practice section menu (lower first); unordered pages follow by date. */
+  order: z.number().optional(),
 });
 
 // Blog posts: src/content/blog/*.md → /blog/<file-name>/

@@ -33,6 +33,10 @@ export const FR_SEGMENTS: Record<string, string> = {
   'testing-adobe-web-sdk-without-an-adobe-account': 'tester-adobe-web-sdk-sans-compte-adobe',
   // Practice pages
   'multilingual-sites': 'sites-multilingues',
+  'data-layer-specification': 'specification-couche-de-donnees',
+  'tracking-plan': 'plan-de-marquage',
+  'implementation-spec-store': 'specification-implementation-boutique',
+  'implementation-spec-media': 'specification-implementation-medias',
   // Demo store products
   'tidepool-daypack': 'sac-de-jour-tidepool',
   'breakwater-dry-bag': 'sac-etanche-breakwater',

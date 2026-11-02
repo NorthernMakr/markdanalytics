@@ -11,9 +11,9 @@ const pageData = {
   page: { name: pageName, type: pageType, section: 'media', siteName: 'Balsam Daily (demo)' },
   ...extra,
 };
-const sections = tr(lang,
-  ['Local', 'Transportation', 'Weather', 'Food', 'Sports'],
-  ['Local', 'Transport', 'Météo', 'Gastronomie', 'Sports']);
+// en = what analytics receives (data-link-name); label = what's shown.
+const SECTION_EN = ['Local', 'Transportation', 'Weather', 'Food', 'Sports'];
+const sections = SECTION_EN.map((en, i) => ({ en, label: tr(lang, en, ['Local', 'Transport', 'Météo', 'Gastronomie', 'Sports'][i]) }));
 const today = new Date().toLocaleDateString(LOCALE[lang], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 ---
 <Base title={`${title} | Balsam Daily (${tr(lang, 'demo', 'démo')})`} pageData={pageData} bodyClass="media"
@@ -31,7 +31,7 @@ const today = new Date().toLocaleDateString(LOCALE[lang], { weekday: 'long', mon
       </svg>
       <nav aria-label={tr(lang, 'Sections', 'Rubriques')}>
         <ul class="section-nav">
-          {sections.map((s) => <li><a href={l('/media/')} data-teaser-module="section nav">{s}</a></li>)}
+          {sections.map((s, i) => <li><a href={l('/media/')} data-link-name={s.en} data-teaser-module="section nav" data-teaser-position={i + 1}>{s.label}</a></li>)}
         </ul>
       </nav>
     </div>
