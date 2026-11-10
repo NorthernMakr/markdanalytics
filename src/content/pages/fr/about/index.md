@@ -29,7 +29,8 @@ Praticien de l’analytique numérique, avec une expérience pratique dans les s
 
 #### AIR MILES / Blue Rewards
 
-**Directeur associé / gestionnaire principal, Analytique numérique et connaissances** · d’octobre 2020 à aujourd’hui
+**Directeur associé / gestionnaire principal, Analytique numérique et connaissances**  
+D’octobre 2020 à aujourd’hui
 
 - Responsable de l’analytique, analyste et Scrum Master de l’équipe : je rédige les spécifications de mise en œuvre et je bâtis les rapports.
 - Mise en place du processus d’assurance qualité des mises en œuvre et débogage du suivi sur le Web et dans l’application mobile.
@@ -39,33 +40,38 @@ Praticien de l’analytique numérique, avec une expérience pratique dans les s
 
 #### BMO
 
-**Chef et directeur, responsable de produit, Analytique numérique d’entreprise** · de novembre 2018 à août 2019
+**Chef et directeur, responsable de produit, Analytique numérique d’entreprise**  
+De novembre 2018 à août 2019
 
 - Responsable de la feuille de route de l’analytique numérique d’entreprise pour BMO Canada et BMO Harris aux États-Unis.
 - Recommandations qui ont augmenté la conversion de plus de 15 % pour une importante unité canadienne de vente numérique de cartes de crédit.
 - Passage de l’équipe à la livraison agile dans Jira.
 
-**Directeur, Marketing, Personnalisation, tests et analytique** · de juin 2016 à novembre 2018
+**Directeur, Marketing, Personnalisation, tests et analytique**  
+De juin 2016 à novembre 2018
 
 - Montage des dossiers d’affaires pour Adobe Analytics et Adobe Target, et direction de leur mise en œuvre.
 - Sélection et lancement d’une plateforme de gestion des données (DMP) rentabilisée en quatre mois, qui a généré 1,2 million de dollars de revenus nets la première année.
 - Création de la pratique de référencement (SEO) : hausse de 35 % du trafic de recherche et de 15 % du trafic qualifié qui convertit, en deux ans.
 
-**Gestionnaire principal, Marketing, chef de l’analytique numérique** · de juin 2013 à juin 2016
+**Gestionnaire principal, Marketing, chef de l’analytique numérique**  
+De juin 2013 à juin 2016
 
 - Reconstruction de la fonction d’analytique marketing, avec des indicateurs numériques et des normes de visualisation des données pour le marketing au Canada et aux États-Unis.
 - Conception et prestation de formations en analytique; plus de 250 personnes formées à BMO et à CBC.
 
 #### Nurun / Razorfish
 
-**Chef, Analytique de sites et de campagnes** · de mars 2012 à juin 2013
+**Chef, Analytique de sites et de campagnes**  
+De mars 2012 à juin 2013
 
 - Rédaction des spécifications Adobe Analytics et Google Analytics Premium pour Walmart Canada.
 - Optimisation des campagnes et rapports pour des clients comme Holt Renfrew, Sears et Home Depot.
 
 #### CBC/Radio-Canada
 
-**Gestionnaire, Recherche numérique, et chef, Analytique numérique** · de septembre 2008 à mars 2012
+**Gestionnaire, Recherche numérique, et chef, Analytique numérique**  
+De septembre 2008 à mars 2012
 
 - Direction de la recherche sur les auditoires numériques et de l’analytique, et création de la pratique Adobe Analytics.
 - Lancement du programme de mesure des médias sociaux de CBC.

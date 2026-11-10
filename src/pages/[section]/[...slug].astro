@@ -57,7 +57,8 @@ const crumbs = [{ name: tr(lang, 'Home', 'Accueil'), path: l('/') }, { name: sec
   <article class="post">
     <div class="blog-wrap">
       <header class="post-head">
-        <p class="crumbs">{isHub ? sectionName : <a href={l(`/${section}/`)}>{sectionName}</a>}</p>
+        {/* A hub whose title is the section name needs no label above it */}
+        {!(isHub && sectionName === d.title) && <p class="crumbs">{isHub ? sectionName : <a href={l(`/${section}/`)}>{sectionName}</a>}</p>}
         <h1>{d.title}</h1>
         {!isHub && (
           <div class="post-meta">

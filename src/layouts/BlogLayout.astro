@@ -26,17 +26,17 @@ const isCurrent = (href: string) => base.startsWith(href);
         <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#14213D"/><rect x="7" y="18" width="4" height="7" rx="1" fill="#E9A23B"/><rect x="14" y="12" width="4" height="13" rx="1" fill="#E8ECF2"/><rect x="21" y="7" width="4" height="18" rx="1" fill="#E8ECF2"/></svg>
         {siteMeta.blogName}
       </a>
-      <div class="blog-nav-right">
-        <nav aria-label={tr(lang, 'Main', 'Principal')}>
-          <ul>
-            {nav.map((n) => (
-              <li><a href={l(n.href)} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
-            ))}
-          </ul>
-        </nav>
+      <div class="blog-tools">
         <a class="blog-contact" href={l('/contact/')} aria-current={base === '/contact/' ? 'page' : undefined}>{tr(lang, 'Contact', 'Me joindre')}</a>
         <LangSwitch class="blog-lang" />
       </div>
+      <nav class="blog-menu" aria-label={tr(lang, 'Main', 'Principal')}>
+        <ul>
+          {nav.map((n) => (
+            <li><a href={l(n.href)} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
+          ))}
+        </ul>
+      </nav>
     </div>
   </header>
   <main>

@@ -68,6 +68,6 @@ Case studies, Store, Media site, About.
   (build later, downloadable for visitors, possibly a Claude agent).
 - About: résumé is live in both languages (no phone or email on the page; the contact form is the
   only route). "What I'm looking for" is a short draft for Mark to confirm. No PDF download yet.
-- Contact link sits top right on every page: a button in the blog header (`BlogLayout.astro`)
-  and a link in the demo ribbon (`Base.astro`) on the store and media site.
+- Blog header is two rows: logo left with Contact button + EN/FR top right (`.blog-tools`), menu
+  below (`.blog-menu`). On the store and media site the Contact link is in the demo ribbon (`Base.astro`).
 - Case studies: placeholder until Mark supplies content.

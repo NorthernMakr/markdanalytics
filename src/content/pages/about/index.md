@@ -29,7 +29,8 @@ Digital analytics practitioner with hands-on experience in loyalty, banking, med
 
 #### AIR MILES / Blue Rewards
 
-**Associate Director / Senior Manager, Digital Analytics & Insight** · October 2020 to present
+**Associate Director / Senior Manager, Digital Analytics & Insight**  
+October 2020 to present
 
 - Work as analytics lead, analyst and team Scrum Master, writing implementation specifications and building reports.
 - Set up the team's implementation QA process and debug tracking on web and in the mobile app.
@@ -39,33 +40,38 @@ Digital analytics practitioner with hands-on experience in loyalty, banking, med
 
 #### BMO
 
-**Head & Director, Product Owner, Enterprise Digital Analytics** · November 2018 to August 2019
+**Head & Director, Product Owner, Enterprise Digital Analytics**  
+November 2018 to August 2019
 
 - Owned the enterprise digital analytics roadmap across BMO Canada and BMO Harris in the United States.
 - Delivered recommendations that raised conversion by more than 15% for a leading Canadian credit-card digital sales unit.
 - Led the team's move to Agile delivery in Jira.
 
-**Director, Marketing, Personalization, Testing & Analytics** · June 2016 to November 2018
+**Director, Marketing, Personalization, Testing & Analytics**  
+June 2016 to November 2018
 
 - Built the business cases for Adobe Analytics and Adobe Target and led their implementation.
 - Sourced and introduced a Data Management Platform that paid for itself in four months and generated $1.2 million in net revenue in its first year.
 - Built the SEO practice, increasing search traffic by 35% and qualified, converting traffic by 15% over two years.
 
-**Senior Manager, Marketing, Head Digital Analytics** · June 2013 to June 2016
+**Senior Manager, Marketing, Head Digital Analytics**  
+June 2013 to June 2016
 
 - Rebuilt the marketing analytics function, with digital KPIs and data visualization standards for Canadian and US marketing.
 - Designed and delivered analytics training; over 250 people trained across BMO and CBC.
 
 #### Nurun / Razorfish
 
-**Lead, Site and Campaign Analytics** · March 2012 to June 2013
+**Lead, Site and Campaign Analytics**  
+March 2012 to June 2013
 
 - Built Adobe Analytics and Google Analytics Premium specifications for Walmart Canada.
 - Led campaign optimization and reporting for clients including Holt Renfrew, Sears and Home Depot.
 
 #### Canadian Broadcasting Corporation
 
-**Manager, Digital Research & Head, Digital Analytics** · September 2008 to March 2012
+**Manager, Digital Research & Head, Digital Analytics**  
+September 2008 to March 2012
 
 - Led digital audience research and analytics and built the Adobe Analytics practice.
 - Launched CBC's social media measurement program.

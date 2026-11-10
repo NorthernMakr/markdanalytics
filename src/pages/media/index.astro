@@ -17,7 +17,7 @@ const L = txt(lead);
       <article class="lead">
         <a class="lead-visual" href={url(lead.slug)} data-link-name={lead.headline} data-teaser-module="lead" data-teaser-position="1">
           <img src={lead.video?.poster} alt="" width="960" height="540" />
-          {lead.video && <span class="play">▶ {tr(lang, 'Watch', 'Regarder')} : {lead.video.duration} s</span>}
+          {lead.video && <span class="play">▶ {tr(lang, 'Watch:', 'Regarder :')} {lead.video.duration} s</span>}
         </a>
         <p class="kicker" style="margin-top:16px">{L.section}{lead.video && <span class="has-video">{video}</span>}</p>
         <h2><a href={url(lead.slug)} data-link-name={lead.headline} data-teaser-module="lead" data-teaser-position="1">{L.headline}</a></h2>
