@@ -193,6 +193,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
         <span>{demoBanner}</span>
         <span class="lab-ribbon-links">
           <a href={localize('/', lang)}>{tr(lang, 'Back to', 'Retour à')} {siteMeta.blogName}</a>
+          <a href={localize('/contact/', lang)}>{tr(lang, 'Contact', 'Me joindre')}</a>
           <LangSwitch />
         </span>
       </div>

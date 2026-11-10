@@ -34,6 +34,7 @@ const isCurrent = (href: string) => base.startsWith(href);
             ))}
           </ul>
         </nav>
+        <a class="blog-contact" href={l('/contact/')} aria-current={base === '/contact/' ? 'page' : undefined}>{tr(lang, 'Contact', 'Me joindre')}</a>
         <LangSwitch class="blog-lang" />
       </div>
     </div>

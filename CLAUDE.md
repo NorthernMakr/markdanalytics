@@ -66,4 +66,8 @@ Case studies, Store, Media site, About.
 - Data quality: TODO: why QA matters; QA docs = spec tables + checked/date/method columns,
   quarterly cadence, automated checks listed, illustrative history; spider design page
   (build later, downloadable for visitors, possibly a Claude agent).
-- About (résumé, what Mark is looking for) and Case studies: placeholders until Mark supplies content.
+- About: résumé is live in both languages (no phone or email on the page; the contact form is the
+  only route). "What I'm looking for" is a short draft for Mark to confirm. No PDF download yet.
+- Contact link sits top right on every page: a button in the blog header (`BlogLayout.astro`)
+  and a link in the demo ribbon (`Base.astro`) on the store and media site.
+- Case studies: placeholder until Mark supplies content.
