@@ -7,7 +7,7 @@ tags: [assurance qualité, qualité des données, tests, surveillance]
 platform: Both
 ---
 
-**Une mise en œuvre ne vaut que sa dernière vérification.** Les sites changent chaque semaine; les balises se brisent sans bruit. Cette section porte sur l’art de le détecter avant qu’un rapport ne le fasse.
+**Une mise en œuvre ne vaut que sa dernière vérification.** Les sites changent chaque semaine; les balises se brisent sans bruit. Cette section porte sur l’art de le détecter avant qu’un rapport ne le fasse. C’est le volet 4, le plan de maintenance, de la [carte de mise en œuvre](/fr/processus/carte-de-mise-en-oeuvre/).
 
 Trois idées la traversent :
 

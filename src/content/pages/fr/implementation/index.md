@@ -7,7 +7,7 @@ tags: [besoins, SDR, spécifications, couche de données, documentation]
 platform: Both
 ---
 
-**Une bonne analytique commence par un document, pas par une balise.** Cette section présente les documents sur lesquels repose une mise en œuvre, remplis pour la boutique et le site de nouvelles démo de ce site, pour que chacun puisse être comparé à ce que les pages envoient réellement.
+**Une bonne analytique commence par un document, pas par une balise.** Cette section présente les documents sur lesquels repose une mise en œuvre, remplis pour la boutique et le site de nouvelles démo de ce site, pour que chacun puisse être comparé à ce que les pages envoient réellement. Sur la [carte de mise en œuvre](/fr/processus/carte-de-mise-en-oeuvre/), ces documents forment le pivot auquel se rattachent tous les volets de travail.
 
 ## La chaîne
 

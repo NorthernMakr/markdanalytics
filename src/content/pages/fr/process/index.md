@@ -10,7 +10,7 @@ platform: Both
 
 Dans les grandes organisations, la plupart des problèmes d’analytique ne sont pas des problèmes de balisage. Ce sont des problèmes de mémoire. Personne ne se souvient pourquoi l’eVar37 existe, quelle équipe l’a demandée, si l’événement d’étape de paiement se déclenche encore dans la nouvelle application, ou laquelle des trois dimensions « type de page » est la bonne. Les balises fonctionnent; le savoir qui les entoure s’est évaporé.
 
-Une pratique règle ce problème en consignant les choses de façon cohérente, et en faisant de la version écrite celle que les gens utilisent vraiment. Cette page présente ce que je documenterais si je dirigeais une pratique d’analytique numérique en entreprise, et pourquoi chaque élément mérite sa place. Les pages suivantes de cette section approfondiront chacun d’eux, avec la [boutique démo](/fr/boutique/) et le [site média](/fr/medias/) de ce domaine comme exemples concrets.
+Une pratique règle ce problème en consignant les choses de façon cohérente, et en faisant de la version écrite celle que les gens utilisent vraiment. Cette page présente ce que je documenterais si je dirigeais une pratique d’analytique numérique en entreprise, et pourquoi chaque élément mérite sa place. Les pages suivantes de cette section approfondiront chacun d’eux, avec la [boutique démo](/fr/boutique/) et le [site média](/fr/medias/) de ce domaine comme exemples concrets. La [carte de mise en œuvre](/fr/processus/carte-de-mise-en-oeuvre/) montre comment les pièces s’assemblent et lesquelles ce site a construites.
 
 ## L’ensemble documentaire
 
@@ -149,6 +149,8 @@ Il est envoyé à la fois dans `dataLayer` (pour Google Tag Manager) et dans `ad
 | Collecte | `sendEvent` du Web SDK avec XDM | Balise Google GA4 et balises d’événement |
 | Base sur chaque page | Page vue avec `web.webPageDetails` | Balise Google avec les paramètres de page communs |
 | Ordre de chargement | Couche de données, puis Tags, puis GTM | |
+
+C’est la norme. Sur ce site, la colonne Adobe est une solution de rechange, parce que je n’ai pas accès à un compte Adobe : un script remplace la propriété Tags et ses règles, et une doublure de l’Edge Network reçoit les requêtes du Web SDK. La [carte de mise en œuvre](/fr/processus/carte-de-mise-en-oeuvre/#le-côté-adobe-de-ce-site-est-une-solution-de-rechange) précise ce qui est réel et ce qui est simulé. [Configurer les variables dans Adobe Analytics, CJA et GA4](/fr/processus/configuration-des-variables/) traite du côté plateforme.
 
 ### Les variables de base
 

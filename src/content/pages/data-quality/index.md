@@ -7,7 +7,7 @@ tags: [QA, data quality, testing, monitoring]
 platform: Both
 ---
 
-**An implementation is only as good as its last check.** Sites change every week; tags break quietly. This section is about catching that before a report does.
+**An implementation is only as good as its last check.** Sites change every week; tags break quietly. This section is about catching that before a report does. It's stream 4, the maintenance plan, on the [implementation map](/process/implementation-map/).
 
 Three ideas run through it:
 

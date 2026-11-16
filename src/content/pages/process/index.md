@@ -10,7 +10,7 @@ platform: Both
 
 Most analytics problems in large organisations aren't tagging problems. They're memory problems. Nobody remembers why eVar37 exists, which team asked for it, whether the checkout step event still fires on the new app, or which of three "page type" dimensions is the right one. The tags work; the knowledge around them has evaporated.
 
-A practice fixes that by writing things down in a consistent way, and by making the written version the thing people actually use. This page sets out what I'd document if I were running an enterprise digital analytics practice, and why each piece earns its place. Later pages in this section go deeper on each one, using the [demo store](/shop/) and [media site](/media/) on this domain as worked examples.
+A practice fixes that by writing things down in a consistent way, and by making the written version the thing people actually use. This page sets out what I'd document if I were running an enterprise digital analytics practice, and why each piece earns its place. Later pages in this section go deeper on each one, using the [demo store](/shop/) and [media site](/media/) on this domain as worked examples. The [implementation map](/process/implementation-map/) shows how the pieces fit together and which of them this site has built.
 
 ## The document set
 
@@ -149,6 +149,8 @@ It's pushed to both `dataLayer` (for Google Tag Manager) and `adobeDataLayer` (t
 | Collection | Web SDK `sendEvent` with XDM | GA4 Google tag and event tags |
 | Base on every page | Page view with `web.webPageDetails` | Google tag with shared page parameters |
 | Load order | Data layer, then Tags, then GTM | |
+
+This is the standard. On this site the Adobe column is a workaround, because I don't have access to an Adobe account: a script stands in for the Tags property and its rules, and a stand-in Edge Network receives the Web SDK's requests. The [implementation map](/process/implementation-map/#the-adobe-side-of-this-site-is-a-workaround) sets out what is real and what is simulated. [Setting up variables in Adobe Analytics, CJA and GA4](/process/variable-setup/) covers the platform side.
 
 ### The base variables
 
