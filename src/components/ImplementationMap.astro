@@ -3,6 +3,11 @@
 // One data structure draws both the diagram (SVG, every box a link where the
 // site has content) and the table under it, in the page's language.
 // Used from MDX: <ImplementationMap />
+// Props:
+//   colorBy  'status' (default; the detail page) or 'stream' (the home page:
+//            one colour per stream, dashed outline for steps not on the site yet)
+//   table    show the status table under the diagram (default true). Without
+//            it, phones get a linked list instead of the diagram.
 // To change a box: edit STREAMS below. `status` is what this site has today:
 //   live     built and running or published here
 //   partial  partly covered, or simulated because there's no Adobe account
@@ -13,6 +18,9 @@ type Status = 'live' | 'partial' | 'planned';
 interface Box { label: { en: string; fr: string }; status: Status; href?: string; hash?: { en: string; fr: string }; note: { en: string; fr: string } }
 interface Stream { title: { en: string; fr: string }; ordered: boolean; boxes: Box[] }
 
+interface Props { colorBy?: 'status' | 'stream'; table?: boolean }
+const { colorBy = 'status', table = true } = Astro.props;
+const byStream = colorBy === 'stream';
 const lang: Lang = langFromPath(Astro.url.pathname);
 const t = (o: { en: string; fr: string }) => o[lang];
 const link = (b: Box) => (b.href ? localize(b.href, lang) + (b.hash ? '#' + b.hash[lang] : '') : undefined);
@@ -94,8 +102,10 @@ const top = (i: number) => 104 + i * 192;
 const boxX = (j: number) => COLS[j % 3];
 const boxY = (i: number, j: number) => top(i) + 38 + Math.floor(j / 3) * 64;
 const H = top(3) + 162 + 46;
+// Box colour class: by status, or by stream (planned steps get a dashed outline)
+const cls = (b: Box, i: number | 'hub') => byStream ? `stream ${i === 'hub' ? 'hub' : 's' + (i + 1)}${b.status === 'planned' ? ' todo' : ''}` : b.status;
 ---
-<figure class="imap">
+<figure class:list={['imap', { 'imap-has-list': !table }]}>
   <svg viewBox={`0 0 680 ${H}`} width="100%" aria-labelledby="imap-title imap-desc">
     <title id="imap-title">{tr(lang, 'Implementation map', 'Carte de mise en œuvre')}</title>
     <desc id="imap-desc">{tr(lang,
@@ -111,7 +121,7 @@ const H = top(3) + 162 + 46;
     {HUB.map((b, k) => {
       const x = k === 0 ? 110 : 320, w = k === 0 ? 150 : 240, cx = x + w / 2;
       const inner = (
-        <g class={`imap-box ${b.status}`}>
+        <g class={`imap-box ${cls(b, 'hub')}`}>
           <rect x={x} y="20" width={w} height="56" rx="8" />
           <text class="imap-strong" x={cx} y={k === 0 ? 48 : 38} text-anchor="middle" dominant-baseline="central">{t(b.label)}</text>
           {k === 1 && <text class="imap-sub" x={cx} y="58" text-anchor="middle" dominant-baseline="central">{tr(lang, 'Variable map, data layer spec', 'Variables, couche de données')}</text>}
@@ -130,7 +140,7 @@ const H = top(3) + 162 + 46;
         {s.boxes.map((b, j) => {
           const x = boxX(j), y = boxY(i, j);
           const inner = (
-            <g class={`imap-box ${b.status}`}>
+            <g class={`imap-box ${cls(b, i)}`}>
               <rect x={x} y={y} width={BW} height={BH} rx="8" />
               <text x={x + BW / 2} y={y + BH / 2} text-anchor="middle" dominant-baseline="central">{t(b.label)}</text>
             </g>
@@ -148,18 +158,37 @@ const H = top(3) + 162 + 46;
       </g>
     ))}
 
-    {(['live', 'partial', 'planned'] as Status[]).map((st, k) => (
+    {!byStream && (['live', 'partial', 'planned'] as Status[]).map((st, k) => (
       <g class={`imap-box ${st}`}>
         <rect x={40 + k * 190} y={H - 30} width="14" height="14" rx="3" />
         <text class="imap-sub" x={62 + k * 190} y={H - 23} dominant-baseline="central">{t(STATUS[st])}</text>
       </g>
     ))}
+    {byStream && (
+      <g class="imap-box stream hub todo">
+        <rect x="40" y={H - 30} width="14" height="14" rx="3" />
+        <text class="imap-sub" x="62" y={H - 23} dominant-baseline="central">{tr(lang, 'Dashed outline: not on this site yet', 'Contour pointillé : pas encore sur ce site')}</text>
+      </g>
+    )}
   </svg>
-  <figcaption>{tr(lang,
+  {table && <figcaption>{tr(lang,
     'Arrows show order: streams 1 and 2 are sequences, and stream 1 comes before stream 2. Streams 3 and 4 are sets of deliverables. Maintenance findings feed back into the SDR.',
-    'Les flèches indiquent l’ordre : les volets 1 et 2 sont des séquences, et le volet 1 précède le volet 2. Les volets 3 et 4 sont des ensembles de livrables. Les constats de maintenance retournent à la SDR.')}</figcaption>
+    'Les flèches indiquent l’ordre : les volets 1 et 2 sont des séquences, et le volet 1 précède le volet 2. Les volets 3 et 4 sont des ensembles de livrables. Les constats de maintenance retournent à la SDR.')}</figcaption>}
+  {!table && (
+    <nav class="imap-list" aria-label={tr(lang, 'Implementation map', 'Carte de mise en œuvre')}>
+      {[{ title: { en: 'Start: the documents', fr: 'Le départ : les documents' }, boxes: HUB }, ...STREAMS].map((s) => (
+        <section>
+          <h3>{t(s.title)}</h3>
+          <ul>
+            {s.boxes.map((b) => <li>{b.href ? <a href={link(b)}>{t(b.label)}</a> : <span>{t(b.label)} ({t(STATUS.planned).toLowerCase()})</span>}</li>)}
+          </ul>
+        </section>
+      ))}
+    </nav>
+  )}
 </figure>
 
+{table && (
 <div class="table-wrap" tabindex="0" role="region" aria-label={tr(lang, 'Scrollable table', 'Tableau défilant')}>
   <table class="sdr imap-table">
     <thead><tr>
@@ -177,6 +206,7 @@ const H = top(3) + 162 + 46;
     </tbody>
   </table>
 </div>
+)}
 
 <style>
   .imap { margin: 1.6em 0; }
@@ -191,6 +221,20 @@ const H = top(3) + 162 + 46;
   .imap-box.live rect { fill: #DCFFF1; stroke: #216E4E; }
   .imap-box.partial rect { fill: #FFF7D6; stroke: #946F00; }
   .imap-box.planned rect { fill: #EBECF0; stroke: #8590A2; }
+  .imap-box.stream rect { fill: #fff; stroke: var(--ink); }
+  .imap-box.s1 rect { fill: #FDE8E6; stroke: #B4443F; }
+  .imap-box.s2 rect { fill: #E3F5E6; stroke: #2F7D46; }
+  .imap-box.s3 rect { fill: #FFF3CF; stroke: #946F00; }
+  .imap-box.s4 rect { fill: #E2F0FF; stroke: #1D62A8; }
+  .imap-box.todo rect { stroke-dasharray: 4 3; fill-opacity: .45; }
+  .imap-list { display: none; font: 16px/1.5 var(--sans); }
+  .imap-list h3 { font: 700 17px/1.3 var(--sans); margin: 1.2em 0 .3em; }
+  .imap-list ul { margin: 0; padding-left: 1.2em; }
+  .imap-list span { color: var(--muted); }
+  @media (max-width: 640px) {
+    .imap-has-list svg, .imap-has-list figcaption { display: none; }
+    .imap-has-list .imap-list { display: block; }
+  }
   .imap a:hover rect, .imap a:focus-visible rect { stroke-width: 2.5; }
   .imap a text { text-decoration: underline; text-decoration-color: var(--signal); }
   table.sdr.imap-table { min-width: 640px; }

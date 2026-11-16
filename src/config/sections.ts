@@ -20,13 +20,16 @@ export interface Section {
   nav: { en: string; fr: string };
   /** Full section name (hub page heading, breadcrumbs). */
   title: { en: string; fr: string };
+  /** Left out of the main menu and the home page. Its pages stay live at the same addresses. */
+  hidden?: boolean;
 }
 
 export const SECTIONS: Section[] = [
-  { id: 'basics', fr: 'notions-de-base',
+  { id: 'basics', fr: 'notions-de-base', hidden: true,
     nav: { en: 'Basics', fr: 'Notions de base' },
     title: { en: 'Digital analytics basics', fr: 'Notions de base en analytique numérique' } },
-  { id: 'process', fr: 'processus',
+  // Process pages are reached from the implementation map on the home page.
+  { id: 'process', fr: 'processus', hidden: true,
     nav: { en: 'Process', fr: 'Processus' },
     title: { en: 'Running an analytics practice', fr: 'Diriger une pratique d’analytique' } },
   { id: 'implementation', fr: 'mise-en-oeuvre',
@@ -45,7 +48,7 @@ export const SECTIONS: Section[] = [
 
 /** Main menu, in order. `href` is the English path; links are localized when rendered. */
 export const NAV: { href: string; label: { en: string; fr: string } }[] = [
-  ...SECTIONS.filter((s) => s.id !== 'about').map((s) => ({ href: `/${s.id}/`, label: s.nav })),
+  ...SECTIONS.filter((s) => s.id !== 'about' && !s.hidden).map((s) => ({ href: `/${s.id}/`, label: s.nav })),
   { href: '/shop/', label: { en: 'Store', fr: 'Boutique' } },
   { href: '/media/', label: { en: 'Media site', fr: 'Site média' } },
   { href: '/about/', label: SECTIONS.find((s) => s.id === 'about')!.nav },

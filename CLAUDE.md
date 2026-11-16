@@ -61,6 +61,11 @@ Commit as Mark Dykeman <mark.toronto@gmail.com>.
 
 Structure follows Mark's site map: Basics, Process, Implementation artifacts, Data quality,
 Case studies, Store, Media site, About.
+- Home page: short intro → the implementation map (`<ImplementationMap colorBy="stream" table={false} />`, coloured
+  by stream, dashed = not on the site yet, a linked list on phones) → "What the map shows" → demo sites → recently
+  updated. Basics and Process are `hidden: true` in `sections.ts`: out of the menu and home page, pages still live
+  (Process pages are reached from the map). A site-wide "Draft" notice sits above the header in `BlogLayout.astro`;
+  remove it when Mark says the site is ready.
 - Process: the implementation map (`/process/implementation-map/`) is the high-level page: requirements → SDR →
   four streams (platform setup, page and tag setup, procedure/documentation, maintenance). Every box links to its
   content and carries a status (live / partial or simulated / planned); keep the statuses honest when content lands.
