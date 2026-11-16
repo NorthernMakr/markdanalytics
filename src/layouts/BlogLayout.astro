@@ -20,6 +20,9 @@ const nav = NAV.map((n) => ({ href: n.href, label: tr(lang, n.label.en, n.label.
 const isCurrent = (href: string) => base.startsWith(href);
 ---
 <Base title={title} description={description} pageData={pageData} bodyClass="blog" {...seo}>
+  <p class="draft-notice" role="note">{tr(lang,
+    'Draft: this site is a work in progress. Pages are still being added and revised.',
+    'Ébauche : ce site est en construction. Des pages s’ajoutent et se révisent encore.')}</p>
   <header class="blog-nav">
     <div class="blog-wrap">
       <a class="blog-logo" href={l('/')}>

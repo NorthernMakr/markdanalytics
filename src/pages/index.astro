@@ -2,16 +2,13 @@
 import BlogLayout from '../layouts/BlogLayout.astro';
 import { siteMeta } from '../config/tags';
 import { getPages, parseId, pagePath, formatDate, isoDate } from '../lib/content';
-import { SECTIONS } from '../config/sections';
+import ImplementationMap from '../components/ImplementationMap.astro';
 import { graph } from '../lib/seo';
 import { LOCALE, langFromPath, localize, tr } from '../i18n';
 
 const lang = langFromPath(Astro.url.pathname);
 const l = (p: string) => localize(p, lang);
 const pages = await getPages(lang);
-// One card per section, using each hub page's own title and description
-const hubs = SECTIONS.map((sec) => ({ sec, hub: pages.find((p) => p.id === (lang === 'fr' ? `fr/${sec.id}` : sec.id)) }))
-  .filter((h) => h.hub);
 // Most recently published or updated pages inside sections
 const recent = pages.filter((p) => parseId(p.id).slug !== 'index')
   .sort((a, b) => (b.data.updatedDate ?? b.data.pubDate).valueOf() - (a.data.updatedDate ?? a.data.pubDate).valueOf())
@@ -37,58 +34,46 @@ const highlighted = JSON.stringify(specimen, null, 2)
   .replace(/("languageMatch"<\/span>: )true/, '$1<span data-lm>true</span>');
 ---
 <BlogLayout title={`${siteMeta.blogName} — ${tr(lang, siteMeta.blogTagline, siteMeta.blogTaglineFr).replace(/\.$/, '')}`} pageData={pageData} jsonLd={graph()}>
-  <section class="hub-hero">
+  <section class="home-intro">
     <div class="blog-wrap">
-      <div>
-        <h1>{tr(lang, 'Process, implementation, analysis.', 'Processus, mise en œuvre, analyse.')}</h1>
-        <p>{tr(lang, siteMeta.blogTagline, siteMeta.blogTaglineFr)}</p>
+      <h1>{tr(lang, 'How a digital analytics implementation fits together.', 'Comment s’assemble une mise en œuvre d’analytique numérique.')}</h1>
+      <p>{tr(lang,
+        'I’m Mark Dykeman. This site shows how I plan, build and look after a digital analytics implementation, worked through on two demo sites that run real tags.',
+        'Je suis Mark Dykeman. Ce site montre comment je planifie, construis et entretiens une mise en œuvre d’analytique numérique, à l’aide de deux sites démo qui font tourner de vraies balises.')}</p>
+      <p>{tr(lang,
+        'Start with the map below. Business requirements become one design document, and four streams of work follow from it.',
+        'Commencez par la carte ci-dessous. Les besoins d’affaires deviennent un seul document de conception, et quatre volets de travail en découlent.')}</p>
+    </div>
+  </section>
+
+  <section class="home-map">
+    <div class="blog-wrap">
+      <div class="imap-col">
+        <p class="lead">{tr(lang, 'Select any box to see that step done on this site.', 'Sélectionnez une case pour voir cette étape réalisée sur ce site.')}</p>
+        <ImplementationMap colorBy="stream" table={false} />
+
+        <h2>{tr(lang, 'What the map shows', 'Ce que montre la carte')}</h2>
+        <ul>
+          <li>{tr(lang,
+            'The top row is the starting point: what the business needs to know, and the solution design reference (SDR) that turns each need into variables.',
+            'La rangée du haut est le point de départ : ce que l’entreprise a besoin de savoir, et la référence de conception de la solution (SDR), qui traduit chaque besoin en variables.')}</li>
+          <li>{tr(lang,
+            'Each coloured band is a stream of work: setting up the analytics platform, setting up the pages and tags, writing the procedures and documentation, and keeping it all correct after launch.',
+            'Chaque bande colorée est un volet de travail : configurer la plateforme d’analytique, configurer les pages et les balises, rédiger les procédures et la documentation, et garder le tout exact après le lancement.')}</li>
+          <li>{tr(lang,
+            'Arrows show order. The first two streams are sequences, and the platform comes before the tags. The last two are sets of deliverables.',
+            'Les flèches indiquent l’ordre. Les deux premiers volets sont des séquences, et la plateforme vient avant les balises. Les deux derniers sont des ensembles de livrables.')}</li>
+        </ul>
+        <p><a href={l('/process/implementation-map/')}>{tr(lang,
+          'See the full map, with what’s built, what’s simulated and what’s planned',
+          'Voir la carte complète, avec ce qui est construit, ce qui est simulé et ce qui est prévu')}</a>.</p>
       </div>
-      <figure style="margin:0">
-        <pre class="specimen" aria-label={tr(lang, 'This page’s data layer object', 'L’objet de couche de données de cette page')}><code set:html={highlighted} /></pre>
-        <figcaption class="specimen-caption">{tr(lang,
-          'This page, as GTM and Adobe Tags see it, including your browser’s language. Open the event log (bottom right) to watch it live.',
-          'Cette page telle que la voient GTM et Adobe Tags, y compris la langue de votre navigateur. Ouvrez le journal (en bas à droite) pour la voir en direct.')}</figcaption>
-      </figure>
     </div>
   </section>
 
   <section class="hub-section">
     <div class="blog-wrap">
-      <h2>{tr(lang, 'Sections', 'Sections')}</h2>
-      <div class="section-cards">
-        {hubs.map(({ sec, hub }) => (
-          <a class="section-card" href={l(`/${sec.id}/`)}>
-            <h3>{tr(lang, sec.title.en, sec.title.fr)}</h3>
-            <p>{hub!.data.description}</p>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="hub-section">
-    <div class="blog-wrap">
-      <h2>{tr(lang, 'Recently updated', 'Mis à jour récemment')}</h2>
-      <ul class="post-list">
-        {recent.map((p) => {
-          const { section, slug } = parseId(p.id);
-          return (
-            <li>
-              <time datetime={isoDate(p.data.updatedDate ?? p.data.pubDate)}>{formatDate(p.data.updatedDate ?? p.data.pubDate, lang)}</time>
-              <div>
-                <h3><a href={l(pagePath(section, slug))}>{p.data.title}</a></h3>
-                <p>{p.data.description}</p>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  </section>
-
-  <section class="hub-section">
-    <div class="blog-wrap">
-      <h2>{tr(lang, 'Test sites', 'Sites de test')}</h2>
+      <h2>{tr(lang, 'The demo sites', 'Les sites démo')}</h2>
       <div class="hub-cols">
         <article class="lab-card">
           <h3>Taiga Supply Co. ({tr(lang, 'demo store', 'boutique démo')})</h3>
@@ -122,6 +107,32 @@ const highlighted = JSON.stringify(specimen, null, 2)
       <p class="lab-note">{tr(lang,
         'Both sites also run Adobe’s Web SDK against a stand-in Edge Network on this domain.',
         'Les deux sites font aussi tourner le Web SDK d’Adobe contre une doublure de l’Edge Network sur ce domaine.')} <a href={l('/data-quality/testing-adobe-web-sdk-without-an-adobe-account/')}>{tr(lang, 'How the mock Web SDK setup works', 'Comment fonctionne le Web SDK simulé')}</a>.</p>
+      <figure class="home-specimen">
+        <pre class="specimen" aria-label={tr(lang, 'This page’s data layer object', 'L’objet de couche de données de cette page')}><code set:html={highlighted} /></pre>
+        <figcaption class="specimen-caption">{tr(lang,
+          'This page, as GTM and Adobe Tags see it, including your browser’s language. Open the event log (bottom right) to watch it live.',
+          'Cette page telle que la voient GTM et Adobe Tags, y compris la langue de votre navigateur. Ouvrez le journal (en bas à droite) pour la voir en direct.')}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="hub-section">
+    <div class="blog-wrap">
+      <h2>{tr(lang, 'Recently updated', 'Mis à jour récemment')}</h2>
+      <ul class="post-list">
+        {recent.map((p) => {
+          const { section, slug } = parseId(p.id);
+          return (
+            <li>
+              <time datetime={isoDate(p.data.updatedDate ?? p.data.pubDate)}>{formatDate(p.data.updatedDate ?? p.data.pubDate, lang)}</time>
+              <div>
+                <h3><a href={l(pagePath(section, slug))}>{p.data.title}</a></h3>
+                <p>{p.data.description}</p>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   </section>
 
