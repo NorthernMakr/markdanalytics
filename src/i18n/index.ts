@@ -38,6 +38,7 @@ export const FR_SEGMENTS: Record<string, string> = {
   'multilingual-sites': 'sites-multilingues',
   'implementation-map': 'carte-de-mise-en-oeuvre',
   'variable-setup': 'configuration-des-variables',
+  'consent-handling': 'gestion-du-consentement',
   'data-layer-specification': 'specification-couche-de-donnees',
   'business-requirements': 'besoins-d-affaires',
   'sdr-developers': 'sdr-developpeurs',

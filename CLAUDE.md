@@ -65,8 +65,10 @@ Case studies, Store, Media site, About.
   four streams (platform setup, page and tag setup, procedure/documentation, maintenance). Every box links to its
   content and carries a status (live / partial or simulated / planned); keep the statuses honest when content lands.
   `/process/variable-setup/` compares variable setup in Adobe Analytics, CJA and GA4. The Adobe side (bridge script,
-  mock Edge) is always described as a workaround for having no Adobe account. Planned boxes with no page yet:
-  permissions, consent handling, engagement model, data monitoring, data alerts.
+  mock Edge) is always described as a workaround for having no Adobe account. `/process/consent-handling/` is the consent standard
+  (Web SDK defaultConsent/setConsent, Google consent mode, QA states); the banner itself is NOT built: the site still
+  runs defaultConsent "in" and loads GTM with no consent defaults. Planned boxes with no page yet: permissions,
+  engagement model, data monitoring, data alerts.
 - Implementation artifacts: DONE (requirements, SDR + Excel, developer/business views,
   product-page spec with wireframe + link naming convention, data layer spec). Link names
   (`link_click` / `link clicked`, region:element:{variables}) are SPECIFIED but not built.
