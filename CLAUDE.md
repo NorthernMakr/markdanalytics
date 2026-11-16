@@ -22,6 +22,7 @@ Read this first; open other files only when the task needs them.
 | Demo products / stories (with French text) | `src/data/products.ts`, `src/data/articles.ts` |
 | Requirements + SDR (web pages AND Excel) | `src/data/sdr.json` → pages render it via `src/components/sdr/SdrTable.astro`; Excel: `python3 scripts/build-sdr-xlsx.py` then recalc (xlsx skill `recalc.py`) |
 | Spec wireframe (numbered, EN/FR) | `python3 scripts/build-wireframes.py` → `public/images/specs/` |
+| Implementation map (diagram + status table, EN/FR) | `src/components/ImplementationMap.astro` (edit `STREAMS`; each box has a status and a link) |
 | Old URL → new URL | `public/_redirects` |
 | Sitemap, RSS, llms.txt | generated from sections via `src/lib/indexable.ts`; no manual edits |
 
@@ -60,6 +61,12 @@ Commit as Mark Dykeman <mark.toronto@gmail.com>.
 
 Structure follows Mark's site map: Basics, Process, Implementation artifacts, Data quality,
 Case studies, Store, Media site, About.
+- Process: the implementation map (`/process/implementation-map/`) is the high-level page: requirements → SDR →
+  four streams (platform setup, page and tag setup, procedure/documentation, maintenance). Every box links to its
+  content and carries a status (live / partial or simulated / planned); keep the statuses honest when content lands.
+  `/process/variable-setup/` compares variable setup in Adobe Analytics, CJA and GA4. The Adobe side (bridge script,
+  mock Edge) is always described as a workaround for having no Adobe account. Planned boxes with no page yet:
+  permissions, consent handling, engagement model, data monitoring, data alerts.
 - Implementation artifacts: DONE (requirements, SDR + Excel, developer/business views,
   product-page spec with wireframe + link naming convention, data layer spec). Link names
   (`link_click` / `link clicked`, region:element:{variables}) are SPECIFIED but not built.

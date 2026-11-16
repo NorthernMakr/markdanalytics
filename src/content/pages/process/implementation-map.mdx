@@ -1,0 +1,56 @@
+---
+title: "Implementation map: from requirements to maintenance"
+description: "One picture of an analytics implementation: requirements feed the SDR, and the SDR drives four streams of work. Every box links to where this site does it, with an honest status."
+pubDate: 2026-11-15
+category: Analytics practice
+tags: [implementation, SDR, governance, Adobe Analytics, Web SDK, GA4]
+platform: Both
+order: 1
+---
+import ImplementationMap from '../../../components/ImplementationMap.astro';
+
+**An implementation is four streams of work hanging off one document.** Requirements become a solution design reference (SDR). Everything after that, the platform configuration, the page and tag code, the documentation and the upkeep, reads from the SDR. This page is the map of that; the rest of the site is the detail.
+
+Select any coloured box to go to the page where this site does that step.
+
+<ImplementationMap />
+
+## How to read it
+
+- **The SDR is the hub.** It holds the variable map and points at the data layer specification. If a variable isn't in the SDR, no stream should be building it.
+- **Streams 1 and 2 are sequences.** Platform setup comes first because the tags need somewhere to send data: the Web SDK is configured with a datastream, so the datastream has to exist ([Adobe: implement Analytics with the Web SDK tag extension](https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/web-sdk/web-sdk-tag-extension)).
+- **Streams 3 and 4 are sets of deliverables.** They have no fixed order. Documentation can start on day one; maintenance has nothing to check until data flows.
+- **Maintenance feeds back.** What QA, monitoring and audits find goes back into the SDR, so the SDR stays the record of what is true now.
+
+## The four streams
+
+**1. Analytics platform setup.** What gets configured inside the analytics tools: report suites and their variable settings for Adobe Analytics, a schema, dataset and data view for Customer Journey Analytics, custom definitions for GA4. [Setting up variables in Adobe Analytics, CJA and GA4](/process/variable-setup/) compares the three.
+
+**2. Page and tag setup.** What runs in the browser: the [data layer](/implementation/data-layer-specification/), the base code on every page, and the tag manager's data elements and rules that turn data layer values into requests.
+
+**3. Procedure and documentation.** How people work with the implementation: [naming conventions](/process/#naming-conventions), the [change process](/process/#adding-or-changing-a-variable), [specifications developers can build from](/implementation/product-page-specification/).
+
+**4. Maintenance plan.** How it stays correct after launch: [QA standards](/process/#qa-standards), automated checks on every release, and periodic audits. See [Data quality monitoring](/data-quality/).
+
+## The Adobe side of this site is a workaround
+
+<div class="panel warn">
+
+I don't have access to an Adobe Experience Cloud account for this site. So the Adobe boxes in streams 1 and 2 are marked **partial or simulated**, and this is what that means.
+
+</div>
+
+| A real implementation has | This site has instead |
+|---|---|
+| A report suite with configured eVars, props and events | The intended settings, written in the [SDR](/implementation/sdr/). Nothing is configured in Adobe |
+| A datastream on Adobe's Edge Network | A stand-in Edge Network on this domain that answers the Web SDK's requests |
+| An Adobe Tags property with the Web SDK extension | Adobe's real Web SDK library, loaded and configured by a script |
+| Data elements and rules in Tags | The same mapping written as code in one bridge script |
+
+The Web SDK itself is Adobe's unmodified library, and the requests it builds are real, so the browser side of the implementation can be inspected and tested. What can't be shown is anything that happens inside Adobe: report suite processing, datastream mapping, reports. [Testing the Adobe Web SDK without an Adobe account](/data-quality/testing-adobe-web-sdk-without-an-adobe-account/) explains the setup and its limits.
+
+The Google side is not simulated. The demo sites send to a real Google Tag Manager container and GA4 property.
+
+## What's planned
+
+The grey boxes are not on the site yet: permissions, consent handling, the engagement model, data monitoring and data alerts. They're listed here so the map shows the whole job, not only the finished parts.

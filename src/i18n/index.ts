@@ -36,6 +36,8 @@ export const FR_SEGMENTS: Record<string, string> = {
   'testing-adobe-web-sdk-without-an-adobe-account': 'tester-adobe-web-sdk-sans-compte-adobe',
   'what-is-a-data-layer': 'quest-ce-quune-couche-de-donnees',
   'multilingual-sites': 'sites-multilingues',
+  'implementation-map': 'carte-de-mise-en-oeuvre',
+  'variable-setup': 'configuration-des-variables',
   'data-layer-specification': 'specification-couche-de-donnees',
   'business-requirements': 'besoins-d-affaires',
   'sdr-developers': 'sdr-developpeurs',

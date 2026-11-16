@@ -1,0 +1,56 @@
+---
+title: "Carte de mise en œuvre : des besoins à la maintenance"
+description: "Une mise en œuvre d’analytique en une image : les besoins alimentent la SDR, et la SDR dirige quatre volets de travail. Chaque case mène à l’endroit où ce site le fait, avec un état honnête."
+pubDate: 2026-11-15
+category: Pratique d’analytique
+tags: [mise en œuvre, SDR, gouvernance, Adobe Analytics, Web SDK, GA4]
+platform: Both
+order: 1
+---
+import ImplementationMap from '../../../../components/ImplementationMap.astro';
+
+**Une mise en œuvre, c’est quatre volets de travail rattachés à un seul document.** Les besoins deviennent une référence de conception de solution (SDR). Tout le reste, la configuration de la plateforme, le code des pages et des balises, la documentation et l’entretien, se lit à partir de la SDR. Cette page en est la carte; le reste du site en est le détail.
+
+Sélectionnez une case colorée pour aller à la page où ce site réalise cette étape.
+
+<ImplementationMap />
+
+## Comment la lire
+
+- **La SDR est le pivot.** Elle contient la carte des variables et renvoie à la spécification de la couche de données. Si une variable n’est pas dans la SDR, aucun volet ne devrait la construire.
+- **Les volets 1 et 2 sont des séquences.** La configuration de la plateforme vient en premier parce que les balises ont besoin d’un endroit où envoyer les données : le Web SDK se configure avec un flux de données, qui doit donc exister ([Adobe : mettre en œuvre Analytics avec l’extension de balise Web SDK](https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/web-sdk/web-sdk-tag-extension), en anglais).
+- **Les volets 3 et 4 sont des ensembles de livrables.** Ils n’ont pas d’ordre fixe. La documentation peut commencer le premier jour; la maintenance n’a rien à vérifier tant que les données ne circulent pas.
+- **La maintenance alimente la SDR.** Ce que l’AQ, la surveillance et les audits découvrent retourne dans la SDR, qui reste ainsi le reflet de ce qui est vrai maintenant.
+
+## Les quatre volets
+
+**1. Configuration de la plateforme d’analytique.** Ce qui se configure dans les outils d’analytique : les suites de rapports et les réglages de leurs variables pour Adobe Analytics, un schéma, un jeu de données et une vue de données pour Customer Journey Analytics, des définitions personnalisées pour GA4. [Configurer les variables dans Adobe Analytics, CJA et GA4](/fr/processus/configuration-des-variables/) compare les trois.
+
+**2. Configuration des pages et des balises.** Ce qui s’exécute dans le navigateur : la [couche de données](/fr/mise-en-oeuvre/specification-couche-de-donnees/), le code de base de chaque page, puis les éléments de données et les règles du gestionnaire de balises, qui transforment les valeurs de la couche de données en requêtes.
+
+**3. Procédures et documentation.** Comment les gens travaillent avec la mise en œuvre : les [conventions de nommage](/fr/processus/#conventions-de-nommage), le [processus de changement](/fr/processus/#ajouter-ou-modifier-une-variable), des [spécifications que les développeurs peuvent réaliser](/fr/mise-en-oeuvre/specification-fiche-produit/).
+
+**4. Plan de maintenance.** Comment tout reste exact après le lancement : les [normes d’assurance qualité](/fr/processus/#normes-dassurance-qualité), des vérifications automatisées à chaque version et des audits périodiques. Voir [Surveillance de la qualité des données](/fr/qualite-des-donnees/).
+
+## Le côté Adobe de ce site est une solution de rechange
+
+<div class="panel warn">
+
+Je n’ai pas accès à un compte Adobe Experience Cloud pour ce site. Les cases Adobe des volets 1 et 2 portent donc l’état **partiel ou simulé**, et voici ce que cela veut dire.
+
+</div>
+
+| Une vraie mise en œuvre comprend | Ce site a plutôt |
+|---|---|
+| Une suite de rapports avec des eVars, des props et des événements configurés | Les réglages prévus, consignés dans la [SDR](/fr/mise-en-oeuvre/sdr/). Rien n’est configuré dans Adobe |
+| Un flux de données sur l’Edge Network d’Adobe | Une doublure de l’Edge Network sur ce domaine, qui répond aux requêtes du Web SDK |
+| Une propriété Adobe Tags avec l’extension Web SDK | La vraie bibliothèque Web SDK d’Adobe, chargée et configurée par un script |
+| Des éléments de données et des règles dans Tags | La même correspondance, écrite en code dans un seul script passerelle |
+
+Le Web SDK est la bibliothèque d’Adobe, non modifiée, et les requêtes qu’il produit sont réelles : le côté navigateur de la mise en œuvre peut donc être inspecté et testé. Ce qu’on ne peut pas montrer, c’est tout ce qui se passe chez Adobe : le traitement dans la suite de rapports, la correspondance dans le flux de données, les rapports. [Tester le Web SDK d’Adobe sans compte Adobe](/fr/qualite-des-donnees/tester-adobe-web-sdk-sans-compte-adobe/) explique le montage et ses limites.
+
+Le côté Google n’est pas simulé. Les sites démo envoient leurs données à un vrai conteneur Google Tag Manager et à une vraie propriété GA4.
+
+## Ce qui est prévu
+
+Les cases grises ne sont pas encore sur le site : les autorisations, la gestion du consentement, le modèle d’engagement, la surveillance des données et les alertes de données. Elles figurent ici pour que la carte montre tout le travail, pas seulement les parties terminées.

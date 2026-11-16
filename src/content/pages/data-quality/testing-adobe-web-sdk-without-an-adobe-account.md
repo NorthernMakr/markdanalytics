@@ -9,6 +9,8 @@ platform: Adobe
 
 Practising a Web SDK implementation normally needs an Adobe org, a datastream and a schema before you can send a single event. This site skips all of that. It runs Adobe's real Web SDK library, but points it at a small stand-in for Adobe's Edge Network that lives on this domain. The SDK behaves exactly as it would in production: it builds XDM payloads, manages identity, sets its cookies and makes real network requests. Those requests just never leave markdanalytics.ca.
 
+This is a workaround for not having access to an Adobe account, not a recommended architecture. The [implementation map](/process/implementation-map/#the-adobe-side-of-this-site-is-a-workaround) shows which parts of a real Adobe implementation it stands in for.
+
 ## The moving parts
 
 | Piece | Where it lives | What it does |

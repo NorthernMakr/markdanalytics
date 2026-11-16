@@ -9,6 +9,8 @@ platform: Adobe
 
 Pour s’exercer à une implémentation Web SDK, il faut normalement une organisation Adobe, un flux de données (datastream) et un schéma avant d’envoyer le moindre événement. Ce site se passe de tout cela. Il exécute la vraie bibliothèque Web SDK d’Adobe, mais la pointe vers une petite doublure de l’Edge Network d’Adobe hébergée sur ce domaine. Le SDK se comporte exactement comme en production : il construit les données XDM, gère l’identité, dépose ses témoins et fait de vraies requêtes réseau. Ces requêtes ne quittent simplement jamais markdanalytics.ca.
 
+C’est une solution de rechange, faute d’accès à un compte Adobe, et non une architecture recommandée. La [carte de mise en œuvre](/fr/processus/carte-de-mise-en-oeuvre/#le-côté-adobe-de-ce-site-est-une-solution-de-rechange) montre quelles parties d’une vraie mise en œuvre Adobe elle remplace.
+
 ## Les pièces
 
 | Pièce | Emplacement | Rôle |

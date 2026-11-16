@@ -1,0 +1,198 @@
+---
+// The implementation map: requirements -> SDR -> four streams of work.
+// One data structure draws both the diagram (SVG, every box a link where the
+// site has content) and the table under it, in the page's language.
+// Used from MDX: <ImplementationMap />
+// To change a box: edit STREAMS below. `status` is what this site has today:
+//   live     built and running or published here
+//   partial  partly covered, or simulated because there's no Adobe account
+//   planned  not on the site yet
+import { langFromPath, localize, tr, type Lang } from '../i18n';
+
+type Status = 'live' | 'partial' | 'planned';
+interface Box { label: { en: string; fr: string }; status: Status; href?: string; hash?: { en: string; fr: string }; note: { en: string; fr: string } }
+interface Stream { title: { en: string; fr: string }; ordered: boolean; boxes: Box[] }
+
+const lang: Lang = langFromPath(Astro.url.pathname);
+const t = (o: { en: string; fr: string }) => o[lang];
+const link = (b: Box) => (b.href ? localize(b.href, lang) + (b.hash ? '#' + b.hash[lang] : '') : undefined);
+
+const WEBSDK = '/data-quality/testing-adobe-web-sdk-without-an-adobe-account/';
+const VARS = '/process/variable-setup/';
+
+const HUB: Box[] = [
+  { label: { en: 'Requirements', fr: 'Besoins d’affaires' }, status: 'live', href: '/implementation/business-requirements/',
+    note: { en: 'Mock business requirements for the demo store and news site', fr: 'Besoins d’affaires fictifs de la boutique et du site de nouvelles' } },
+  { label: { en: 'SDR', fr: 'SDR' }, status: 'live', href: '/implementation/sdr/',
+    note: { en: 'Every variable, its requirement, data layer source and settings', fr: 'Chaque variable, son besoin, sa source dans la couche de données et ses réglages' } },
+];
+
+const STREAMS: Stream[] = [
+  { title: { en: '1. Analytics platform setup', fr: '1. Configuration de la plateforme' }, ordered: true, boxes: [
+    { label: { en: 'Report suites', fr: 'Suites de rapports' }, status: 'partial', href: VARS, hash: { en: 'adobe-analytics', fr: 'adobe-analytics' },
+      note: { en: 'Designed and documented; no Adobe account to configure it in', fr: 'Conçues et documentées; aucun compte Adobe pour les configurer' } },
+    { label: { en: 'Variable settings', fr: 'Réglages des variables' }, status: 'live', href: VARS,
+      note: { en: 'How variables are set up in Adobe Analytics, CJA and GA4', fr: 'Comment configurer les variables dans Adobe Analytics, CJA et GA4' } },
+    { label: { en: 'XDM schema (if CJA)', fr: 'Schéma XDM (si CJA)' }, status: 'partial', href: VARS, hash: { en: 'customer-journey-analytics', fr: 'customer-journey-analytics' },
+      note: { en: 'Standard XDM fields are sent; no custom schema yet', fr: 'Les champs XDM standards sont envoyés; pas encore de schéma personnalisé' } },
+    { label: { en: 'Datastreams', fr: 'Flux de données' }, status: 'partial', href: WEBSDK,
+      note: { en: 'Simulated by a stand-in Edge Network on this domain', fr: 'Simulés par une doublure de l’Edge Network sur ce domaine' } },
+    { label: { en: 'Permissions', fr: 'Autorisations' }, status: 'planned',
+      note: { en: 'Who can change variables, tags and report settings', fr: 'Qui peut modifier les variables, les balises et les réglages de rapports' } },
+  ] },
+  { title: { en: '2. Page and tag setup', fr: '2. Configuration des pages et des balises' }, ordered: true, boxes: [
+    { label: { en: 'Data layer', fr: 'Couche de données' }, status: 'live', href: '/implementation/data-layer-specification/',
+      note: { en: 'Specified, built and enforced at build time', fr: 'Spécifiée, construite et vérifiée à la compilation' } },
+    { label: { en: 'Base page code', fr: 'Code de base des pages' }, status: 'live', href: '/implementation/how-this-sites-data-layer-works/',
+      note: { en: 'One page object, pushed before any tag manager loads', fr: 'Un seul objet de page, poussé avant tout gestionnaire de balises' } },
+    { label: { en: 'Web SDK extension', fr: 'Extension Web SDK' }, status: 'partial', href: WEBSDK,
+      note: { en: 'Adobe’s real Web SDK, loaded by a script instead of a Tags property', fr: 'Le vrai Web SDK d’Adobe, chargé par un script plutôt que par une propriété Tags' } },
+    { label: { en: 'Data elements', fr: 'Éléments de données' }, status: 'partial', href: WEBSDK, hash: { en: 'xdm-mapping', fr: 'correspondance-xdm' },
+      note: { en: 'Done in code by the bridge script (workaround)', fr: 'Faits en code par le script passerelle (solution de rechange)' } },
+    { label: { en: 'Rules', fr: 'Règles' }, status: 'partial', href: WEBSDK, hash: { en: 'how-a-request-flows', fr: 'le-parcours-dune-requête' },
+      note: { en: 'Done in code by the bridge script (workaround)', fr: 'Faites en code par le script passerelle (solution de rechange)' } },
+    { label: { en: 'Consent handling', fr: 'Gestion du consentement' }, status: 'planned',
+      note: { en: 'Consent banner and what each tag does when consent is declined', fr: 'Bandeau de consentement et comportement des balises en cas de refus' } },
+  ] },
+  { title: { en: '3. Procedure and documentation', fr: '3. Procédures et documentation' }, ordered: false, boxes: [
+    { label: { en: 'Engagement model', fr: 'Modèle d’engagement' }, status: 'planned',
+      note: { en: 'How teams bring work to the analytics team', fr: 'Comment les équipes confient du travail à l’équipe d’analytique' } },
+    { label: { en: 'Developer onboarding', fr: 'Accueil des développeurs' }, status: 'partial', href: '/implementation/sdr-developers/',
+      note: { en: 'The developer view of the SDR; a full onboarding guide is planned', fr: 'La vue de la SDR pour les développeurs; un guide d’accueil complet est prévu' } },
+    { label: { en: 'Sample specs', fr: 'Spécifications types' }, status: 'live', href: '/implementation/product-page-specification/',
+      note: { en: 'Product page specification with wireframe and acceptance criteria', fr: 'Spécification de la fiche produit, avec maquette et critères d’acceptation' } },
+    { label: { en: 'Naming conventions', fr: 'Conventions de nommage' }, status: 'live', href: '/process/', hash: { en: 'naming-conventions', fr: 'conventions-de-nommage' },
+      note: { en: 'Data layer keys, GA4 names, Adobe values, display names', fr: 'Clés de la couche de données, noms GA4, valeurs Adobe, noms d’affichage' } },
+    { label: { en: 'Change process', fr: 'Processus de changement' }, status: 'live', href: '/process/', hash: { en: 'adding-or-changing-a-variable', fr: 'ajouter-ou-modifier-une-variable' },
+      note: { en: 'Adding, changing and retiring a variable', fr: 'Ajouter, modifier et retirer une variable' } },
+  ] },
+  { title: { en: '4. Maintenance plan', fr: '4. Plan de maintenance' }, ordered: false, boxes: [
+    { label: { en: 'QA procedures', fr: 'Procédures d’AQ' }, status: 'partial', href: '/process/', hash: { en: 'qa-standards', fr: 'normes-dassurance-qualité' },
+      note: { en: 'Standards are written; sample QA documents are in progress', fr: 'Les normes sont rédigées; les documents d’AQ types sont en cours' } },
+    { label: { en: 'Data monitoring', fr: 'Surveillance des données' }, status: 'planned',
+      note: { en: 'Daily volumes, nulls and unexpected values per key variable', fr: 'Volumes quotidiens, valeurs nulles et valeurs inattendues par variable clé' } },
+    { label: { en: 'Data alerts', fr: 'Alertes de données' }, status: 'planned',
+      note: { en: 'Alerts when a key metric or variable breaks', fr: 'Alertes quand une mesure ou une variable clé se brise' } },
+    { label: { en: 'Release validation', fr: 'Validation des versions' }, status: 'live', href: '/data-quality/',
+      note: { en: 'Build-time convention checks and browser tests on every change', fr: 'Vérifications à la compilation et tests en navigateur à chaque changement' } },
+    { label: { en: 'Periodic audit', fr: 'Audit périodique' }, status: 'partial', href: '/data-quality/',
+      note: { en: 'Quarterly re-check is defined; the crawler is being designed', fr: 'La revérification trimestrielle est définie; le robot d’exploration est en conception' } },
+    { label: { en: 'SDR updates', fr: 'Mises à jour de la SDR' }, status: 'live', href: '/implementation/sdr/', hash: { en: 'one-source-three-views-one-workbook', fr: 'une-source-trois-vues-un-classeur' },
+      note: { en: 'One data file feeds every view, so findings are fixed once', fr: 'Un seul fichier alimente toutes les vues : on corrige une fois' } },
+  ] },
+];
+
+const STATUS: Record<Status, { en: string; fr: string }> = {
+  live: { en: 'On this site', fr: 'Sur ce site' },
+  partial: { en: 'Partial or simulated', fr: 'Partiel ou simulé' },
+  planned: { en: 'Planned', fr: 'Prévu' },
+};
+
+// Geometry (SVG units; the viewBox is 680 wide)
+const COLS = [60, 255, 450], BW = 170, BH = 44;
+const top = (i: number) => 104 + i * 192;
+const boxX = (j: number) => COLS[j % 3];
+const boxY = (i: number, j: number) => top(i) + 38 + Math.floor(j / 3) * 64;
+const H = top(3) + 162 + 46;
+---
+<figure class="imap">
+  <svg viewBox={`0 0 680 ${H}`} width="100%" aria-labelledby="imap-title imap-desc">
+    <title id="imap-title">{tr(lang, 'Implementation map', 'Carte de mise en œuvre')}</title>
+    <desc id="imap-desc">{tr(lang,
+      'Requirements feed the SDR, which drives four streams of work: analytics platform setup, page and tag setup, procedure and documentation, and the maintenance plan. The table below lists every step with its status and link.',
+      'Les besoins alimentent la SDR, qui dirige quatre volets de travail : configuration de la plateforme, configuration des pages et des balises, procédures et documentation, et plan de maintenance. Le tableau ci-dessous énumère chaque étape avec son état et son lien.')}</desc>
+    <defs>
+      <marker id="imap-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </marker>
+    </defs>
+
+    {/* Hub: requirements -> SDR, then a spine down to each stream */}
+    {HUB.map((b, k) => {
+      const x = k === 0 ? 110 : 320, w = k === 0 ? 150 : 240, cx = x + w / 2;
+      const inner = (
+        <g class={`imap-box ${b.status}`}>
+          <rect x={x} y="20" width={w} height="56" rx="8" />
+          <text class="imap-strong" x={cx} y={k === 0 ? 48 : 38} text-anchor="middle" dominant-baseline="central">{t(b.label)}</text>
+          {k === 1 && <text class="imap-sub" x={cx} y="58" text-anchor="middle" dominant-baseline="central">{tr(lang, 'Variable map, data layer spec', 'Variables, couche de données')}</text>}
+        </g>
+      );
+      return b.href ? <a href={link(b)}>{inner}</a> : inner;
+    })}
+    <line class="imap-line" x1="260" y1="48" x2="312" y2="48" marker-end="url(#imap-arrow)" />
+    <path class="imap-line" d={`M440 76 L440 90 L24 90 L24 ${top(3) + 81}`} />
+
+    {STREAMS.map((s, i) => (
+      <g>
+        <line class="imap-line" x1="24" y1={top(i) + 81} x2="36" y2={top(i) + 81} marker-end="url(#imap-arrow)" />
+        <rect class="imap-stream" x="40" y={top(i)} width="600" height="162" rx="12" />
+        <text class="imap-strong" x="60" y={top(i) + 22} dominant-baseline="central">{t(s.title)}</text>
+        {s.boxes.map((b, j) => {
+          const x = boxX(j), y = boxY(i, j);
+          const inner = (
+            <g class={`imap-box ${b.status}`}>
+              <rect x={x} y={y} width={BW} height={BH} rx="8" />
+              <text x={x + BW / 2} y={y + BH / 2} text-anchor="middle" dominant-baseline="central">{t(b.label)}</text>
+            </g>
+          );
+          return b.href ? <a href={link(b)}>{inner}</a> : inner;
+        })}
+        {s.ordered && s.boxes.map((_, j) => {
+          if (j === 0) return null;
+          const y = boxY(i, j) + BH / 2;
+          return j % 3 === 0
+            ? <path class="imap-line" d={`M535 ${boxY(i, j - 1) + BH} L535 ${boxY(i, j) - 10} L145 ${boxY(i, j) - 10} L145 ${boxY(i, j) - 3}`} marker-end="url(#imap-arrow)" />
+            : <line class="imap-line" x1={boxX(j - 1) + BW + 2} y1={y} x2={boxX(j) - 4} y2={y} marker-end="url(#imap-arrow)" />;
+        })}
+        {i === 0 && <line class="imap-line" x1="340" y1={top(0) + 164} x2="340" y2={top(1) - 4} marker-end="url(#imap-arrow)" />}
+      </g>
+    ))}
+
+    {(['live', 'partial', 'planned'] as Status[]).map((st, k) => (
+      <g class={`imap-box ${st}`}>
+        <rect x={40 + k * 190} y={H - 30} width="14" height="14" rx="3" />
+        <text class="imap-sub" x={62 + k * 190} y={H - 23} dominant-baseline="central">{t(STATUS[st])}</text>
+      </g>
+    ))}
+  </svg>
+  <figcaption>{tr(lang,
+    'Arrows show order: streams 1 and 2 are sequences, and stream 1 comes before stream 2. Streams 3 and 4 are sets of deliverables. Maintenance findings feed back into the SDR.',
+    'Les flèches indiquent l’ordre : les volets 1 et 2 sont des séquences, et le volet 1 précède le volet 2. Les volets 3 et 4 sont des ensembles de livrables. Les constats de maintenance retournent à la SDR.')}</figcaption>
+</figure>
+
+<div class="table-wrap" tabindex="0" role="region" aria-label={tr(lang, 'Scrollable table', 'Tableau défilant')}>
+  <table class="sdr imap-table">
+    <thead><tr>
+      <th>{tr(lang, 'Stream', 'Volet')}</th><th>{tr(lang, 'Step', 'Étape')}</th><th>{tr(lang, 'Status', 'État')}</th><th>{tr(lang, 'On this site', 'Sur ce site')}</th>
+    </tr></thead>
+    <tbody>
+      {[{ title: { en: 'Hub', fr: 'Pivot' }, boxes: HUB }, ...STREAMS].map((s) => s.boxes.map((b, j) => (
+        <tr>
+          {j === 0 && <th scope="rowgroup" rowspan={s.boxes.length}>{t(s.title)}</th>}
+          <td>{b.href ? <a href={link(b)}>{t(b.label)}</a> : t(b.label)}</td>
+          <td><span class={`lozenge ${b.status === 'live' ? 'green' : b.status === 'partial' ? 'yellow' : 'grey'}`}>{t(STATUS[b.status])}</span></td>
+          <td>{t(b.note)}</td>
+        </tr>
+      )))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .imap { margin: 1.6em 0; }
+  .imap svg { display: block; height: auto; font-family: var(--sans); }
+  .imap figcaption { font: 14px/1.5 var(--sans); color: var(--muted); margin-top: 8px; }
+  .imap-line { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+  .imap-stream { fill: none; stroke: var(--rule); stroke-width: 1.2; stroke-dasharray: 5 4; }
+  .imap text { font-size: 13px; fill: var(--ink); }
+  .imap .imap-strong { font-size: 14px; font-weight: 700; }
+  .imap .imap-sub { font-size: 12px; fill: var(--muted); }
+  .imap-box rect { stroke-width: 1; }
+  .imap-box.live rect { fill: #DCFFF1; stroke: #216E4E; }
+  .imap-box.partial rect { fill: #FFF7D6; stroke: #946F00; }
+  .imap-box.planned rect { fill: #EBECF0; stroke: #8590A2; }
+  .imap a:hover rect, .imap a:focus-visible rect { stroke-width: 2.5; }
+  .imap a text { text-decoration: underline; text-decoration-color: var(--signal); }
+  table.sdr.imap-table { min-width: 640px; }
+  .imap-table th[scope='rowgroup'] { border-bottom: 1px solid var(--rule); white-space: nowrap; }
+</style>

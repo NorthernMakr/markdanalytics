@@ -7,7 +7,7 @@ tags: [requirements, SDR, specifications, data layer, documentation]
 platform: Both
 ---
 
-**Good analytics starts as a document, not a tag.** This section shows the documents an implementation runs on, filled in for this site's demo store and news site, so each one can be checked against what the pages actually send.
+**Good analytics starts as a document, not a tag.** This section shows the documents an implementation runs on, filled in for this site's demo store and news site, so each one can be checked against what the pages actually send. On the [implementation map](/process/implementation-map/), these documents are the hub that every stream of work reads from.
 
 ## The chain
 
