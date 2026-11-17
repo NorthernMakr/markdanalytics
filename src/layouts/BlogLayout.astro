@@ -16,8 +16,12 @@ const lang = langFromPath(Astro.url.pathname);
 const base = basePath(Astro.url.pathname);
 const l = (p: string) => localize(p, lang);
 // Menu items come from src/config/sections.ts (NAV).
-const nav = NAV.map((n) => ({ href: n.href, label: tr(lang, n.label.en, n.label.fr) }));
+const nav = NAV.map((n) => ({
+  href: n.href, label: tr(lang, n.label.en, n.label.fr),
+  children: n.children?.map((c) => ({ href: c.href, label: tr(lang, c.label.en, c.label.fr) })),
+}));
 const isCurrent = (href: string) => base.startsWith(href);
+const isExact = (href: string) => base === href;
 ---
 <Base title={title} description={description} pageData={pageData} bodyClass="blog" {...seo}>
   <p class="draft-notice" role="note">{tr(lang,
@@ -35,7 +39,18 @@ const isCurrent = (href: string) => base.startsWith(href);
       </div>
       <nav class="blog-menu" aria-label={tr(lang, 'Main', 'Principal')}>
         <ul>
-          {nav.map((n) => (
+          {nav.map((n, i) => n.children ? (
+            <li class="has-sub" data-current={n.children.some((c) => isCurrent(c.href)) ? '' : undefined}>
+              <button type="button" class="nav-sub-toggle" aria-expanded="false" aria-controls={`nav-sub-${i}`}>
+                {n.label}<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <ul class="nav-sub" id={`nav-sub-${i}`}>
+                {n.children.map((c) => (
+                  <li><a href={l(c.href)} aria-current={isExact(c.href) ? 'page' : undefined}>{c.label}</a></li>
+                ))}
+              </ul>
+            </li>
+          ) : (
             <li><a href={l(n.href)} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
           ))}
         </ul>
@@ -45,6 +60,27 @@ const isCurrent = (href: string) => base.startsWith(href);
   <main>
     <slot />
   </main>
+  <script>
+    // Menu drop-downs: open on click or tap (and on hover with a mouse, in CSS).
+    // Escape or a click elsewhere closes them.
+    const toggles = [...document.querySelectorAll<HTMLButtonElement>('.nav-sub-toggle')];
+    const closeAll = (except?: HTMLButtonElement) =>
+      toggles.forEach((t) => { if (t !== except) t.setAttribute('aria-expanded', 'false'); });
+    toggles.forEach((t) => t.addEventListener('click', () => {
+      const open = t.getAttribute('aria-expanded') !== 'true';
+      closeAll(t);
+      t.setAttribute('aria-expanded', String(open));
+    }));
+    document.addEventListener('click', (e) => {
+      if (!(e.target as Element).closest('.has-sub')) closeAll();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const open = toggles.find((t) => t.getAttribute('aria-expanded') === 'true');
+      closeAll();
+      open?.focus();
+    });
+  </script>
   <footer class="blog-footer">
     <div class="blog-wrap">
       <p>© {new Date().getFullYear()} {siteMeta.owner}. {tr(lang, 'Independent notes, not affiliated with Adobe or Google.', 'Notes indépendantes, sans lien avec Adobe ni Google.')}</p>

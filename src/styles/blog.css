@@ -216,3 +216,23 @@
 .panel > :first-child { margin-top: 0; } .panel > :last-child { margin-bottom: 0; }
 .wireframe { margin: 1.4em 0; } .wireframe img { width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 8px; background: #fff; }
 .wireframe figcaption { font-size: 14px; color: var(--muted); margin-top: 6px; }
+
+/* Menu drop-down (e.g. Implementation). The button opens it on click/tap; hover opens it with a mouse. */
+.blog-menu .has-sub { position: relative; }
+.nav-sub-toggle {
+  display: inline-flex; align-items: center; gap: 6px; padding: 10px 0; margin: 0;
+  background: none; border: 0; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.nav-caret { width: 10px; height: 6px; transition: transform .15s; }
+.nav-sub-toggle[aria-expanded="true"] .nav-caret { transform: rotate(180deg); }
+.has-sub[data-current] > .nav-sub-toggle { text-decoration: underline; text-decoration-color: var(--signal); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.blog-nav ul.nav-sub {
+  display: none; position: absolute; top: 100%; left: -14px; z-index: 50;
+  flex-direction: column; gap: 0; min-width: 240px; padding: 6px 0;
+  background: #fff; border: 1px solid var(--rule); border-radius: 8px; box-shadow: 0 8px 24px rgba(20, 33, 61, .12);
+}
+.nav-sub-toggle[aria-expanded="true"] + ul.nav-sub { display: flex; }
+@media (hover: hover) { .has-sub:hover > ul.nav-sub { display: flex; } }
+.blog-nav ul.nav-sub a { display: block; padding: 9px 14px; white-space: nowrap; }
+.blog-nav ul.nav-sub a:hover, .blog-nav ul.nav-sub a:focus-visible { background: var(--paper); }
+.nav-sub-toggle:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; border-radius: 4px; }

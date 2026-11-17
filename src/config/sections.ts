@@ -46,9 +46,25 @@ export const SECTIONS: Section[] = [
     title: { en: 'About me', fr: 'À propos de moi' } },
 ];
 
-/** Main menu, in order. `href` is the English path; links are localized when rendered. */
-export const NAV: { href: string; label: { en: string; fr: string } }[] = [
-  ...SECTIONS.filter((s) => s.id !== 'about' && !s.hidden).map((s) => ({ href: `/${s.id}/`, label: s.nav })),
+/** A menu entry. `href` is the English path; links are localized when rendered. */
+export interface NavItem {
+  href: string;
+  label: { en: string; fr: string };
+  /** Drop-down entries under this item. The item itself then opens the drop-down instead of linking. */
+  children?: { href: string; label: { en: string; fr: string } }[];
+}
+
+/** Drop-downs, keyed by the menu item's English path. */
+const SUBMENUS: Record<string, NavItem['children']> = {
+  '/implementation/': [
+    { href: '/process/adobe-analytics-approach/', label: { en: 'Adobe Analytics Approach', fr: 'Approche Adobe Analytics' } },
+    { href: '/implementation/', label: { en: 'Implementation Artifacts', fr: 'Livrables de mise en œuvre' } },
+  ],
+};
+
+/** Main menu, in order. */
+export const NAV: NavItem[] = [
+  ...SECTIONS.filter((s) => s.id !== 'about' && !s.hidden).map((s) => ({ href: `/${s.id}/`, label: s.nav, children: SUBMENUS[`/${s.id}/`] })),
   { href: '/shop/', label: { en: 'Store', fr: 'Boutique' } },
   { href: '/media/', label: { en: 'Media site', fr: 'Site média' } },
   { href: '/about/', label: SECTIONS.find((s) => s.id === 'about')!.nav },
