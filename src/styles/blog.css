@@ -35,7 +35,7 @@
 .home-intro .home-goals { font-size: 18px; line-height: 1.55; max-width: 62ch; margin: 0 0 16px; padding-left: 1.2em; }
 .home-intro .home-goals li { margin: .4em 0; }
 .home-intro-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 42%); grid-template-areas: "title title" "text photo" "rest rest"; column-gap: 40px; align-items: start; }
-.home-intro-grid h1 { grid-area: title; max-width: none; }
+.home-intro-grid h1 { grid-area: title; max-width: none; margin-bottom: 32px; }
 .home-intro-text { grid-area: text; }
 .home-intro-text .home-goals { margin-bottom: 0; }
 .home-intro-rest { grid-area: rest; }
