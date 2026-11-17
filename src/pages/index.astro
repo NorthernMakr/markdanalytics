@@ -2,7 +2,6 @@
 import BlogLayout from '../layouts/BlogLayout.astro';
 import { siteMeta } from '../config/tags';
 import { getPages, parseId, pagePath, formatDate, isoDate } from '../lib/content';
-import ImplementationMap from '../components/ImplementationMap.astro';
 import { graph } from '../lib/seo';
 import { LOCALE, langFromPath, localize, tr } from '../i18n';
 
@@ -36,38 +35,13 @@ const highlighted = JSON.stringify(specimen, null, 2)
 <BlogLayout title={`${siteMeta.blogName} — ${tr(lang, siteMeta.blogTagline, siteMeta.blogTaglineFr).replace(/\.$/, '')}`} pageData={pageData} jsonLd={graph()}>
   <section class="home-intro">
     <div class="blog-wrap">
-      <h1>{tr(lang, 'How a digital analytics implementation fits together.', 'Comment s’assemble une mise en œuvre d’analytique numérique.')}</h1>
+      <h1>Mark Dykeman</h1>
       <p>{tr(lang,
         'Digital product and analytics leader specializing in Adobe Analytics and Google Analytics, with more than 20 years of digital experience and over a decade leading teams and technical capabilities. Builds customer-focused roadmaps, develops people, and connects business priorities with technology delivery across complex organizations. Experience spans analytics implementation, enterprise analytics platforms, experimentation, UX, vendor management, and Agile delivery.',
         'Leader en produits numériques et en analytique, spécialisé en Adobe Analytics et Google Analytics, comptant plus de 20 ans d’expérience numérique, dont plus d’une décennie à diriger des équipes et des capacités techniques. Établit des feuilles de route axées sur le client, développe les personnes et relie les priorités d’affaires à la livraison technologique dans des organisations complexes. Son expérience couvre la mise en œuvre analytique, les plateformes d’analytique d’entreprise, l’expérimentation, l’UX, la gestion des fournisseurs et la livraison Agile.')}</p>
-      <p>{tr(lang,
-        'Start with the map below. Business requirements become one design document, and four streams of work follow from it.',
-        'Commencez par la carte ci-dessous. Les besoins d’affaires deviennent un seul document de conception, et quatre volets de travail en découlent.')}</p>
-    </div>
-  </section>
-
-  <section class="home-map">
-    <div class="blog-wrap">
-      <div class="imap-col">
-        <p class="lead">{tr(lang, 'Select any box to see that step done on this site.', 'Sélectionnez une case pour voir cette étape réalisée sur ce site.')}</p>
-        <ImplementationMap colorBy="stream" table={false} />
-
-        <h2>{tr(lang, 'What the map shows', 'Ce que montre la carte')}</h2>
-        <ul>
-          <li>{tr(lang,
-            'The top row is the starting point: what the business needs to know, and the solution design reference (SDR) that turns each need into variables.',
-            'La rangée du haut est le point de départ : ce que l’entreprise a besoin de savoir, et la référence de conception de la solution (SDR), qui traduit chaque besoin en variables.')}</li>
-          <li>{tr(lang,
-            'Each coloured band is a stream of work: setting up the analytics platform, setting up the pages and tags, writing the procedures and documentation, and keeping it all correct after launch.',
-            'Chaque bande colorée est un volet de travail : configurer la plateforme d’analytique, configurer les pages et les balises, rédiger les procédures et la documentation, et garder le tout exact après le lancement.')}</li>
-          <li>{tr(lang,
-            'Arrows show order. The first two streams are sequences, and the platform comes before the tags. The last two are sets of deliverables.',
-            'Les flèches indiquent l’ordre. Les deux premiers volets sont des séquences, et la plateforme vient avant les balises. Les deux derniers sont des ensembles de livrables.')}</li>
-        </ul>
-        <p><a href={l('/process/implementation-map/')}>{tr(lang,
-          'See the full map, with what’s built, what’s simulated and what’s planned',
-          'Voir la carte complète, avec ce qui est construit, ce qui est simulé et ce qui est prévu')}</a>.</p>
-      </div>
+      <p><a href={l('/process/adobe-analytics-approach/')}>{tr(lang,
+        'See how this site approaches an Adobe Analytics implementation',
+        'Voir comment ce site aborde une mise en œuvre d’Adobe Analytics')}</a>.</p>
     </div>
   </section>
 

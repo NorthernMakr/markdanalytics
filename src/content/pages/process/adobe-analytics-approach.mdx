@@ -1,0 +1,28 @@
+---
+title: "Adobe Analytics approach"
+description: "How a digital analytics implementation fits together: requirements become one design document, and four streams of work follow from it."
+pubDate: 2026-11-17
+category: Analytics practice
+tags: [implementation, SDR, Adobe Analytics, Web SDK, GA4]
+platform: Adobe
+order: 0
+---
+import ImplementationMap from '../../../components/ImplementationMap.astro';
+
+## How a digital analytics implementation fits together
+
+I'm Mark Dykeman. This site shows how I plan, build and look after a digital analytics implementation, worked through on two demo sites that run real tags.
+
+Start with the map below. Business requirements become one design document, and four streams of work follow from it.
+
+Select any box to see that step done on this site.
+
+<ImplementationMap colorBy="stream" table={false} />
+
+## What the map shows
+
+- The top row is the starting point: what the business needs to know, and the solution design reference (SDR) that turns each need into variables.
+- Each coloured band is a stream of work: setting up the analytics platform, setting up the pages and tags, writing the procedures and documentation, and keeping it all correct after launch.
+- Arrows show order. The first two streams are sequences, and the platform comes before the tags. The last two are sets of deliverables.
+
+[See the full map, with what's built, what's simulated and what's planned](/process/implementation-map/).

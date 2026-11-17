@@ -37,6 +37,7 @@ export const FR_SEGMENTS: Record<string, string> = {
   'what-is-a-data-layer': 'quest-ce-quune-couche-de-donnees',
   'multilingual-sites': 'sites-multilingues',
   'implementation-map': 'carte-de-mise-en-oeuvre',
+  'adobe-analytics-approach': 'approche-adobe-analytics',
   'variable-setup': 'configuration-des-variables',
   'consent-handling': 'gestion-du-consentement',
   'data-layer-specification': 'specification-couche-de-donnees',
