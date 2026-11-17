@@ -49,8 +49,12 @@ const highlighted = JSON.stringify(specimen, null, 2)
           'D’habitude, l’analytique s’ajoute une fois le site Web construit. Qu’arrive-t-il quand les deux ne sont pas séparés? Je ne suis pas certain que ça change quelque chose, mais j’aimerais voir s’il y a des avantages imprévus.')}</li>
       </ul>
       </div>
-      <img class="home-photo" src="/images/home/mt-baker.webp" width="1200" height="827" fetchpriority="high"
-        alt={tr(lang, 'Mt. Baker, from my home in Victoria, B.C.', 'Le mont Baker, vu de chez moi à Victoria (C.-B.)')} />
+      <figure class="home-specimen">
+        <pre class="specimen" aria-label={tr(lang, 'This page’s data layer object', 'L’objet de couche de données de cette page')}><code set:html={highlighted} /></pre>
+        <figcaption class="specimen-caption">{tr(lang,
+          'This page, as GTM and Adobe Tags see it, including your browser’s language. Open the event log (bottom right) to watch it live.',
+          'Cette page telle que la voient GTM et Adobe Tags, y compris la langue de votre navigateur. Ouvrez le journal (en bas à droite) pour la voir en direct.')}</figcaption>
+      </figure>
       <div class="home-intro-rest">
       <ul class="home-goals">
         <li><strong>{tr(lang, 'Indulge my love of AI.', 'Me faire plaisir avec l’IA.')}</strong> {tr(lang,
@@ -108,12 +112,6 @@ const highlighted = JSON.stringify(specimen, null, 2)
       <p class="lab-note">{tr(lang,
         'Both sites also run Adobe’s Web SDK against a stand-in Edge Network on this domain.',
         'Les deux sites font aussi tourner le Web SDK d’Adobe contre une doublure de l’Edge Network sur ce domaine.')} <a href={l('/data-quality/testing-adobe-web-sdk-without-an-adobe-account/')}>{tr(lang, 'How the mock Web SDK setup works', 'Comment fonctionne le Web SDK simulé')}</a>.</p>
-      <figure class="home-specimen">
-        <pre class="specimen" aria-label={tr(lang, 'This page’s data layer object', 'L’objet de couche de données de cette page')}><code set:html={highlighted} /></pre>
-        <figcaption class="specimen-caption">{tr(lang,
-          'This page, as GTM and Adobe Tags see it, including your browser’s language. Open the event log (bottom right) to watch it live.',
-          'Cette page telle que la voient GTM et Adobe Tags, y compris la langue de votre navigateur. Ouvrez le journal (en bas à droite) pour la voir en direct.')}</figcaption>
-      </figure>
     </div>
   </section>
 
