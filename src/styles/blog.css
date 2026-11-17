@@ -35,6 +35,9 @@
 .home-intro p { font-size: 19px; line-height: 1.6; max-width: 62ch; margin: 0 0 12px; }
 .home-intro .home-goals { font-size: 18px; line-height: 1.55; max-width: 62ch; margin: 0 0 16px; padding-left: 1.2em; }
 .home-intro .home-goals li { margin: .4em 0; }
+.home-intro-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 42%); gap: 40px; align-items: start; }
+.home-photo { width: 100%; height: auto; border-radius: 8px; display: block; margin-top: 8px; }
+@media (max-width: 820px) { .home-intro-grid { grid-template-columns: 1fr; gap: 20px; } }
 .home-map { padding: 8px 0 40px; }
 .home-map .imap-col { max-width: 760px; }
 .home-map .lead { color: var(--muted); margin: 0 0 4px; }

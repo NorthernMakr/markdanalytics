@@ -34,7 +34,8 @@ const highlighted = JSON.stringify(specimen, null, 2)
 ---
 <BlogLayout title={`${siteMeta.blogName} — ${tr(lang, siteMeta.blogTagline, siteMeta.blogTaglineFr).replace(/\.$/, '')}`} pageData={pageData} jsonLd={graph()}>
   <section class="home-intro">
-    <div class="blog-wrap">
+    <div class="blog-wrap home-intro-grid">
+      <div class="home-intro-text">
       <h1>Mark Dykeman</h1>
       <p>{tr(lang,
         'Greetings and salutations! I’m Mark Dykeman, and I’ve spent my career in digital analytics and on websites and mobile apps. With this site I’m trying to do three things:',
@@ -56,6 +57,9 @@ const highlighted = JSON.stringify(specimen, null, 2)
       <p><a href={l('/process/adobe-analytics-approach/')}>{tr(lang,
         'See how this site approaches an Adobe Analytics implementation',
         'Voir comment ce site aborde une mise en œuvre d’Adobe Analytics')}</a>.</p>
+      </div>
+      <img class="home-photo" src="/images/home/mt-baker.webp" width="1200" height="827" fetchpriority="high"
+        alt={tr(lang, 'Mt. Baker, from my home in Victoria, B.C.', 'Le mont Baker, vu de chez moi à Victoria (C.-B.)')} />
     </div>
   </section>
 
