@@ -50,15 +50,19 @@ export const SECTIONS: Section[] = [
 export interface NavItem {
   href: string;
   label: { en: string; fr: string };
-  /** Drop-down entries under this item. The item itself then opens the drop-down instead of linking. */
-  children?: { href: string; label: { en: string; fr: string } }[];
+  /** Drop-down entries under this item. The item still links to `href`; a caret button beside it opens the drop-down. */
+  children?: {
+    href: string; label: { en: string; fr: string };
+    /** Show a fly-out listing every page in this content section (kept up to date from the content files). */
+    flyoutSection?: string;
+  }[];
 }
 
 /** Drop-downs, keyed by the menu item's English path. */
 const SUBMENUS: Record<string, NavItem['children']> = {
   '/implementation/': [
     { href: '/process/adobe-analytics-approach/', label: { en: 'Adobe Analytics Approach', fr: 'Approche Adobe Analytics' } },
-    { href: '/implementation/', label: { en: 'Implementation Artifacts', fr: 'Livrables de mise en œuvre' } },
+    { href: '/implementation/', label: { en: 'Implementation Artifacts', fr: 'Livrables de mise en œuvre' }, flyoutSection: 'implementation' },
   ],
 };
 

@@ -4,6 +4,7 @@ import LangSwitch from '../components/LangSwitch.astro';
 import { siteMeta } from '../config/tags';
 import { NAV } from '../config/sections';
 import { langFromPath, basePath, localize, tr } from '../i18n';
+import { getSectionPages, parseId, pagePath } from '../lib/content';
 import '../styles/blog.css';
 
 interface Props {
@@ -16,10 +17,18 @@ const lang = langFromPath(Astro.url.pathname);
 const base = basePath(Astro.url.pathname);
 const l = (p: string) => localize(p, lang);
 // Menu items come from src/config/sections.ts (NAV).
-const nav = NAV.map((n) => ({
+// Fly-outs list every page in a content section, in the hub page's order.
+const nav = await Promise.all(NAV.map(async (n) => ({
   href: n.href, label: tr(lang, n.label.en, n.label.fr),
-  children: n.children?.map((c) => ({ href: c.href, label: tr(lang, c.label.en, c.label.fr) })),
-}));
+  children: n.children && await Promise.all(n.children.map(async (c) => ({
+    href: c.href, label: tr(lang, c.label.en, c.label.fr),
+    pages: c.flyoutSection
+      ? (await getSectionPages(c.flyoutSection, lang))
+          .filter((p) => parseId(p.id).slug !== 'index')
+          .map((p) => ({ href: pagePath(c.flyoutSection!, parseId(p.id).slug), label: p.data.title }))
+      : undefined,
+  }))),
+})));
 const isCurrent = (href: string) => base.startsWith(href);
 const isExact = (href: string) => base === href;
 ---
@@ -40,13 +49,28 @@ const isExact = (href: string) => base === href;
       <nav class="blog-menu" aria-label={tr(lang, 'Main', 'Principal')}>
         <ul>
           {nav.map((n, i) => n.children ? (
-            <li class="has-sub" data-current={n.children.some((c) => isCurrent(c.href)) ? '' : undefined}>
-              <button type="button" class="nav-sub-toggle" aria-expanded="false" aria-controls={`nav-sub-${i}`}>
-                {n.label}<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
+            <li class="has-sub" data-current={isCurrent(n.href) || n.children.some((c) => isCurrent(c.href)) ? '' : undefined}>
+              <span class="nav-split">
+                <a href={l(n.href)} aria-current={isExact(n.href) ? 'page' : undefined}>{n.label}</a>
+                <button type="button" class="nav-sub-toggle" aria-expanded="false" aria-controls={`nav-sub-${i}`}
+                  aria-label={tr(lang, `${n.label}: show menu`, `${n.label} : afficher le menu`)}>
+                  <svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </span>
               <ul class="nav-sub" id={`nav-sub-${i}`}>
                 {n.children.map((c) => (
-                  <li><a href={l(c.href)} aria-current={isExact(c.href) ? 'page' : undefined}>{c.label}</a></li>
+                  <li class={c.pages?.length ? 'has-fly' : undefined}>
+                    <a href={l(c.href)} aria-current={isExact(c.href) ? 'page' : undefined}>
+                      {c.label}{c.pages?.length && <svg class="fly-caret" viewBox="0 0 6 10" aria-hidden="true"><path d="M1 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>}
+                    </a>
+                    {c.pages?.length && (
+                      <ul class="nav-fly">
+                        {c.pages.map((pg) => (
+                          <li><a href={l(pg.href)} aria-current={isExact(pg.href) ? 'page' : undefined}>{pg.label}</a></li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
                 ))}
               </ul>
             </li>

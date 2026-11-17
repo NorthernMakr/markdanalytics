@@ -8,7 +8,7 @@ Read this first; open other files only when the task needs them.
 
 | Need to change… | Edit |
 |---|---|
-| Menu, sections, section addresses (EN/FR) | `src/config/sections.ts` (one place) |
+| Menu, sections, section addresses (EN/FR) | `src/config/sections.ts` (one place; drop-downs and fly-outs in `SUBMENUS`; a fly-out lists its section's pages automatically) |
 | A content page | `src/content/pages/<section>/<file>.md`; French: `src/content/pages/fr/<section>/<same file>.md` |
 | A page's French address | `FR_SEGMENTS` in `src/i18n/index.ts` |
 | Section page layout / hub list | `src/pages/[section]/[...slug].astro` (French route just re-renders it) |

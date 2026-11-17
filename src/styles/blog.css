@@ -217,22 +217,41 @@
 .wireframe { margin: 1.4em 0; } .wireframe img { width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 8px; background: #fff; }
 .wireframe figcaption { font-size: 14px; color: var(--muted); margin-top: 6px; }
 
-/* Menu drop-down (e.g. Implementation). The button opens it on click/tap; hover opens it with a mouse. */
+/* Menu drop-down (e.g. Implementation). The label links to the section; the caret button
+   beside it opens the drop-down on click/tap, and hover opens it with a mouse.
+   "Implementation Artifacts" has a fly-out to the right listing every artifact page
+   (on phones and other touch screens it is shown indented under its parent instead). */
 .blog-menu .has-sub { position: relative; }
+.nav-split { display: inline-flex; align-items: center; gap: 2px; }
 .nav-sub-toggle {
-  display: inline-flex; align-items: center; gap: 6px; padding: 10px 0; margin: 0;
+  display: inline-flex; align-items: center; justify-content: center; padding: 10px 6px; margin: 0;
   background: none; border: 0; font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
 .nav-caret { width: 10px; height: 6px; transition: transform .15s; }
 .nav-sub-toggle[aria-expanded="true"] .nav-caret { transform: rotate(180deg); }
-.has-sub[data-current] > .nav-sub-toggle { text-decoration: underline; text-decoration-color: var(--signal); text-decoration-thickness: 2px; text-underline-offset: 6px; }
-.blog-nav ul.nav-sub {
-  display: none; position: absolute; top: 100%; left: -14px; z-index: 50;
-  flex-direction: column; gap: 0; min-width: 240px; padding: 6px 0;
+.has-sub[data-current] > .nav-split > a { text-decoration: underline; text-decoration-color: var(--signal); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+.blog-nav ul.nav-sub, .blog-nav ul.nav-fly {
+  display: none; position: absolute; z-index: 50;
+  flex-direction: column; flex-wrap: nowrap; gap: 0; padding: 6px 0;
   background: #fff; border: 1px solid var(--rule); border-radius: 8px; box-shadow: 0 8px 24px rgba(20, 33, 61, .12);
 }
-.nav-sub-toggle[aria-expanded="true"] + ul.nav-sub { display: flex; }
-@media (hover: hover) { .has-sub:hover > ul.nav-sub { display: flex; } }
-.blog-nav ul.nav-sub a { display: block; padding: 9px 14px; white-space: nowrap; }
+.blog-nav ul.nav-sub { top: 100%; left: -14px; min-width: 250px; }
+.nav-sub-toggle[aria-expanded="true"] + ul.nav-sub, .nav-split:has(.nav-sub-toggle[aria-expanded="true"]) + ul.nav-sub { display: flex; }
+.blog-nav ul.nav-sub a { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 9px 14px; white-space: nowrap; }
 .blog-nav ul.nav-sub a:hover, .blog-nav ul.nav-sub a:focus-visible { background: var(--paper); }
+.blog-nav ul.nav-sub a[aria-current="page"] { text-decoration: none; background: var(--paper); font-weight: 600; }
+.fly-caret { width: 6px; height: 10px; flex: none; }
+.has-fly { position: relative; }
+.blog-nav ul.nav-fly { top: -7px; left: 100%; min-width: 300px; }
 .nav-sub-toggle:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; border-radius: 4px; }
+@media (hover: hover) and (min-width: 821px) {
+  .has-sub:hover > ul.nav-sub { display: flex; }
+  .has-fly:hover > ul.nav-fly, .has-fly:focus-within > ul.nav-fly { display: flex; }
+}
+/* Touch screens and narrow windows: the artifact list sits indented under its parent. */
+@media (hover: none), (max-width: 820px) {
+  .blog-nav ul.nav-fly { display: flex; position: static; box-shadow: none; border: 0; border-radius: 0; padding: 0 0 4px 14px; min-width: 0; }
+  .blog-nav ul.nav-fly a { white-space: normal; padding: 7px 14px; font-size: 14px; }
+  .fly-caret { display: none; }
+  .blog-nav ul.nav-sub { min-width: min(320px, calc(100vw - 32px)); }
+}
