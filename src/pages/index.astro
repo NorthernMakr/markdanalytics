@@ -57,9 +57,16 @@ const highlighted = JSON.stringify(specimen, null, 2)
           'I’m using it to build, manage and write much of this site. I expect bumps and pitfalls, and I’m looking forward to learning from them. You get good by doing.',
           'Je m’en sers pour construire, gérer et rédiger une bonne partie de ce site. Je m’attends à des embûches et j’ai hâte d’en tirer des leçons. C’est en forgeant qu’on devient forgeron.')}</li>
       </ul>
-      <p><a href={l('/process/adobe-analytics-approach/')}>{tr(lang,
-        'See how this site approaches an Adobe Analytics implementation',
-        'Voir comment ce site aborde une mise en œuvre d’Adobe Analytics')}</a>.</p>
+      <h2>{tr(lang, 'Done so far', 'Réalisé jusqu’ici')}</h2>
+      <ul class="home-goals">
+        <li>{tr(lang, 'Built the site in English and French, to demonstrate and test ', 'Construit le site en anglais et en français, pour montrer et tester ')}<a href={l('/process/multilingual-sites/')}>{tr(lang, 'how I handle multilingual sites', 'ma façon de gérer les sites multilingues')}</a>.</li>
+        <li>{tr(lang, 'Built two demo sites, a ', 'Construit deux sites démo, un ')}<a href={l('/media/')}>{tr(lang, 'media site', 'site média')}</a>{tr(lang, ' and an ', ' et une ')}<a href={l('/shop/')}>{tr(lang, 'e-commerce store', 'boutique en ligne')}</a>{tr(lang,
+          ', as a canvas for analytics implementation and experimentation.',
+          ', comme terrain d’essai pour la mise en œuvre et l’expérimentation en analytique.')}</li>
+        <li>{tr(lang,
+          'Built the whole site to work well on phones, be accessible, and be friendly to search engines and AI answer engines (SEO and AEO).',
+          'Conçu l’ensemble pour bien fonctionner sur mobile, être accessible et bien se présenter aux moteurs de recherche et aux moteurs de réponse IA (SEO et AEO).')}</li>
+      </ul>
       </div>
     </div>
   </section>

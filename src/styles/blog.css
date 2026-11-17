@@ -40,6 +40,7 @@
 .home-intro-text { grid-area: text; }
 .home-intro-text .home-goals { margin-bottom: 0; }
 .home-intro-rest { grid-area: rest; }
+.home-intro-rest h2 { font: 700 24px/1.25 var(--serif); margin: 24px 0 6px; }
 .home-intro-rest .home-goals { margin-top: .4em; max-width: none; }
 .home-photo { grid-area: photo; width: 100%; height: auto; border-radius: 8px; display: block; margin-top: 6px; }
 @media (max-width: 820px) {
