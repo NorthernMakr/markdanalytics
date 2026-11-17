@@ -1,6 +1,7 @@
 ---
 title: "Configurer les variables dans Adobe Analytics, CJA et GA4"
 description: "La même valeur, le type de page, configurée de trois façons : une eVar dans Adobe Analytics, un champ de schéma et un composant de vue de données dans Customer Journey Analytics, et une dimension personnalisée dans GA4. Ce qu’on configure, ce qu’on envoie, et où se règle le comportement dans les rapports."
+updatedDate: 2026-11-17
 pubDate: 2026-11-15
 category: Pratique d’analytique
 tags: [variables, eVars, XDM, vues de données, dimensions personnalisées, Adobe Analytics, Customer Journey Analytics, GA4]
@@ -60,9 +61,9 @@ Une mise en garde pour un site qui commence par Analytics : les valeurs envoyée
 ## GA4
 
 1. **Envoyer la valeur comme paramètre d’événement.** Dans Google Tag Manager, une variable de couche de données lit `page.type`, et la balise Google l’envoie sous le nom `page_type`. Les valeurs qui décrivent l’utilisateur partent comme propriétés d’utilisateur; celles qui décrivent un produit vont dans le tableau `items`.
-2. **L’enregistrer comme dimension personnalisée.** On crée la dimension personnalisée pour pouvoir analyser les données du paramètre, et il faut de 24 à 48 heures avant de pouvoir l’utiliser dans les rapports ([Google : dimensions et mesures](https://support.google.com/analytics/answer/14240153?hl=fr)).
-3. **Choisir la portée.** La portée événement porte sur un paramètre d’événement, la portée utilisateur sur une propriété de l’utilisateur, et la portée article sur un produit dans le tableau `items` d’un événement de commerce (même page de Google). Le type de page a une portée événement.
-4. **Surveiller les limites.** Une propriété standard permet 50 dimensions personnalisées à portée événement, 25 à portée utilisateur et 10 à portée article (même page de Google); l’enregistrement passe donc par le [processus de changement](/fr/processus/#ajouter-ou-modifier-une-variable), comme tout emplacement Adobe.
+2. **L’enregistrer comme dimension personnalisée.** Un paramètre d’événement personnalisé n’apparaît dans les rapports GA4 qu’une fois enregistré comme dimension personnalisée ([Google : dimensions et mesures](https://support.google.com/analytics/answer/14240153?hl=fr)). L’enregistrement n’est pas nécessaire pour le recueillir : l’exportation BigQuery contient tous les paramètres envoyés, enregistrés ou non ([Google : schéma de l’exportation BigQuery](https://support.google.com/analytics/answer/7029846?hl=fr)). Les rapports intègrent une nouvelle dimension de 24 à 48 heures après sa création ([Google : créer des dimensions personnalisées à portée événement](https://support.google.com/analytics/answer/14239696?hl=fr)), et l’enregistrer ne rend pas les données antérieures disponibles dans les rapports; il vaut donc mieux l’enregistrer avant le lancement.
+3. **Choisir la portée.** La portée événement porte sur un paramètre d’événement, la portée utilisateur sur une propriété de l’utilisateur, et la portée article sur un produit dans le tableau `items` d’un événement de commerce (page de Google sur les dimensions et mesures, citée plus haut). Le type de page a une portée événement.
+4. **Surveiller les limites.** Une propriété standard permet 50 dimensions personnalisées à portée événement, 25 à portée utilisateur et 10 à portée article (page de Google sur les dimensions et mesures, citée plus haut); l’enregistrement passe donc par le [processus de changement](/fr/processus/#ajouter-ou-modifier-une-variable), comme tout emplacement Adobe.
 
 GA4 n’a ni expiration ni attribution à configurer. Ce qui s’en rapproche le plus, c’est le choix de la portée.
 

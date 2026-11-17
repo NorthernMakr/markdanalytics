@@ -1,6 +1,7 @@
 ---
 title: "Setting up variables in Adobe Analytics, CJA and GA4"
 description: "The same value, page type, set up three ways: as an eVar in Adobe Analytics, a schema field and data view component in Customer Journey Analytics, and a custom dimension in GA4. What you configure, what you send, and where the reporting behaviour lives."
+updatedDate: 2026-11-17
 pubDate: 2026-11-15
 category: Analytics practice
 tags: [variables, eVars, XDM, data views, custom dimensions, Adobe Analytics, Customer Journey Analytics, GA4]
@@ -60,9 +61,9 @@ One caution for a site that starts with Analytics: values sent only in the `data
 ## GA4
 
 1. **Send the value as an event parameter.** In Google Tag Manager, a data layer variable reads `page.type` and the Google tag sends it as `page_type`. Values about the user go as user properties; values about a product go inside the `items` array.
-2. **Register it as a custom dimension.** You create the custom dimension so you can analyse the parameter's data, and it takes 24 to 48 hours before you can report on it ([Google: dimensions and metrics](https://support.google.com/analytics/answer/14240153?hl=en)).
-3. **Pick the scope.** Event scope reports on a parameter of an event, user scope on a property of the user, and item scope on a product inside the `items` array of an ecommerce event (same Google page). Page type is event-scoped.
-4. **Mind the limits.** A standard property allows 50 event-scoped, 25 user-scoped and 10 item-scoped custom dimensions (same Google page), so registration goes through the [change process](/process/#adding-or-changing-a-variable) like any Adobe slot.
+2. **Register it as a custom dimension.** A custom event parameter appears in GA4 reports only once it's registered as a custom dimension ([Google: dimensions and metrics](https://support.google.com/analytics/answer/14240153?hl=en)). Registration isn't needed to collect it: the BigQuery export includes every parameter sent, registered or not ([Google: BigQuery Export schema](https://support.google.com/analytics/answer/7029846?hl=en)). Reports pick up a new dimension 24 to 48 hours after it's created ([Google: create event-scoped custom dimensions](https://support.google.com/analytics/answer/14239696?hl=en)), and registering it doesn't make older data available in reports, so register before launch.
+3. **Pick the scope.** Event scope reports on a parameter of an event, user scope on a property of the user, and item scope on a product inside the `items` array of an ecommerce event (Google's dimensions and metrics page, linked above). Page type is event-scoped.
+4. **Mind the limits.** A standard property allows 50 event-scoped, 25 user-scoped and 10 item-scoped custom dimensions (Google's dimensions and metrics page, linked above), so registration goes through the [change process](/process/#adding-or-changing-a-variable) like any Adobe slot.
 
 GA4 has no expiration or allocation to configure. The closest equivalent is choosing the scope.
 
