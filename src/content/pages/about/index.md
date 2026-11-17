@@ -2,11 +2,13 @@
 title: About me
 description: "Mark Dykeman, digital analytics implementation and analysis, Victoria, BC: background, résumé and the kind of work I'm looking for."
 pubDate: 2026-11-02
-updatedDate: 2026-11-10
+updatedDate: 2026-11-17
 category: About
 tags: [about, résumé]
 platform: Other
 ---
+
+Digital product and analytics leader specializing in Adobe Analytics and Google Analytics, with more than 20 years of digital experience and over a decade leading teams and technical capabilities. Builds customer-focused roadmaps, develops people, and connects business priorities with technology delivery across complex organizations. Experience spans analytics implementation, enterprise analytics platforms, experimentation, UX, vendor management, and Agile delivery.
 
 I'm Mark Dykeman, a digital analytics specialist in Victoria, British Columbia. I work Adobe Analytics first and Google Analytics second, across the whole chain: requirements, solution design, implementation specs, data quality and analysis. This site is where I show that work.
 

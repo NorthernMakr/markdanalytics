@@ -2,11 +2,13 @@
 title: À propos de moi
 description: "Mark Dykeman, mise en œuvre et analyse en analytique numérique, Victoria (C.-B.) : parcours, CV et le genre de travail que je recherche."
 pubDate: 2026-11-02
-updatedDate: 2026-11-10
+updatedDate: 2026-11-17
 category: À propos
 tags: [à propos, CV]
 platform: Other
 ---
+
+Leader en produits numériques et en analytique, spécialisé en Adobe Analytics et Google Analytics, comptant plus de 20 ans d’expérience numérique, dont plus d’une décennie à diriger des équipes et des capacités techniques. Établit des feuilles de route axées sur le client, développe les personnes et relie les priorités d’affaires à la livraison technologique dans des organisations complexes. Son expérience couvre la mise en œuvre analytique, les plateformes d’analytique d’entreprise, l’expérimentation, l’UX, la gestion des fournisseurs et la livraison Agile.
 
 Je suis Mark Dykeman, spécialiste de l’analytique numérique à Victoria, en Colombie-Britannique. Je travaille d’abord avec Adobe Analytics, puis avec Google Analytics, sur toute la chaîne : besoins, conception de la solution, spécifications de mise en œuvre, qualité des données et analyse. Ce site présente ce travail.
 
