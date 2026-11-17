@@ -15,7 +15,7 @@ const pageData = {
 <BlogLayout title={`${tr(lang, 'Page not found', 'Page introuvable')} — ${siteMeta.blogName}`} pageData={pageData} noindex>
   <section class="hub-section" style="border-top:0">
     <div class="blog-wrap">
-      <h1 style="font:700 40px/1.1 var(--serif);margin:24px 0 12px">{tr(lang, 'That page isn’t here', 'Cette page n’existe pas')}</h1>
+      <h1 style="font:700 40px/1.1 var(--sans);margin:24px 0 12px">{tr(lang, 'That page isn’t here', 'Cette page n’existe pas')}</h1>
       {lang === 'en'
         ? <p style="color:var(--muted);font-size:18px;max-width:52ch">The address may have changed or been typed slightly wrong. Try the <a href="/">home page</a>, the <a href="/blog/">notes</a>, or the <a href="/practice/">analytics practice</a> section.</p>
         : <p style="color:var(--muted);font-size:18px;max-width:52ch">L’adresse a peut-être changé ou contient une faute de frappe. Essayez la <a href={l('/')}>page d’accueil</a>, les <a href={l('/blog/')}>notes</a> ou la section <a href={l('/practice/')}>pratique d’analytique</a>.</p>}
