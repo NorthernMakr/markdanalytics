@@ -117,7 +117,8 @@ Every request also sets `data.__adobe.analytics`. **eVars describe context and g
 every hit** (eVar1 page name, eVar2 page type, eVar3 section, eVar4 page language, eVar5 browser
 language; eVar6 is unassigned; intended settings: Hit expiry, Most recent
 allocation). **Props count things on their hit** (prop1 page name on page views,
-prop2 interaction, prop3 video name, prop4 link name). Adobe-side settings can't
+prop2 interaction, prop3 video name, prop4 link name). The interaction is also
+sent in eVar9 (intended: Visit expiry) so it has attribution as well as a count. Adobe-side settings can't
 be checked against the mock; verify them in a real report suite.
 
 ### Load order (in every page's `<head>`)
@@ -265,7 +266,7 @@ GA4 `value` is the item subtotal (no tax or shipping, per Google), while Adobe's
 XDM `order.priceTotal` is the full total including tax and shipping.
 
 `npm run test:adobe` checks every Web SDK request in both languages: eVar1–5 on
-every hit, prop1 only on page views, prop2–4 on the interactions they count.
+every hit, prop1 only on page views, prop2–4 on the interactions they count, eVar9 equal to prop2.
 
 To add a language (say `zh-CN` under `/zh/`): add it to `LANGS` and `LOCALE`
 in `src/i18n/index.ts` and `PAGE_LANGUAGES` in `src/config/analytics.ts`, then

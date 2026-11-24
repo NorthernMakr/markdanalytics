@@ -507,6 +507,43 @@
       }
     },
     {
+      "adobe": "eVar9",
+      "type": "eVar",
+      "status": "live",
+      "reqs": [
+        "BR-02",
+        "BR-08"
+      ],
+      "name": {
+        "en": "Interaction",
+        "fr": "Interaction"
+      },
+      "dl": "event (adobeDataLayer)",
+      "example": "cart add",
+      "expiry": "Visit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit except page views",
+        "fr": "Chaque hit sauf les pages vues"
+      },
+      "meaning": {
+        "en": "What the visitor did, kept for the rest of the visit so that later orders, leads and clicks can be credited to it.",
+        "fr": "Ce que le visiteur a fait, conservé pour le reste de la visite afin de pouvoir y créditer les commandes, les demandes et les clics qui suivent."
+      },
+      "metrics": {
+        "en": "Orders, revenue, leads, link clicks",
+        "fr": "Commandes, revenus, demandes, clics de liens"
+      },
+      "why": {
+        "en": "eVar copy of the interaction, for attribution: the prop counts each action, the eVar gives it credit for what happens next.",
+        "fr": "Copie de l’interaction en eVar, pour l’attribution : la prop compte chaque action, l’eVar lui crédite ce qui se passe ensuite."
+      },
+      "ga4": {
+        "name": "event_name (built in)",
+        "scope": "Event"
+      }
+    },
+    {
       "adobe": "prop1",
       "type": "prop",
       "status": "live",
@@ -571,8 +608,8 @@
         "fr": "Occurrences"
       },
       "why": {
-        "en": "Prop: one count per action, never carried to the next hit.",
-        "fr": "Prop : un compte par action, jamais reporté au hit suivant."
+        "en": "Prop: one count per action, never carried to the next hit. The Interaction eVar holds the same value for attribution.",
+        "fr": "Prop : un compte par action, jamais reporté au hit suivant. L’eVar Interaction porte la même valeur pour l’attribution."
       },
       "ga4": {
         "name": "event_name (built in)",
@@ -829,6 +866,42 @@
       },
       "ga4": {
         "name": "generate_lead",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "event5",
+      "type": "event",
+      "status": "proposed",
+      "reqs": [
+        "BR-08"
+      ],
+      "name": {
+        "en": "Link click",
+        "fr": "Clic de lien"
+      },
+      "dl": "content clicked",
+      "example": "event5",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "Tracked link clicks",
+        "fr": "Clics de liens suivis"
+      },
+      "meaning": {
+        "en": "A tracked link was clicked. The countable metric that goes with Link name and Interaction.",
+        "fr": "Un lien suivi a été cliqué. La mesure comptable qui accompagne Nom du lien et Interaction."
+      },
+      "metrics": {
+        "en": "Use with Link name, Interaction, Page name",
+        "fr": "À utiliser avec Nom du lien, Interaction, Nom de page"
+      },
+      "why": {
+        "en": "Success event, so clicks can be attributed to eVars and used in calculated metrics such as clicks per visit.",
+        "fr": "Événement de succès, pour attribuer les clics aux eVars et les utiliser dans des mesures calculées, comme les clics par visite."
+      },
+      "ga4": {
+        "name": "content_click",
         "scope": "Event"
       }
     }

@@ -173,6 +173,7 @@ Elles sont recueillies sur chaque propriété dès le premier jour. Les deux var
 
 - **Les eVars** portent les valeurs descriptives ci-dessus et sont envoyées sur **chaque hit de la page** : la page vue et chaque interaction (événements de produit, de panier, de vidéo et de clic). Elles expirent au hit : chaque hit porte donc son propre contexte, et aucun rapport ne dépend de la durée de persistance d’une valeur. L’expiration et l’attribution des eVars sont des réglages de la suite de rapports, pas du code de page; elles font donc partie de la spécification : ici, expiration au hit et attribution à la plus récente.
 - **Les props** comptent des choses sur le hit où elles surviennent, sans jamais persister : `prop1` nom de page (pages vues), `prop2` interaction (tous les autres hits, comme `cart add`, `purchase` ou `media start`), `prop3` nom de la vidéo, `prop4` nom du lien.
+- **L’interaction est dans les deux.** `prop2` la compte; `eVar9` porte la même valeur, avec expiration à la visite et attribution à la plus récente, pour pouvoir lui attribuer les commandes, les demandes et les clics qui suivent dans la visite. C’est la seule valeur de contexte ici qui persiste exprès.
 
 GA4 n’a pas besoin d’une règle équivalente : les paramètres communs de la balise Google accompagnent chaque événement qu’elle envoie.
 

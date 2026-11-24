@@ -2,8 +2,8 @@
 // mock Edge Network in both languages and checks every request the SDK sends:
 //   - eVar1-5 (page name, page type, section, page language, browser language); eVar6 never sent
 //     are on EVERY request, page views and interactions alike
-//   - prop1 (page name) only on page views; prop2 (interaction) on every
-//     other request; prop3 (video name) on media events; prop4 (link name)
+//   - prop1 (page name) only on page views; prop2 and eVar9 (interaction, same
+//     value) on every other request; prop3 (video name) on media events; prop4 (link name)
 //     on teaser clicks; all values in English
 // Usage: node tests/check-adobe-context.cjs [base URL, default http://lab.test:8787]
 // (The SDK won't accept an IP address as its edge domain, so the default maps
@@ -28,6 +28,8 @@ const B = process.argv[2] || 'http://lab.test:8787';
       if (isView && !v.prop1) failures.push(`${label}: page view without prop1`);
       if (!isView && v.prop1) failures.push(`${label} ${r.type}: prop1 on a non-page-view hit`);
       if (!isView && !v.prop2) failures.push(`${label} ${r.type}: missing prop2 (interaction)`);
+      if (!isView && v.eVar9 !== v.prop2) failures.push(`${label} ${r.type}: eVar9 "${v.eVar9}" should equal prop2 "${v.prop2}"`);
+      if (isView && v.eVar9) failures.push(`${label}: eVar9 (interaction) on a page view`);
     }
     return reqs;
   };

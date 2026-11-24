@@ -12,7 +12,7 @@ import SdrTable from '../../../components/sdr/SdrTable.astro';
 | Property | Value |
 |---|---|
 | **Document** | Solution design reference, markdanalytics.ca demo sites |
-| **Version** | 1.2, 24 November 2026 (eVar6, language match, unassigned: a segment on page language and browser language finds matches and mismatches) |
+| **Version** | 1.2, 24 November 2026 (eVar6, language match, unassigned: a segment on page language and browser language finds matches and mismatches; eVar9 added so the interaction has attribution as well as a count; event5, link click, proposed) |
 | **Status** | Live, with 5 variables proposed |
 | **Owner** | Mark Dykeman, analytics lead |
 | **Download** | [Excel workbook (English)](/downloads/markdanalytics-sdr-en.xlsx) · [Excel (français)](/downloads/markdanalytics-sdr-fr.xlsx) |
@@ -22,8 +22,8 @@ import SdrTable from '../../../components/sdr/SdrTable.astro';
 
 ## Design rules
 
-- **eVars describe context; props count things.** Descriptive values (page type, section, language) are eVars sent on every hit with Hit expiry, so no report depends on persistence. Props count actions on their own hit: page name, interaction, video name, link name.
-- **Merchandising and promotions persist on purpose.** The proposed product-list eVar keeps credit with each product until purchase; the promotion eVar lasts the visit. Those are the only variables where persistence is the point.
+- **eVars describe context; props count things.** Descriptive values (page type, section, language) are eVars sent on every hit with Hit expiry, so no report depends on persistence. Props count actions on their own hit: page name, interaction, video name, link name. The interaction is also an eVar (`eVar9`, Visit expiry): the prop counts it, the eVar gives it attribution.
+- **Merchandising and promotions persist on purpose.** The proposed product-list eVar keeps credit with each product until purchase; the promotion eVar and the interaction eVar last the visit. Those are the only variables where persistence is the point.
 - **Every value is English**, whatever the page language. Page language is its own variable.
 - **Expiry and allocation are part of the design.** They're report suite settings, not page code, so the SDR is where they're recorded ([Adobe: eVars](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/evar), [props](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/prop)).
 

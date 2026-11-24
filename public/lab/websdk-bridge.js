@@ -93,6 +93,10 @@
   //   eVar6 is unassigned: it held a language match flag until 2026-11-24, which
   //   a segment on eVar4 and eVar5 finds just as easily.
   //
+  // The interaction is recorded twice, on every non-page-view hit: prop2 COUNTS
+  // it, eVar9 gives it ATTRIBUTION (intended settings: Visit expiry, Most
+  // recent), so later conversions in the visit can be credited to it.
+  //
   // Props COUNT things, on the hit where they happen (props never persist):
   //   prop1 page name (page views), prop2 interaction (every non-page-view hit,
   //   e.g. "cart add", "purchase", "content clicked"), prop3 video name (media
@@ -109,7 +113,7 @@
     };
   }
   function countVars(e) {
-    var c = { prop2: e.event };
+    var c = { prop2: e.event, eVar9: e.event };
     if (e.media && e.media.name) c.prop3 = e.media.name;
     if (e.link && e.link.text) c.prop4 = e.link.text;
     return c;

@@ -40,7 +40,8 @@ sitemap, RSS and llms.txt update themselves. Template: `src/content/pages/_page-
 - **Adobe:** eVars describe context and go on EVERY hit (eVar1 page name, eVar2 type, eVar3 section, eVar4 page
   language, eVar5 browser language; Hit expiry; eVar6 is UNASSIGNED since 2026-11-24: the
   language match flag is redundant (a segment on eVar4 + eVar5 finds matches and mismatches), so it stays in the data layer only and GA4 `language_match` is gone too). Props count things on their own
-  hit (prop1 page name, prop2 interaction, prop3 video name, prop4 link name).
+  hit (prop1 page name, prop2 interaction, prop3 video name, prop4 link name). The interaction is in BOTH: prop2 counts it,
+  eVar9 (Visit expiry, Most recent) gives it attribution. event5 (link click) is proposed, not built, like event1-4.
 - **GA4 purchase `value`** = sum of price × quantity (no tax/shipping). Adobe XDM
   `order.priceTotal` includes tax and shipping.
 - No personal data in data layers. Contact address lives only in the `CONTACT_TO` secret.
