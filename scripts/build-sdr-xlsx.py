@@ -29,7 +29,7 @@ L = {
     h_req=["ID","Question","Decision it informs","KPIs","Site","Priority","Owner","Answered by"],
     h_sdr=["Variable","Name","Requirements","Data layer source","Example","Expiry","Allocation","Set on","GA4","GA4 scope","Status"],
     h_dev=["Expose in the data layer","Why (brief)","Example","Send on","Status"],
-    h_biz=["Name","What it means","Pair it with","Why this kind of variable","Adobe","GA4","Status"],
+    h_biz=["Name","What it means","Pair it with","Why this kind of variable","Adobe","Example","GA4","Status"],
     site={"both":"Both","store":"Store","media":"Media"}, prio={"High":"High","Medium":"Medium"}, all="All variables"),
   "fr": dict(about="À propos", req="Besoins", sdr="SDR", dev="Développeurs", biz="Utilisateurs d’affaires",
     title="Référence de conception de la solution : boutique et site de nouvelles démo de markdanalytics.ca",
@@ -46,7 +46,7 @@ L = {
     h_req=["ID","Question","Décision éclairée","Indicateurs","Site","Priorité","Responsable","Variables"],
     h_sdr=["Variable","Nom","Besoins","Source (couche de données)","Exemple","Expiration","Attribution","Fixée sur","GA4","Portée GA4","Statut"],
     h_dev=["À exposer dans la couche de données","Pourquoi (en bref)","Exemple","Envoyer sur","Statut"],
-    h_biz=["Nom","Ce que ça signifie","À associer à","Pourquoi ce type de variable","Adobe","GA4","Statut"],
+    h_biz=["Nom","Ce que ça signifie","À associer à","Pourquoi ce type de variable","Adobe","Exemple","GA4","Statut"],
     site={"both":"Les deux","store":"Boutique","media":"Médias"}, prio={"High":"Haute","Medium":"Moyenne"}, all="Toutes les variables"),
 }
 
@@ -137,9 +137,9 @@ def build(lang):
 
     # Business users
     ws = wb.create_sheet(t["biz"])
-    rows = [[tx(v["name"]), tx(v["meaning"]), tx(v["metrics"]), tx(v["why"]), v["adobe"], v["ga4"]["name"], st(v["status"])]
+    rows = [[tx(v["name"]), tx(v["meaning"]), tx(v["metrics"]), tx(v["why"]), v["adobe"], v["example"], v["ga4"]["name"], st(v["status"])]
             for v in data["variables"]]
-    table(ws, t["h_biz"], rows, [26, 44, 34, 44, 22, 30, 14], status_col=7, lang=lang)
+    table(ws, t["h_biz"], rows, [26, 44, 34, 44, 22, 30, 30, 14], status_col=8, lang=lang)
 
     out = ROOT / f"public/downloads/markdanalytics-sdr-{lang}.xlsx"
     wb.save(out)

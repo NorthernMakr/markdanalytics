@@ -7,7 +7,8 @@
 //   business      what each variable means, what to pair it with, eVar or prop
 // Used from MDX pages: <SdrTable view="full" />
 import sdr from '../../data/sdr.json';
-import { langFromPath, tr, type Lang } from '../../i18n';
+import { langFromPath, tr, LOCALE, type Lang } from '../../i18n';
+import { fullPageName } from '../../config/analytics';
 
 interface Props { view: 'requirements' | 'full' | 'developers' | 'business' }
 const { view } = Astro.props;
@@ -18,6 +19,18 @@ const reqById = Object.fromEntries(sdr.requirements.map((r) => [r.id, r]));
 const varsFor = (id: string) => sdr.variables.filter((v) => v.reqs.includes(id)).map((v) => v.adobe);
 const purpose = (v: (typeof sdr.variables)[number]) => t(reqById[v.reqs[0]].question).replace(/^Constraint: |^Contrainte : /, '');
 const site = (s: string) => ({ both: tr(lang, 'Both', 'Les deux'), store: tr(lang, 'Store', 'Boutique'), media: tr(lang, 'Media', 'Médias') }[s] ?? s);
+
+// Business view: what each variable holds on the page that shows the table (the
+// "SDR for business users" article), so readers can compare it with the Event log.
+// Variables this page never sets fall back to the SDR example from another page.
+const herePage = fullPageName('implementation:sdr-business-users');
+const here: Record<string, string> = {
+  pageName: herePage, eVar1: herePage, prop1: herePage,
+  eVar2: 'article', eVar3: 'implementation',
+  eVar4: LOCALE[lang], eVar5: LOCALE[lang], eVar6: 'match',
+  prop2: 'content scrolled',
+  event3: 'event3',
+};
 ---
 <div class="table-wrap" tabindex="0" role="region" aria-label={tr(lang, 'Scrollable table', 'Tableau défilant')}>
 {view === 'requirements' && (
@@ -69,12 +82,16 @@ const site = (s: string) => ({ both: tr(lang, 'Both', 'Les deux'), store: tr(lan
     <thead><tr>
       <th>{tr(lang, 'Name', 'Nom')}</th><th>{tr(lang, 'What it means', 'Ce que ça signifie')}</th>
       <th>{tr(lang, 'Pair it with', 'À associer à')}</th><th>{tr(lang, 'Why this kind of variable', 'Pourquoi ce type de variable')}</th>
-      <th>Adobe</th><th>GA4</th><th>{tr(lang, 'Status', 'Statut')}</th>
+      <th>Adobe</th><th>{tr(lang, 'Example on this page', 'Exemple sur cette page')}</th><th>GA4</th><th>{tr(lang, 'Status', 'Statut')}</th>
     </tr></thead>
     <tbody>{sdr.variables.map((v) => (
       <tr>
         <td><strong>{t(v.name)}</strong></td><td>{t(v.meaning)}</td><td>{t(v.metrics)}</td><td>{t(v.why)}</td>
-        <td><code>{v.adobe}</code></td><td><code>{v.ga4.name}</code></td><td class={`status-${v.status}`}>{status(v.status)}</td>
+        <td><code>{v.adobe}</code></td>
+        <td>{here[v.adobe]
+          ? <code>{here[v.adobe]}</code>
+          : <Fragment>{tr(lang, 'Not set on this page. Elsewhere:', 'Non définie sur cette page. Ailleurs :')} <code>{v.example}</code></Fragment>}</td>
+        <td><code>{v.ga4.name}</code></td><td class={`status-${v.status}`}>{status(v.status)}</td>
       </tr>))}</tbody>
   </table>
 )}
