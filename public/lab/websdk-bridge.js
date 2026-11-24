@@ -91,7 +91,7 @@
   //   eVar1 page name, eVar2 page type, eVar3 site section, eVar4 page language,
   //   eVar5 browser language
   //   eVar6 is unassigned: it held a language match flag until 2026-11-24, which
-  //   repeated what eVar4 and eVar5 already say.
+  //   a segment on eVar4 and eVar5 finds just as easily.
   //
   // Props COUNT things, on the hit where they happen (props never persist):
   //   prop1 page name (page views), prop2 interaction (every non-page-view hit,

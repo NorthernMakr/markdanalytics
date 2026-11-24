@@ -60,7 +60,7 @@ Les deux plateformes recueillent déjà leur propre langue de navigateur. La [di
 | `user.languageMatch` | Non envoyé | Non envoyé |
 | Clic sur le sélecteur de langue | `language switched` | `language_switch` avec `language_from`, `language_to` |
 
-L’indicateur de concordance reste dans la couche de données, où une invitation à changer de langue pourrait le lire, mais il n’est envoyé à aucune des deux plateformes : la langue de la page et celle du navigateur disent déjà la même chose, et une variable qui ne fait que répéter deux autres est une chose de plus à documenter et à tester. C’était `eVar6` et `language_match` jusqu’au 24 novembre 2026; `eVar6` n’est plus attribuée.
+L’indicateur de concordance reste dans la couche de données, où une invitation à changer de langue pourrait le lire, mais il n’est envoyé à aucune des deux plateformes. Il est facile de créer, dans Analysis Workspace ou GA4, un segment qui repère les concordances et les non-concordances à partir de la langue de la page et de celle du navigateur; une troisième variable ne ferait que répéter les deux autres. C’était `eVar6` et `language_match` jusqu’au 24 novembre 2026; `eVar6` n’est plus attribuée.
 
 ## Faire travailler GA4 comme Adobe
 
@@ -100,7 +100,7 @@ Ce dernier point est le vrai test de la règle. Avec une langue dans une autre �
 ## Rapports à construire
 
 - **Pages les plus vues, ventilées par langue de page.** Une ligne par page, la répartition par langue à un clic.
-- **Taux de non-concordance par page d’entrée.** Créez un segment où la langue de la page et celle du navigateur diffèrent (page française avec une langue de navigateur qui ne commence pas par `fr`, ou l’inverse). Un taux élevé sur une page laisse croire que l’autre version linguistique manque ou est difficile à trouver.
+- **Taux de non-concordance par page d’entrée.** Créez un segment de non-concordance : page française avec une langue de navigateur qui ne commence pas par `fr`, ou page anglaise avec une langue qui ne commence pas par `en`. Les conditions inverses donnent le segment de concordance. Un taux élevé sur une page laisse croire que l’autre version linguistique manque ou est difficile à trouver.
 - **Taux de conversion par langue de page.** La caisse est la même; un écart signale un problème de traduction ou de contenu, pas de boutique.
 - **Utilisation du sélecteur de langue.** Les pages que les gens quittent pour l’autre langue, et dans quel sens.
 

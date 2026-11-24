@@ -60,7 +60,7 @@ Both platforms already collect a browser language of their own. GA4's [Language 
 | `user.languageMatch` | Not sent | Not sent |
 | Language switch click | `language switched` | `language_switch` with `language_from`, `language_to` |
 
-The match flag stays in the data layer, where a language switch prompt could read it, but it isn't sent to either platform: the page language and the browser language already say the same thing, and a variable that only repeats two others is one more thing to document and test. It was `eVar6` and `language_match` until 24 November 2026; `eVar6` is now unassigned.
+The match flag stays in the data layer, where a language switch prompt could read it, but it isn't sent to either platform. It's easy to write a segment in Analysis Workspace or GA4 that finds matches and mismatches from the page language and the browser language, so a third variable would only repeat the other two. It was `eVar6` and `language_match` until 24 November 2026; `eVar6` is now unassigned.
 
 ## Making GA4 work like Adobe
 
@@ -100,7 +100,7 @@ That last point is the real test of the rule. With a language in a different scr
 ## Reports to build
 
 - **Top pages, broken down by page language.** One row per page, with the language split one click away.
-- **Language mismatch rate by entry page.** Build a segment where the page language and the browser language differ (French page with a browser language that doesn't start with `fr`, or the reverse). High mismatch on a page suggests the other language version is missing or hard to find.
+- **Language mismatch rate by entry page.** Build a mismatch segment: French page with a browser language that doesn't start with `fr`, or English page with one that doesn't start with `en`. The opposite conditions give the match segment. High mismatch on a page suggests the other language version is missing or hard to find.
 - **Conversion rate by page language.** The checkout is the same; a gap points to translation or content problems, not the store.
 - **Language switch usage.** Which pages people leave for the other language, and in which direction.
 
