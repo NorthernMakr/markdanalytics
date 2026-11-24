@@ -121,8 +121,6 @@ browser_language = dlv("user.browserLanguage")
 # page name as page_title makes that report work like Adobe's Pages report:
 # one row per page, whatever the language. page_location stays the real URL
 # (French addresses on French pages), like Adobe's Page URL.
-language_match = lookup("Lookup - Language match", dlv("user.languageMatch"),
-                        [("true", "match"), ("false", "mismatch")], default="unknown")
 content_category = dlv("content.category")
 content_section = dlv("content.section")
 content_author = dlv("content.author")
@@ -145,7 +143,6 @@ tags.append({
             ("login_status", login),
             ("page_language", page_language),
             ("browser_language", browser_language),
-            ("language_match", language_match),
             ("content_category", content_category),
             ("content_section", content_section),
             ("content_author", content_author),

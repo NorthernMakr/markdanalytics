@@ -165,7 +165,7 @@ Elles sont recueillies sur chaque propriété dès le premier jour. Les deux var
 | `page.environment` | `eVar` | `site_environment` |
 | `page.language` | `eVar4` | `page_language` |
 | `user.browserLanguage` | `eVar5` | `browser_language` |
-| `user.languageMatch` | `eVar6` (`match` / `mismatch`) | `language_match` |
+| `user.languageMatch` | Non envoyé (répète `eVar4` et `eVar5`; `eVar6` n’est pas attribuée) | Non envoyé |
 | `user.loginStatus` | `eVar` (expiration à la visite) | `login_status` (portée utilisateur) |
 | `content.*` | des `eVar` par champ de contenu | paramètres `content_*` |
 

@@ -1,7 +1,7 @@
 {
   "_about": "Single source for the business requirements and the solution design reference (SDR). Rendered by src/components/sdr/*.astro on the Implementation pages and exported to Excel by scripts/build-sdr-xlsx.py (public/downloads/). Edit here, then run: python3 scripts/build-sdr-xlsx.py",
-  "version": "1.1",
-  "updated": "2026-11-02",
+  "version": "1.2",
+  "updated": "2026-11-24",
   "requirements": [
     {
       "id": "BR-01",
@@ -418,8 +418,8 @@
         "fr": "Chaque hit"
       },
       "meaning": {
-        "en": "The language the visitor's browser asks for.",
-        "fr": "La langue que demande le navigateur du visiteur."
+        "en": "The language the visitor's browser asks for. Compare it with Page language to find visitors reading in a language their browser didn't ask for.",
+        "fr": "La langue que demande le navigateur du visiteur. Comparez-la à la langue de la page pour repérer les visiteurs qui lisent dans une langue que leur navigateur n’a pas demandée."
       },
       "metrics": {
         "en": "Visits, conversion rate",
@@ -431,42 +431,6 @@
       },
       "ga4": {
         "name": "browser_language",
-        "scope": "Event"
-      }
-    },
-    {
-      "adobe": "eVar6",
-      "type": "eVar",
-      "status": "live",
-      "reqs": [
-        "BR-05"
-      ],
-      "name": {
-        "en": "Language match",
-        "fr": "Concordance de langue"
-      },
-      "dl": "user.languageMatch",
-      "example": "mismatch",
-      "expiry": "Hit",
-      "allocation": "Most recent",
-      "setOn": {
-        "en": "Every hit",
-        "fr": "Chaque hit"
-      },
-      "meaning": {
-        "en": "match / mismatch: is the visitor reading in their browser's language?",
-        "fr": "match / mismatch : le visiteur lit-il dans la langue de son navigateur?"
-      },
-      "metrics": {
-        "en": "Visits, entries, language switches",
-        "fr": "Visites, entrées, changements de langue"
-      },
-      "why": {
-        "en": "eVar: a segment-ready flag on every hit.",
-        "fr": "eVar : un indicateur prêt à segmenter, sur chaque hit."
-      },
-      "ga4": {
-        "name": "language_match",
         "scope": "Event"
       }
     },

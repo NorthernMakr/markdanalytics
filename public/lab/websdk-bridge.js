@@ -86,10 +86,12 @@
   //
   // eVars DESCRIBE the context. They're sent on EVERY request (the page view
   // and every interaction), so each hit carries its own context and no report
-  // depends on persistence. Intended report suite settings: eVar1-6 expire on
+  // depends on persistence. Intended report suite settings: eVar1-5 expire on
   // Hit, allocation Most recent (last).
   //   eVar1 page name, eVar2 page type, eVar3 site section, eVar4 page language,
-  //   eVar5 browser language, eVar6 language match
+  //   eVar5 browser language
+  //   eVar6 is unassigned: it held a language match flag until 2026-11-24, which
+  //   repeated what eVar4 and eVar5 already say.
   //
   // Props COUNT things, on the hit where they happen (props never persist):
   //   prop1 page name (page views), prop2 interaction (every non-page-view hit,
@@ -104,7 +106,6 @@
       eVar3: p.section,
       eVar4: p.language,                         // e.g. fr-CA
       eVar5: u.browserLanguage,                  // e.g. en-US
-      eVar6: u.languageMatch ? 'match' : 'mismatch',
     };
   }
   function countVars(e) {

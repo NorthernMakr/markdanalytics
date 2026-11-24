@@ -49,7 +49,7 @@ Deux langues méritent d’être consignées, et elles répondent à des questio
 
 La langue de la page segmente tout : taux de conversion de la version française, visionnement complet des vidéos en français, billets lus en français. La langue du navigateur décrit l’auditoire. Quand les deux divergent, c’est un signal utile : une personne dont le navigateur préfère le français lit la page anglaise, peut-être parce qu’un lien l’y a menée ou que la version française manque.
 
-Les deux plateformes recueillent déjà leur propre langue de navigateur. La [dimension Langue de GA4](https://support.google.com/analytics/answer/9268042?hl=fr) correspond au réglage de langue du système de l’appareil, et Adobe a sa propre [dimension Langue](https://experienceleague.adobe.com/fr/docs/analytics/components/dimensions/language). Envoyer `browser_language` explicitement reste utile : le format est le même sur les deux plateformes, la valeur côtoie `page_language` sur chaque événement, et elle rend possible l’indicateur de concordance. Aucune des deux plateformes ne connaît la langue de la page si vous ne l’envoyez pas.
+Les deux plateformes recueillent déjà leur propre langue de navigateur. La [dimension Langue de GA4](https://support.google.com/analytics/answer/9268042?hl=fr) correspond au réglage de langue du système de l’appareil, et Adobe a sa propre [dimension Langue](https://experienceleague.adobe.com/fr/docs/analytics/components/dimensions/language). Envoyer `browser_language` explicitement reste utile : le format est le même sur les deux plateformes, la valeur côtoie `page_language` sur chaque événement, et on peut comparer les deux pour repérer les visiteurs qui lisent dans une langue que leur navigateur n’a pas demandée. Aucune des deux plateformes ne connaît la langue de la page si vous ne l’envoyez pas.
 
 ### Correspondance sur ce site
 
@@ -57,10 +57,10 @@ Les deux plateformes recueillent déjà leur propre langue de navigateur. La [di
 |---|---|---|
 | `page.language` | `eVar4`, sur chaque hit | `page_language` |
 | `user.browserLanguage` | `eVar5`, sur chaque hit | `browser_language` |
-| `user.languageMatch` | `eVar6` (`match` / `mismatch`), sur chaque hit | `language_match` (`match` / `mismatch`) |
+| `user.languageMatch` | Non envoyé | Non envoyé |
 | Clic sur le sélecteur de langue | `language switched` | `language_switch` avec `language_from`, `language_to` |
 
-L’indicateur de concordance est envoyé sous forme de mot plutôt que `true`/`false`, pour se lire clairement dans un rapport. Dans GTM, une variable de table de correspondance fait la conversion.
+L’indicateur de concordance reste dans la couche de données, où une invitation à changer de langue pourrait le lire, mais il n’est envoyé à aucune des deux plateformes : la langue de la page et celle du navigateur disent déjà la même chose, et une variable qui ne fait que répéter deux autres est une chose de plus à documenter et à tester. C’était `eVar6` et `language_match` jusqu’au 24 novembre 2026; `eVar6` n’est plus attribuée.
 
 ## Faire travailler GA4 comme Adobe
 
@@ -100,7 +100,7 @@ Ce dernier point est le vrai test de la règle. Avec une langue dans une autre �
 ## Rapports à construire
 
 - **Pages les plus vues, ventilées par langue de page.** Une ligne par page, la répartition par langue à un clic.
-- **Taux de non-concordance par page d’entrée.** Un taux élevé sur une page laisse croire que l’autre version linguistique manque ou est difficile à trouver.
+- **Taux de non-concordance par page d’entrée.** Créez un segment où la langue de la page et celle du navigateur diffèrent (page française avec une langue de navigateur qui ne commence pas par `fr`, ou l’inverse). Un taux élevé sur une page laisse croire que l’autre version linguistique manque ou est difficile à trouver.
 - **Taux de conversion par langue de page.** La caisse est la même; un écart signale un problème de traduction ou de contenu, pas de boutique.
 - **Utilisation du sélecteur de langue.** Les pages que les gens quittent pour l’autre langue, et dans quel sens.
 
@@ -117,7 +117,7 @@ Ce dernier point est le vrai test de la règle. Avec une langue dans une autre �
 ## Le tester
 
 - Chargez chaque page dans les deux langues et comparez la couche de données : tout sauf `page.language` et `page.path` devrait concorder.
-- Réglez le navigateur dans une autre langue et vérifiez que `user.browserLanguage` et l’indicateur de concordance changent.
+- Réglez le navigateur dans une autre langue et vérifiez que `user.browserLanguage` change.
 - Dans DebugView de GA4, vérifiez que `page_title` est le nom de page anglais sur les pages françaises, et dans l’Adobe Experience Platform Debugger que `web.webPageDetails.name` l’est aussi. Les deux URL devraient être l’adresse française.
 - Faites un achat complet dans chaque langue et comparez les événements `purchase` : noms d’articles, variantes, mode de livraison et mode de paiement devraient être identiques.
 

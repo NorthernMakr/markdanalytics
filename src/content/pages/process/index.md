@@ -165,7 +165,7 @@ These are collected on every property from day one. The two language variables a
 | `page.environment` | `eVar` | `site_environment` |
 | `page.language` | `eVar4` | `page_language` |
 | `user.browserLanguage` | `eVar5` | `browser_language` |
-| `user.languageMatch` | `eVar6` (`match` / `mismatch`) | `language_match` |
+| `user.languageMatch` | Not sent (repeats `eVar4` and `eVar5`; `eVar6` is unassigned) | Not sent |
 | `user.loginStatus` | `eVar` (visit expiry) | `login_status` (user-scoped) |
 | `content.*` | `eVar`s per content field | `content_*` parameters |
 

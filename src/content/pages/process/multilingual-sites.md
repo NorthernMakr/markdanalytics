@@ -49,7 +49,7 @@ Two different languages are worth recording, and they answer different questions
 
 Page language segments everything: French-version conversion rate, French video completion, which posts are read in French. Browser language describes the audience. When they disagree, it's a useful signal: someone whose browser prefers French is reading the English page, maybe because a link sent them there or because the French version is missing.
 
-Both platforms already collect a browser language of their own. GA4's [Language dimension](https://support.google.com/analytics/answer/9268042?hl=en) is "the language setting of the device OS", and Adobe has a [Language dimension](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/language) of its own. Sending `browser_language` explicitly still helps: it uses the same format on both platforms, it sits next to `page_language` on every event, and it makes the match flag possible. Neither platform knows the page language unless you send it.
+Both platforms already collect a browser language of their own. GA4's [Language dimension](https://support.google.com/analytics/answer/9268042?hl=en) is "the language setting of the device OS", and Adobe has a [Language dimension](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/language) of its own. Sending `browser_language` explicitly still helps: it uses the same format on both platforms, it sits next to `page_language` on every event, and the two can be compared to find visitors reading in a language their browser didn't ask for. Neither platform knows the page language unless you send it.
 
 ### Mapping on this site
 
@@ -57,10 +57,10 @@ Both platforms already collect a browser language of their own. GA4's [Language 
 |---|---|---|
 | `page.language` | `eVar4`, on every hit | `page_language` |
 | `user.browserLanguage` | `eVar5`, on every hit | `browser_language` |
-| `user.languageMatch` | `eVar6` (`match` / `mismatch`), on every hit | `language_match` (`match` / `mismatch`) |
+| `user.languageMatch` | Not sent | Not sent |
 | Language switch click | `language switched` | `language_switch` with `language_from`, `language_to` |
 
-The match flag is sent as a word rather than `true`/`false`, so it reads clearly in a report. In GTM, a lookup table variable does the conversion.
+The match flag stays in the data layer, where a language switch prompt could read it, but it isn't sent to either platform: the page language and the browser language already say the same thing, and a variable that only repeats two others is one more thing to document and test. It was `eVar6` and `language_match` until 24 November 2026; `eVar6` is now unassigned.
 
 ## Making GA4 work like Adobe
 
@@ -100,7 +100,7 @@ That last point is the real test of the rule. With a language in a different scr
 ## Reports to build
 
 - **Top pages, broken down by page language.** One row per page, with the language split one click away.
-- **Language mismatch rate by entry page.** High mismatch on a page suggests the other language version is missing or hard to find.
+- **Language mismatch rate by entry page.** Build a segment where the page language and the browser language differ (French page with a browser language that doesn't start with `fr`, or the reverse). High mismatch on a page suggests the other language version is missing or hard to find.
 - **Conversion rate by page language.** The checkout is the same; a gap points to translation or content problems, not the store.
 - **Language switch usage.** Which pages people leave for the other language, and in which direction.
 
@@ -117,7 +117,7 @@ Add these to the implementation spec for any multilingual site:
 ## Testing it
 
 - Load each page in both languages and compare the data layer: everything except `page.language` and `page.path` should match.
-- Set the browser to another language and confirm `user.browserLanguage` and the match flag change.
+- Set the browser to another language and confirm `user.browserLanguage` changes.
 - In GA4 DebugView, check that `page_title` is the English page name on French pages, and in the Adobe Experience Platform Debugger that `web.webPageDetails.name` is too. Both URLs should be the French address.
 - Run a full purchase in each language and compare the `purchase` events: item names, variants, shipping tier and payment type should be identical.
 

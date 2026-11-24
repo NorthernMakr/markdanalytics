@@ -1,6 +1,6 @@
 // Adobe Web SDK variable check. Runs page views and interactions through the
 // mock Edge Network in both languages and checks every request the SDK sends:
-//   - eVar1-6 (page name, page type, section, page language, browser language, match)
+//   - eVar1-5 (page name, page type, section, page language, browser language); eVar6 never sent
 //     are on EVERY request, page views and interactions alike
 //   - prop1 (page name) only on page views; prop2 (interaction) on every
 //     other request; prop3 (video name) on media events; prop4 (link name)
@@ -22,7 +22,8 @@ const B = process.argv[2] || 'http://lab.test:8787';
     if (!reqs.length) failures.push(`${label}: no Web SDK requests`);
     for (const r of reqs) {
       const v = r.vars, isView = r.type === 'web.webpagedetails.pageViews';
-      for (const k of ['eVar1', 'eVar2', 'eVar3', 'eVar4', 'eVar5', 'eVar6']) if (!v[k]) failures.push(`${label} ${r.type}: missing ${k}`);
+      for (const k of ['eVar1', 'eVar2', 'eVar3', 'eVar4', 'eVar5']) if (!v[k]) failures.push(`${label} ${r.type}: missing ${k}`);
+      if ('eVar6' in v) failures.push(`${label} ${r.type}: eVar6 is unassigned and must not be sent`);
       if (v.eVar4 !== lang) failures.push(`${label} ${r.type}: eVar4 ${v.eVar4}, expected ${lang}`);
       if (isView && !v.prop1) failures.push(`${label}: page view without prop1`);
       if (!isView && v.prop1) failures.push(`${label} ${r.type}: prop1 on a non-page-view hit`);
