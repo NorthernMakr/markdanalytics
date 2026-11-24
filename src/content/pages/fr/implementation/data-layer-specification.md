@@ -11,7 +11,7 @@ order: 6
 | Propriété | Valeur |
 |---|---|
 | **Document** | Spécification de la couche de données, markdanalytics.ca |
-| **Version** | 1.3, 2 novembre 2026 |
+| **Version** | 1.4, 24 novembre 2026 |
 | **Statut** | En production |
 | **Responsable** | Mark Dykeman, responsable de l’analytique |
 | **Public** | Développeurs qui construisent les pages; analystes qui configurent les balises |
@@ -176,10 +176,13 @@ La liste complète des événements permis. Les données, déclencheurs et momen
 | Vidéo | `video_start`, `video_progress`, `video_pause`, `video_seek`, `video_complete` | `media start`, `media milestone`, `media pause`, `media seek`, `media complete` | Médias |
 | Lecture | `scroll_depth` | `content scrolled` | Médias |
 | Clics sur les accroches | `content_click` | `content clicked` | Médias |
+| Liens nommés | `link_click` (`link_name`, `link_region`, `link_url`) | `link clicked` (`link.name`, `link.region`, `link.url`) | [Fiche produit](/fr/mise-en-oeuvre/specification-fiche-produit/) |
 | Formulaire de contact | `form_start`, `generate_lead`, `form_error` | `form started`, `form submitted`, `form error` | Page de contact |
 | Langue | `language_switch` | `language switched` | Chaque page |
 
 Avant chaque envoi dans `dataLayer` qui contient un objet `ecommerce`, envoyer `{ ecommerce: null }` pour vider le précédent, comme le [recommande Google](https://developers.google.com/analytics/devguides/collection/ga4/ecommerce?client_type=gtm&hl=fr).
+
+Les éléments qui envoient déjà leur propre événement (ajout au panier, ajout aux favoris, produits suggérés, changement de langue) ajoutent plutôt `link_name` et `link_region` (GA4) ou `link: { name, region }` (Adobe) à cet événement. Les noms sont construits par `src/scripts/link-names.ts`; voir la [SDR pour les développeurs](/fr/mise-en-oeuvre/sdr-developpeurs/).
 
 ## 9. Comment cette spécification est appliquée
 
@@ -193,6 +196,7 @@ Pour ajouter une valeur ou un événement : l’ajouter d’abord à la liste pe
 
 | Version | Date | Modification |
 |---|---|---|
+| 1.4 | 2026-11-24 | Ajout de `link_click` / `link clicked` et des champs de nom de lien sur les événements existants |
 | 1.3 | 2026-11-02 | Sections renommées (basics, process, implementation, data-quality, case-studies, about) |
 | 1.2 | 2026-11-02 | `page.path` est la vraie adresse, dans la langue de la page; adresses françaises introduites |
 | 1.1 | 2026-10-29 | Ajout de `page.language`, `user.browserLanguage`, `user.languageMatch` et de l’événement du sélecteur de langue |

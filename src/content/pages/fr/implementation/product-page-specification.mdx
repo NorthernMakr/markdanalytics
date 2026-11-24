@@ -10,11 +10,11 @@ order: 5
 
 | Propriété | Valeur |
 |---|---|
-| **Statut** | <span class="lozenge yellow">Prête pour le développement</span> |
+| **Statut** | <span class="lozenge green">En production</span> |
 | **Billet** | TAIGA-142 (illustratif) |
 | **Responsable** | Mark Dykeman, responsable de l’analytique |
 | **Développement** | Équipe front-end de la boutique |
-| **Version** | 0.9, 2 novembre 2026 |
+| **Version** | 1.0, 24 novembre 2026 |
 | **Page** | Fiche produit : `/shop/product/{slug}/` et `/fr/boutique/produit/{slug}/` |
 | **Besoins** | [BR-02, BR-03, BR-04, BR-05, BR-08](/fr/mise-en-oeuvre/besoins-d-affaires/) |
 | **Voir aussi** | [SDR](/fr/mise-en-oeuvre/sdr/) · [SDR pour les développeurs](/fr/mise-en-oeuvre/sdr-developpeurs/) · [spécification de la couche de données](/fr/mise-en-oeuvre/specification-couche-de-donnees/) |
@@ -29,7 +29,7 @@ order: 5
 
 - **Dans la portée :** la fiche produit dans les deux langues, ses données au chargement, et chaque élément interactif de la maquette ci-dessous.
 - **Hors de la portée :** le panier et la caisse (spécification distincte), le bandeau démo du site et le bouton Journal.
-- **Déjà en production :** les données au chargement, `view_item`, `add_to_cart`, `add_to_wishlist`, `select_item` et l’événement du sélecteur de langue. **Nouveau dans cette spécification :** un nom de lien sur chaque élément suivi (lignes marquées *Proposé*).
+- **Déjà en production :** les données au chargement, `view_item`, `add_to_cart`, `add_to_wishlist`, `select_item` et l’événement du sélecteur de langue. **Ajouté dans la version 1.0 :** un nom de lien sur chaque élément suivi, construit automatiquement par un seul script (section 4).
 
 ## 2. Maquette
 
@@ -42,19 +42,19 @@ order: 5
 
 | # | Élément | Nom de lien | Exemple | Au clic | Statut |
 |---|---|---|---|---|---|
-| 1 | Logo | `header:logo` | `header:logo` | Clic de lien | <span class="lozenge grey">Proposé</span> |
-| 2 | Menu des catégories | `header:nav:{link_text}` | `header:nav:packs-and-bags` | Clic de lien | <span class="lozenge grey">Proposé</span> |
-| 3 | Panier | `header:cart` | `header:cart` | Clic de lien | <span class="lozenge grey">Proposé</span> |
-| 4 | Sélecteur de langue | `header:language:{to_language}` | `header:language:en` | `language_switch` / `language switched` | <span class="lozenge green">Événement en production</span> nom proposé |
-| 5 | Fil d’Ariane | `pdp:breadcrumb:{link_text}` | `pdp:breadcrumb:packs-and-bags` | Clic de lien | <span class="lozenge grey">Proposé</span> |
-| 6 | Pastille de couleur | `pdp:colour:{colour}:{sku}` | `pdp:colour:buoy:tg-pk-101` | Clic de lien | <span class="lozenge grey">Proposé</span> |
+| 1 | Logo | `header:logo` | `header:logo` | Clic de lien | <span class="lozenge green">En production</span> |
+| 2 | Menu des catégories | `header:nav:{link_text}` | `header:nav:packs-and-bags` | Clic de lien | <span class="lozenge green">En production</span> |
+| 3 | Panier | `header:cart` | `header:cart` | Clic de lien | <span class="lozenge green">En production</span> |
+| 4 | Sélecteur de langue | `header:language:{to_language}` | `header:language:en` | `language_switch` / `language switched` | <span class="lozenge green">En production</span> |
+| 5 | Fil d’Ariane | `pdp:breadcrumb:{link_text}` | `pdp:breadcrumb:packs-and-bags` | Clic de lien | <span class="lozenge green">En production</span> |
+| 6 | Pastille de couleur | `pdp:colour:{colour}:{product_name}:{sku}` | `pdp:colour:buoy:tidepool-daypack:tg-pk-101` | Clic de lien | <span class="lozenge green">En production</span> |
 | 7 | Quantité | aucun (pas un lien; lue par le #8) | — | Rien au changement | — |
-| 8 | Ajouter au panier | `pdp:add-to-cart:{product_name}:{sku}` | `pdp:add-to-cart:tidepool-daypack:tg-pk-101` | `add_to_cart` / `cart add` | <span class="lozenge green">Événement en production</span> nom proposé |
-| 9 | Ajouter aux favoris | `pdp:wishlist:{product_name}:{sku}` | `pdp:wishlist:tidepool-daypack:tg-pk-101` | `add_to_wishlist` / `wishlist add` | <span class="lozenge green">Événement en production</span> nom proposé |
-| 10 | Produit suggéré | `pdp:related:{position}:{product_name}` | `pdp:related:2:squall-rain-shell` | `select_item` / `product clicked` | <span class="lozenge green">Événement en production</span> nom proposé |
-| 11 | Liens du pied de page | `footer:{link_text}` | `footer:sitemap` | Clic de lien | <span class="lozenge grey">Proposé</span> |
+| 8 | Ajouter au panier | `pdp:add-to-cart:{product_name}:{sku}` | `pdp:add-to-cart:tidepool-daypack:tg-pk-101` | `add_to_cart` / `cart add` | <span class="lozenge green">En production</span> |
+| 9 | Ajouter aux favoris | `pdp:wishlist:{product_name}:{sku}` | `pdp:wishlist:tidepool-daypack:tg-pk-101` | `add_to_wishlist` / `wishlist add` | <span class="lozenge green">En production</span> |
+| 10 | Produit suggéré | `pdp:related:{position}:{product_name}:{sku}` | `pdp:related:2:squall-rain-shell:tg-ap-201` | `select_item` / `product clicked` | <span class="lozenge green">En production</span> |
+| 11 | Liens du pied de page | `footer:{link_text}` | `footer:sitemap` | Clic de lien | <span class="lozenge green">En production</span> |
 
-Le **clic de lien** est un nouvel événement : `link_click` dans `dataLayer` et `link clicked` dans `adobeDataLayer` (section 5). Quand un élément a déjà son propre événement (#4, #8, #9, #10), le nom de lien est ajouté à cet événement plutôt que d’en envoyer un second. Les noms restent en anglais sur la page française : c’est la langue de rapport du site.
+Le **clic de lien** est un événement à part entière : `link_click` dans `dataLayer` et `link clicked` dans `adobeDataLayer` (section 5). Quand un élément a déjà son propre événement (#4, #8, #9, #10), le nom de lien est ajouté à cet événement plutôt que d’en envoyer un second. Les noms restent en anglais sur la page française : c’est la langue de rapport du site.
 
 ## 4. Convention de nommage des liens
 
@@ -80,9 +80,22 @@ Les liens sont nommés automatiquement à partir de leur **texte**, pour que le 
 Règles :
 
 - **Les zones** viennent d’une liste fixe : `header`, `pdp` (corps de la fiche produit), `footer`; les autres spécifications ajoutent les leurs.
-- **En anglais dans chaque version linguistique.** Sur les pages françaises, le texte anglais vient d’un attribut `data-link-name` rendu avec la page; sur les pages anglaises, le texte visible sert directement.
+- **En anglais dans chaque version linguistique.** Un texte traduit ou qui change porte un attribut `data-link-name` avec le texte anglais, rendu de la même façon dans les deux versions linguistiques; sinon, le texte visible sert.
+- **Produits : nom et SKU sur chaque lien qui agit sur un produit.** Ils viennent du conteneur (`data-item-name`, `data-item-id`) : le lien du titre d’une carte produit ne répète donc pas le nom.
 - **La position seulement là où les éléments se répètent** (grilles de produits, listes). Les positions changent quand la mise en page change : un nom ne dépend donc jamais de la position seule.
 - **Minuscules, traits d’union, deux-points entre les parties, 100 caractères au plus.** Adobe tronque les props à [100 octets](https://experienceleague.adobe.com/fr/docs/analytics/implementation/vars/page-vars/prop); le nom va dans `prop4`.
+
+### Comment les noms sont construits
+
+Personne ne tape un nom de lien. Les gabarits balisent les **conteneurs** (`data-region`, `data-module`, `data-position`, `data-item-id`), et un seul script, `src/scripts/link-names.ts`, les lit au moment du clic :
+
+1. **Zone :** le `data-region` le plus proche (`header`, `pdp`, `footer`). Les liens hors d’une zone ne sont pas nommés.
+2. **Élément :** le `data-module` le plus proche (`nav`, `breadcrumb`, `colour`, `related`). Quand le lien est le module lui-même (`logo`, `cart`), son texte est omis.
+3. **Position :** le `data-position` le plus proche, dans les listes répétées seulement.
+4. **Texte du lien :** `data-link-name`, ou le texte visible, en minuscules avec des traits d’union.
+5. **Produit :** `data-item-name` et `data-item-id` du conteneur de produit le plus proche.
+
+Les parties vides sont retirées. Les deux liens « Tout voir » deviennent donc `header:nav:shop-all` et `pdp:breadcrumb:shop-all`, et chaque « Ajouter au panier » porte son produit. Les attributs et le script complet sont dans la [SDR pour les développeurs](/fr/mise-en-oeuvre/sdr-developpeurs/).
 
 ## 5. Données envoyées
 
@@ -101,14 +114,14 @@ window.lab.adobe({ event: 'link clicked',
 **Ajouter au panier** (#8 : événement existant, plus le nom de lien) :
 
 ```js
-window.lab.ga4({ event: 'add_to_cart', link_name: 'pdp:add-to-cart:tidepool-daypack:tg-pk-101',
+window.lab.ga4({ event: 'add_to_cart', link_name: 'pdp:add-to-cart:tidepool-daypack:tg-pk-101', link_region: 'pdp',
   ecommerce: { currency: 'CAD', value: 129, items: [{ item_id: 'TG-PK-101', item_name: 'Tidepool daypack',
     item_variant: 'Buoy', price: 129, quantity: 1 }] } });
-window.lab.adobe({ event: 'cart add', link: { name: 'pdp:add-to-cart:tidepool-daypack:tg-pk-101' },
+window.lab.adobe({ event: 'cart add', link: { name: 'pdp:add-to-cart:tidepool-daypack:tg-pk-101', region: 'pdp' },
   productListItems: [{ SKU: 'TG-PK-101', name: 'Tidepool daypack', quantity: 1, priceTotal: 129 }] });
 ```
 
-La gestion des balises associe `link.name` / `link_name` à `prop4` et au `link_text` de GA4, selon la [SDR](/fr/mise-en-oeuvre/sdr/). `link_click` et `link clicked` doivent être ajoutés à la liste des événements permis du site avant d’être envoyés; la construction rejette les noms non enregistrés.
+La gestion des balises associe le nom du lien à `prop4` et à `eVar9`, la zone à `prop5` et à `eVar10`, et fixe `event5` sur chaque hit qui porte un nom de lien; GA4 reçoit `link_name` et `link_region`. Les détails sont dans la [SDR](/fr/mise-en-oeuvre/sdr/). `link_click` et `link clicked` sont inscrits dans la liste des événements permis du site.
 
 ## 6. Critères d’acceptation
 
@@ -119,7 +132,7 @@ La gestion des balises associe `link.name` / `link_name` à `prop4` et au `link_
 - [ ] Aucun nom de lien ne dépasse 100 caractères ni ne contient de majuscules, d’espaces ou de lettres accentuées.
 - [ ] Rien n’est envoyé au chargement au-delà des trois événements de la section 5.
 
-L’assurance qualité consigne le résultat de chaque critère, avec la date, dans le document d’assurance qualité de cette page (dans [Qualité des données](/fr/qualite-des-donnees/)).
+`npm run test:links` vérifie automatiquement les critères 1, 2 et 5, dans les deux langues, ainsi que les variables Adobe de chaque hit. L’assurance qualité consigne le résultat de chaque critère, avec la date, dans le document d’assurance qualité de cette page (dans [Qualité des données](/fr/qualite-des-donnees/)).
 
 ## 7. Questions ouvertes
 
@@ -130,4 +143,5 @@ L’assurance qualité consigne le résultat de chaque critère, avec la date, d
 
 | Version | Date | Modification |
 |---|---|---|
+| 1.0 | 2026-11-24 | Noms de liens construits (`src/scripts/link-names.ts`); les noms des couleurs et des produits suggérés se terminent maintenant par le nom du produit et le SKU |
 | 0.9 | 2026-11-02 | Première ébauche pour la revue de développement |

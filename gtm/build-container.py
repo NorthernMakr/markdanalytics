@@ -27,6 +27,8 @@ def params_table(key, pairs):
 
 def dlv(path, name=None):
     name = name or f"DLV - {path}"
+    if any(v["name"] == name for v in variables):  # reuse: GTM rejects duplicate names
+        return "{{" + name + "}}"
     variables.append({
         "accountId": "0", "containerId": "0", "variableId": str(next(ids)),
         "name": name, "type": "v",
@@ -164,7 +166,8 @@ ecom_events = [
 ]
 ecom_trigger = event_trigger("CE - GA4 ecommerce events", "^(" + "|".join(ecom_events) + ")$")
 ga4_event("GA4 - Event - Ecommerce", ecom_trigger,
-          params=[("cart_source", dlv("cart_source"))], ecommerce=True)
+          params=[("cart_source", dlv("cart_source")),
+                  ("link_name", dlv("link_name")), ("link_region", dlv("link_region"))], ecommerce=True)
 
 # --- Video (same names GA4 uses for YouTube) ----------------------------------------
 video_trigger = event_trigger("CE - Video events", "^video_(start|progress|complete|pause|seek)$")
@@ -192,6 +195,14 @@ ga4_event("GA4 - Event - Content click", click_trigger, params=[
     ("link_url", dlv("link_url")),
 ])
 
+# --- Named links and buttons (src/scripts/link-names.ts: region:element:detail) ---------
+link_trigger = event_trigger("CE - link_click", "^link_click$")
+ga4_event("GA4 - Event - Link click", link_trigger, params=[
+    ("link_name", dlv("link_name")),
+    ("link_region", dlv("link_region")),
+    ("link_url", dlv("link_url")),
+])
+
 # --- Catalog filter -------------------------------------------------------------------
 filter_trigger = event_trigger("CE - filter_applied", "^filter_applied$")
 ga4_event("GA4 - Event - Filter applied", filter_trigger, params=[
@@ -212,6 +223,8 @@ lang_trigger = event_trigger("CE - language_switch", "^language_switch$")
 ga4_event("GA4 - Event - Language switch", lang_trigger, params=[
     ("language_from", dlv("language_from")),
     ("language_to", dlv("language_to")),
+    ("link_name", dlv("link_name")),
+    ("link_region", dlv("link_region")),
 ])
 
 container = {

@@ -7,6 +7,7 @@
 // The cart lives in localStorage so the funnel behaves realistically across
 // pages. Nothing ever leaves the browser.
 import { ga4, adobe } from './lab';
+import { linkFields } from './link-names';
 import { products, type Product } from '../data/products';
 
 const CURRENCY = 'CAD';
@@ -17,6 +18,9 @@ export type ShippingTier = keyof typeof SHIPPING;
 
 export interface CartLine { sku: string; colour: string; qty: number; }
 export interface ListContext { listId: string; listName: string; }
+/** Link name fields from linkFields(): added to an event when the click had a named link. */
+type Link = ReturnType<typeof linkFields>;
+const NO_LINK: Link = { ga4: {}, adobe: {} };
 
 const bySku = (sku: string) => products.find((p) => p.sku === sku);
 const round = (n: number) => Math.round(n * 100) / 100;
@@ -92,9 +96,9 @@ export function viewItemList(list: ListContext, items: Product[]) {
   adobe({ event: 'product list viewed', productList: { id: list.listId, name: list.listName }, productListItems: items.map((p) => adobeItem(p)) });
 }
 
-export function selectItem(list: ListContext, p: Product, index: number) {
-  ga4({ event: 'select_item', ecommerce: { item_list_id: list.listId, item_list_name: list.listName, items: [ga4Item(p, { index, list })] } });
-  adobe({ event: 'product clicked', productList: { id: list.listId, name: list.listName }, productListItems: [adobeItem(p)] });
+export function selectItem(list: ListContext, p: Product, index: number, link: Link = NO_LINK) {
+  ga4({ event: 'select_item', ecommerce: { item_list_id: list.listId, item_list_name: list.listName, items: [ga4Item(p, { index, list })] }, ...link.ga4 });
+  adobe({ event: 'product clicked', productList: { id: list.listId, name: list.listName }, productListItems: [adobeItem(p)], ...link.adobe });
 }
 
 export function viewItem(p: Product) {
@@ -102,13 +106,13 @@ export function viewItem(p: Product) {
   adobe({ event: 'product viewed', productListItems: [adobeItem(p)] });
 }
 
-export function addToCart(p: Product, colour: string, qty: number, source = 'product page') {
+export function addToCart(p: Product, colour: string, qty: number, source = 'product page', link: Link = NO_LINK) {
   const cart = getCart();
   const line = cart.find((l) => l.sku === p.sku && l.colour === colour);
   if (line) line.qty += qty; else cart.push({ sku: p.sku, colour, qty });
   saveCart(cart);
-  ga4({ event: 'add_to_cart', ecommerce: { currency: CURRENCY, value: round(p.price * qty), items: [ga4Item(p, { qty, colour })] }, cart_source: source });
-  adobe({ event: 'cart add', productListItems: [adobeItem(p, { qty, colour })], cart: { source } });
+  ga4({ event: 'add_to_cart', ecommerce: { currency: CURRENCY, value: round(p.price * qty), items: [ga4Item(p, { qty, colour })] }, cart_source: source, ...link.ga4 });
+  adobe({ event: 'cart add', productListItems: [adobeItem(p, { qty, colour })], cart: { source }, ...link.adobe });
 }
 
 export function removeFromCart(sku: string, colour: string, qty: number) {
@@ -123,9 +127,9 @@ export function removeFromCart(sku: string, colour: string, qty: number) {
   adobe({ event: 'cart remove', productListItems: [adobeItem(p, { qty, colour })] });
 }
 
-export function addToWishlist(p: Product, colour: string) {
-  ga4({ event: 'add_to_wishlist', ecommerce: { currency: CURRENCY, value: p.price, items: [ga4Item(p, { colour })] } });
-  adobe({ event: 'wishlist add', productListItems: [adobeItem(p, { colour })] });
+export function addToWishlist(p: Product, colour: string, link: Link = NO_LINK) {
+  ga4({ event: 'add_to_wishlist', ecommerce: { currency: CURRENCY, value: p.price, items: [ga4Item(p, { colour })] }, ...link.ga4 });
+  adobe({ event: 'wishlist add', productListItems: [adobeItem(p, { colour })], ...link.adobe });
 }
 
 function cartPayload(cart: CartLine[], extra: Record<string, unknown> = {}, tier?: ShippingTier) {
@@ -225,7 +229,7 @@ export function trackListClicks(root: ParentNode = document) {
       const link = (e.target as Element).closest<HTMLElement>('a[data-sku]');
       if (!link) return;
       const p = bySku(link.dataset.sku!);
-      if (p) selectItem(list, p, Number(link.dataset.index ?? 0));
+      if (p) selectItem(list, p, Number(link.dataset.index ?? 0), linkFields(link)); // named only inside a [data-region]
     });
   });
 }

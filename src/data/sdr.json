@@ -1,7 +1,7 @@
 {
   "_about": "Single source for the business requirements and the solution design reference (SDR). Rendered by src/components/sdr/*.astro on the Implementation pages and exported to Excel by scripts/build-sdr-xlsx.py (public/downloads/). Edit here, then run: python3 scripts/build-sdr-xlsx.py",
-  "version": "1.1",
-  "updated": "2026-11-02",
+  "version": "1.2",
+  "updated": "2026-11-24",
   "requirements": [
     {
       "id": "BR-01",
@@ -543,6 +543,79 @@
       }
     },
     {
+      "adobe": "eVar9",
+      "type": "eVar",
+      "status": "live",
+      "reqs": [
+        "BR-08",
+        "BR-02"
+      ],
+      "name": {
+        "en": "Link name",
+        "fr": "Nom du lien"
+      },
+      "dl": "link.name",
+      "example": "pdp:add-to-cart:tidepool-daypack:tg-pk-101",
+      "expiry": "Visit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Named link clicks (link clicked, plus cart add, wishlist add, product clicked and language switched when clicked)",
+        "fr": "Clics sur des liens nommés (link clicked, ainsi que cart add, wishlist add, product clicked et language switched lorsqu’ils viennent d’un clic)"
+      },
+      "meaning": {
+        "en": "The last named link clicked in the visit, same value as prop4.",
+        "fr": "Le dernier lien nommé cliqué pendant la visite, même valeur que prop4."
+      },
+      "metrics": {
+        "en": "Named link clicks (event5), cart additions, orders, revenue",
+        "fr": "Clics sur des liens nommés (event5), ajouts au panier, commandes, revenus"
+      },
+      "why": {
+        "en": "eVar with visit expiry: a link gets credit for an order later in the visit. prop4 counts the click itself.",
+        "fr": "eVar à expiration à la visite : un lien est crédité d’une commande plus tard dans la visite. prop4 compte le clic lui-même."
+      },
+      "ga4": {
+        "name": "link_name",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar10",
+      "type": "eVar",
+      "status": "live",
+      "reqs": [
+        "BR-08"
+      ],
+      "name": {
+        "en": "Link region",
+        "fr": "Zone du lien"
+      },
+      "dl": "link.region",
+      "example": "pdp",
+      "expiry": "Visit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Named link clicks",
+        "fr": "Clics sur des liens nommés"
+      },
+      "meaning": {
+        "en": "Where on the page the last named link was: header, pdp (product page body) or footer. Same value as prop5.",
+        "fr": "L’endroit de la page où se trouvait le dernier lien nommé : header, pdp (corps de la page produit) ou footer. Même valeur que prop5."
+      },
+      "metrics": {
+        "en": "Named link clicks (event5), orders, revenue",
+        "fr": "Clics sur des liens nommés (event5), commandes, revenus"
+      },
+      "why": {
+        "en": "eVar with visit expiry, like the link name: compares how the header, page body and footer contribute to orders.",
+        "fr": "eVar à expiration à la visite, comme le nom du lien : compare la contribution de l’en-tête, du corps de page et du pied de page aux commandes."
+      },
+      "ga4": {
+        "name": "link_region",
+        "scope": "Event"
+      }
+    },
+    {
       "adobe": "prop1",
       "type": "prop",
       "status": "live",
@@ -662,17 +735,17 @@
         "en": "Link name",
         "fr": "Nom du lien"
       },
-      "dl": "link.text (data-link-name)",
-      "example": "Harbourfront night market returns…",
+      "dl": "link.name (store); link.text on media teasers",
+      "example": "pdp:add-to-cart:tidepool-daypack:tg-pk-101",
       "expiry": "Hit",
       "allocation": "—",
       "setOn": {
-        "en": "Tracked link clicks",
-        "fr": "Clics de liens suivis"
+        "en": "Named link clicks and media teaser clicks",
+        "fr": "Clics sur des liens nommés et sur les accroches du site de nouvelles"
       },
       "meaning": {
-        "en": "The clicked link, named by the convention in the specification.",
-        "fr": "Le lien cliqué, nommé selon la convention de la spécification."
+        "en": "The clicked link, named region:element:detail by the link name script. Media teasers still send the English headline.",
+        "fr": "Le lien cliqué, nommé région:élément:détail par le script de noms de liens. Les accroches du site de nouvelles envoient encore le titre anglais."
       },
       "metrics": {
         "en": "Occurrences, clicks per page view",
@@ -683,7 +756,43 @@
         "fr": "Prop : compte chaque clic sur le hit où il survient."
       },
       "ga4": {
-        "name": "link_text",
+        "name": "link_name (store) · link_text (media)",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop5",
+      "type": "prop",
+      "status": "live",
+      "reqs": [
+        "BR-08"
+      ],
+      "name": {
+        "en": "Link region",
+        "fr": "Zone du lien"
+      },
+      "dl": "link.region",
+      "example": "header",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Named link clicks",
+        "fr": "Clics sur des liens nommés"
+      },
+      "meaning": {
+        "en": "Where on the page the clicked link was: header, pdp or footer.",
+        "fr": "L’endroit de la page où se trouvait le lien cliqué : header, pdp ou footer."
+      },
+      "metrics": {
+        "en": "Occurrences, named link clicks (event5)",
+        "fr": "Occurrences, clics sur des liens nommés (event5)"
+      },
+      "why": {
+        "en": "Prop: counts clicks by region on the hit, without splitting the link name.",
+        "fr": "Prop : compte les clics par zone sur le hit, sans découper le nom du lien."
+      },
+      "ga4": {
+        "name": "link_region",
         "scope": "Event"
       }
     },
@@ -865,6 +974,42 @@
       },
       "ga4": {
         "name": "generate_lead",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "event5",
+      "type": "event",
+      "status": "live",
+      "reqs": [
+        "BR-08"
+      ],
+      "name": {
+        "en": "Named link click",
+        "fr": "Clic sur un lien nommé"
+      },
+      "dl": "link.name present",
+      "example": "event5",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "Every hit with a link name",
+        "fr": "Chaque hit qui porte un nom de lien"
+      },
+      "meaning": {
+        "en": "A named link or button was clicked, including clicks that also send their own event (add to cart).",
+        "fr": "Un lien ou un bouton nommé a été cliqué, y compris les clics qui envoient aussi leur propre événement (ajout au panier)."
+      },
+      "metrics": {
+        "en": "Use with Link name and Link region (eVar9, eVar10, prop4, prop5)",
+        "fr": "À utiliser avec Nom du lien et Zone du lien (eVar9, eVar10, prop4, prop5)"
+      },
+      "why": {
+        "en": "Counter event: gives the link eVars and props a click metric of their own.",
+        "fr": "Événement compteur : donne aux eVars et aux props de lien leur propre mesure de clics."
+      },
+      "ga4": {
+        "name": "link_click (plus link_name on the element's own event)",
         "scope": "Event"
       }
     }

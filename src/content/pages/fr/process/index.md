@@ -172,7 +172,8 @@ Elles sont recueillies sur chaque propriété dès le premier jour. Les deux var
 **Comment les variables Adobe sont réparties.** Les eVars *décrivent* le contexte; les props *comptent* des choses.
 
 - **Les eVars** portent les valeurs descriptives ci-dessus et sont envoyées sur **chaque hit de la page** : la page vue et chaque interaction (événements de produit, de panier, de vidéo et de clic). Elles expirent au hit : chaque hit porte donc son propre contexte, et aucun rapport ne dépend de la durée de persistance d’une valeur. L’expiration et l’attribution des eVars sont des réglages de la suite de rapports, pas du code de page; elles font donc partie de la spécification : ici, expiration au hit et attribution à la plus récente.
-- **Les props** comptent des choses sur le hit où elles surviennent, sans jamais persister : `prop1` nom de page (pages vues), `prop2` interaction (tous les autres hits, comme `cart add`, `purchase` ou `media start`), `prop3` nom de la vidéo, `prop4` nom du lien.
+- **Les props** comptent des choses sur le hit où elles surviennent, sans jamais persister : `prop1` nom de page (pages vues), `prop2` interaction (tous les autres hits, comme `cart add`, `purchase` ou `media start`), `prop3` nom de la vidéo, `prop4` nom du lien, `prop5` zone du lien.
+- **Les clics de liens** suivent l’habitude d’associer une prop à une eVar et à un événement compteur : le nom et la zone du lien vont aussi dans `eVar9` et `eVar10` (expiration à la visite, pour qu’une commande puisse être créditée au dernier lien cliqué), et `event5` compte les clics. Voir la [SDR](/fr/mise-en-oeuvre/sdr/).
 
 GA4 n’a pas besoin d’une règle équivalente : les paramètres communs de la balise Google accompagnent chaque événement qu’elle envoie.
 

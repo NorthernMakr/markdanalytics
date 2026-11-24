@@ -2,7 +2,7 @@
 import ShopLayout from '../../../layouts/ShopLayout.astro';
 import ProductArt from '../../../components/ProductArt.astro';
 import ProductCard from '../../../components/ProductCard.astro';
-import { products, categoryLabel, productText, colourLabel, type Product } from '../../../data/products';
+import { products, categoryLabel, categoryName, productText, colourLabel, type Product } from '../../../data/products';
 import { langFromPath, localize, money, tr } from '../../../i18n';
 
 export function getStaticPaths() {
@@ -23,19 +23,19 @@ const extra = {
 };
 ---
 <ShopLayout title={text.name} pageType="product detail" pageName={`shop:product:${p.slug}`} extra={extra}>
-  <div class="shop-wrap">
+  <div class="shop-wrap" data-region="pdp">
     <div class="pdp" data-sku={p.sku} data-display-name={text.name}>
       <div class="pdp-art">
         <ProductArt kind={p.art} colour={p.colours[0].hex} label={text.name} />
       </div>
       <div>
-        <p class="crumbs"><a href={l('/shop/catalog/')}>{tr(lang, 'Shop all', 'Tout voir')}</a> / <a href={l(`/shop/catalog/?category=${p.category}`)}>{categoryLabel(p.category, lang)}</a></p>
+        <p class="crumbs" data-module="breadcrumb"><a href={l('/shop/catalog/')} data-link-name="Shop all">{tr(lang, 'Shop all', 'Tout voir')}</a> / <a href={l(`/shop/catalog/?category=${p.category}`)} data-link-name={categoryName(p.category)}>{categoryLabel(p.category, lang)}</a></p>
         <h1>{text.name}</h1>
         <p class="pdp-price">{money(p.price, lang)}</p>
         <p class="pdp-blurb">{text.blurb}</p>
 
-        <form class="add-form" novalidate>
-          <fieldset class="swatch-picker">
+        <form class="add-form" novalidate data-item-id={p.sku} data-item-name={p.name}>
+          <fieldset class="swatch-picker" data-module="colour">
             <legend class="field-label">{tr(lang, 'Colour', 'Couleur')}{lang === 'fr' ? ' ' : ''}: <span data-colour-name>{colourLabel(p.colours[0].name, lang)}</span></legend>
             {p.colours.map((c, i) => (
               <label>
@@ -50,8 +50,8 @@ const extra = {
             <select id="qty" name="qty">
               {[1, 2, 3, 4, 5].map((n) => <option value={n}>{tr(lang, 'Qty', 'Qté')} {n}</option>)}
             </select>
-            <button class="btn btn-go" type="submit">{tr(lang, 'Add to cart', 'Ajouter au panier')}</button>
-            <button class="btn btn-ghost" type="button" data-wishlist>{tr(lang, 'Save to wishlist', 'Ajouter aux favoris')}</button>
+            <button class="btn btn-go" type="submit" data-link-name="Add to cart" data-link-event>{tr(lang, 'Add to cart', 'Ajouter au panier')}</button>
+            <button class="btn btn-ghost" type="button" data-wishlist data-link-name="Wishlist" data-link-event>{tr(lang, 'Save to wishlist', 'Ajouter aux favoris')}</button>
           </div>
           <p class="added-msg" role="status" hidden></p>
         </form>
@@ -64,7 +64,7 @@ const extra = {
 
     <section class="shop-section">
       <h2>{tr(lang, 'You might also like', 'Vous aimerez peut-être aussi')}</h2>
-      <div class="grid" data-list-id="pdp_related" data-list-name="Product page: related">
+      <div class="grid" data-module="related" data-list-id="pdp_related" data-list-name="Product page: related">
         {alsoLike.map((x, i) => <ProductCard product={x} index={i} />)}
       </div>
     </section>
@@ -73,6 +73,7 @@ const extra = {
   <script>
     import { bySku, viewItem, addToCart, addToWishlist, viewItemList, visibleProducts, trackListClicks } from '../../../scripts/commerce';
     import { t, lp } from '../../../scripts/lab';
+    import { linkFields, trackLinkNames } from '../../../scripts/link-names';
 
     const root = document.querySelector<HTMLElement>('.pdp')!;
     const product = bySku(root.dataset.sku!)!;
@@ -97,22 +98,25 @@ const extra = {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const qty = Number((form.querySelector('#qty') as HTMLSelectElement).value);
-      addToCart(product, colour(), qty);
+      addToCart(product, colour(), qty, 'product page', linkFields(form.querySelector('button[type="submit"]')));
       msg.innerHTML = '';
       msg.append(t(`Added ${qty} × ${displayName} (${picked().dataset.label}) to your cart. `,
                    `${qty} × ${displayName} (${picked().dataset.label}) ajouté au panier. `));
       const link = Object.assign(document.createElement('a'), { href: lp('/shop/cart/'), textContent: t('View cart', 'Voir le panier') });
+      link.dataset.linkName = 'View cart'; // English name on both language versions
       msg.append(link);
       msg.hidden = false;
     });
 
     form.querySelector('[data-wishlist]')!.addEventListener('click', (e) => {
-      addToWishlist(product, colour());
+      addToWishlist(product, colour(), linkFields(e.currentTarget as Element));
       (e.currentTarget as HTMLButtonElement).textContent = t('Saved to wishlist', 'Ajouté aux favoris');
     });
 
     const list = document.querySelector<HTMLElement>('[data-list-id]')!;
     viewItemList({ listId: list.dataset.listId!, listName: list.dataset.listName! }, visibleProducts(list));
     trackListClicks();
+    // Every other link, button and swatch in a [data-region]: link_click / link clicked
+    trackLinkNames();
   </script>
 </ShopLayout>

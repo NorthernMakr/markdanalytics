@@ -24,13 +24,25 @@ L = {
                  ("SDR", "Every variable: Adobe slot, data layer source, expiry and allocation, GA4 equivalent, status."),
                  ("Developers", "What the page must expose, with a one-line reason."),
                  ("Business users", "What each variable means, what to pair it with, and why it's an eVar or a prop."),
+                 ("Link names", "For developers: the attributes that name links automatically, and the script that reads them."),
                  ("Status", "Live = collected and checked in the browser; Proposed = designed, not built.")],
     summary="Summary", live="Live", proposed="Proposed", total="Variables",
     h_req=["ID","Question","Decision it informs","KPIs","Site","Priority","Owner","Answered by"],
     h_sdr=["Variable","Name","Requirements","Data layer source","Example","Expiry","Allocation","Set on","GA4","GA4 scope","Status"],
     h_dev=["Expose in the data layer","Why (brief)","Example","Send on","Status"],
     h_biz=["Name","What it means","Pair it with","Why this kind of variable","Adobe","GA4","Status"],
-    site={"both":"Both","store":"Store","media":"Media"}, prio={"High":"High","Medium":"Medium"}, all="All variables"),
+    site={"both":"Both","store":"Store","media":"Media"}, prio={"High":"High","Medium":"Medium"}, all="All variables",
+    links="Link names", h_links=["Attribute","Put it on","Value","Example"],
+    links_intro="Links are named region:element:detail by src/scripts/link-names.ts. Templates mark containers; every link inside inherits the context. Format rules: product page specification, section 4.",
+    links_rows=[
+      ("data-region", "The page area", "header, pdp or footer", '<header data-region="header">'),
+      ("data-module", "A component in the area; on the link itself for a single-purpose link (its text is left out)", "Lowercase component name", '<ul data-module="nav">'),
+      ("data-position", "Each item in a repeating list", "Position, counting from 1", '<article data-position="2">'),
+      ("data-item-id + data-item-name", "The container of what the link acts on", "SKU and English product name", '<form data-item-id="TG-PK-101" data-item-name="Tidepool daypack">'),
+      ("data-link-name", "A link whose visible text is translated or changes", "English text", '<a data-link-name="Packs & bags">Sacs</a>'),
+      ("data-link-event", "An element that already sends its own event", "No value", "<button data-link-event> on add to cart"),
+    ],
+    script_head="Script source: src/scripts/link-names.ts (as built into the site)"),
   "fr": dict(about="À propos", req="Besoins", sdr="SDR", dev="Développeurs", biz="Utilisateurs d’affaires",
     title="Référence de conception de la solution : boutique et site de nouvelles démo de markdanalytics.ca",
     intro="SDR illustrative pour des sites démo fictifs (Taiga Supply Co., Balsam Daily). Chaque valeur envoyée à l’analytique est en anglais, quelle que soit la langue de la page.",
@@ -41,13 +53,25 @@ L = {
                  ("SDR", "Chaque variable : emplacement Adobe, source dans la couche de données, expiration et attribution, équivalent GA4, statut."),
                  ("Développeurs", "Ce que la page doit exposer, avec une raison en une ligne."),
                  ("Utilisateurs d’affaires", "Ce que signifie chaque variable, à quoi l’associer, et pourquoi c’est une eVar ou une prop."),
+                 ("Noms de liens", "Pour les développeurs : les attributs qui nomment les liens automatiquement, et le script qui les lit."),
                  ("Statut", "En production = recueillie et vérifiée dans le navigateur; Proposé = conçue, pas construite.")],
     summary="Résumé", live="En production", proposed="Proposé", total="Variables",
     h_req=["ID","Question","Décision éclairée","Indicateurs","Site","Priorité","Responsable","Variables"],
     h_sdr=["Variable","Nom","Besoins","Source (couche de données)","Exemple","Expiration","Attribution","Fixée sur","GA4","Portée GA4","Statut"],
     h_dev=["À exposer dans la couche de données","Pourquoi (en bref)","Exemple","Envoyer sur","Statut"],
     h_biz=["Nom","Ce que ça signifie","À associer à","Pourquoi ce type de variable","Adobe","GA4","Statut"],
-    site={"both":"Les deux","store":"Boutique","media":"Médias"}, prio={"High":"Haute","Medium":"Moyenne"}, all="Toutes les variables"),
+    site={"both":"Les deux","store":"Boutique","media":"Médias"}, prio={"High":"Haute","Medium":"Moyenne"}, all="Toutes les variables",
+    links="Noms de liens", h_links=["Attribut","Où le mettre","Valeur","Exemple"],
+    links_intro="Les liens sont nommés région:élément:détail par src/scripts/link-names.ts. Les gabarits balisent les conteneurs; chaque lien à l’intérieur hérite du contexte. Règles de format : spécification de la fiche produit, section 4.",
+    links_rows=[
+      ("data-region", "La zone de la page", "header, pdp ou footer", '<header data-region="header">'),
+      ("data-module", "Un composant dans la zone; sur le lien lui-même pour un lien à usage unique (son texte est omis)", "Nom du composant, en minuscules", '<ul data-module="nav">'),
+      ("data-position", "Chaque élément d’une liste répétée", "Position, en comptant à partir de 1", '<article data-position="2">'),
+      ("data-item-id + data-item-name", "Le conteneur de ce sur quoi le lien agit", "SKU et nom anglais du produit", '<form data-item-id="TG-PK-101" data-item-name="Tidepool daypack">'),
+      ("data-link-name", "Un lien dont le texte affiché est traduit ou change", "Texte anglais", '<a data-link-name="Packs & bags">Sacs</a>'),
+      ("data-link-event", "Un élément qui envoie déjà son propre événement", "Aucune valeur", "<button data-link-event> sur l’ajout au panier"),
+    ],
+    script_head="Code source : src/scripts/link-names.ts (tel qu’intégré au site; commentaires en anglais)"),
 }
 
 FONT = "Arial"
@@ -140,6 +164,23 @@ def build(lang):
     rows = [[tx(v["name"]), tx(v["meaning"]), tx(v["metrics"]), tx(v["why"]), v["adobe"], v["ga4"]["name"], st(v["status"])]
             for v in data["variables"]]
     table(ws, t["h_biz"], rows, [26, 44, 34, 44, 22, 30, 14], status_col=7, lang=lang)
+
+    # Link names (developers): attribute rules, then the script itself, one line per row
+    ws = wb.create_sheet(t["links"])
+    table(ws, t["h_links"], [list(r) for r in t["links_rows"]], [28, 50, 30, 56])
+    ws.freeze_panes = None
+    row = len(t["links_rows"]) + 3
+    ws.cell(row, 1, t["links_intro"]).font = body_font
+    ws.cell(row, 1).alignment = wrap
+    ws.merge_cells(start_row=row, start_column=1, end_row=row, end_column=4); ws.row_dimensions[row].height = 30
+    row += 2
+    ws.cell(row, 1, t["script_head"]).font = Font(name=FONT, bold=True, size=12, color=NAVY)
+    code_font = Font(name="Courier New", size=9)
+    for line in (ROOT / "src/scripts/link-names.ts").read_text().splitlines():
+        row += 1
+        c = ws.cell(row, 1, line if line.strip() else None)
+        c.font = code_font
+        if line.startswith("="): c.data_type = "s"
 
     out = ROOT / f"public/downloads/markdanalytics-sdr-{lang}.xlsx"
     wb.save(out)

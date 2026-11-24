@@ -12,7 +12,7 @@ import SdrTable from '../../../components/sdr/SdrTable.astro';
 | Property | Value |
 |---|---|
 | **Document** | Solution design reference, markdanalytics.ca demo sites |
-| **Version** | 1.1, 2 November 2026 (eVar1 is the page name; other context eVars moved up one) |
+| **Version** | 1.2, 24 November 2026 (link name and region: eVar9, eVar10, prop5, event5) |
 | **Status** | Live, with 5 variables proposed |
 | **Owner** | Mark Dykeman, analytics lead |
 | **Download** | [Excel workbook (English)](/downloads/markdanalytics-sdr-en.xlsx) · [Excel (français)](/downloads/markdanalytics-sdr-fr.xlsx) |
@@ -23,7 +23,7 @@ import SdrTable from '../../../components/sdr/SdrTable.astro';
 ## Design rules
 
 - **eVars describe context; props count things.** Descriptive values (page type, section, language) are eVars sent on every hit with Hit expiry, so no report depends on persistence. Props count actions on their own hit: page name, interaction, video name, link name.
-- **Merchandising and promotions persist on purpose.** The proposed product-list eVar keeps credit with each product until purchase; the promotion eVar lasts the visit. Those are the only variables where persistence is the point.
+- **Merchandising and promotions persist on purpose.** The proposed product-list eVar keeps credit with each product until purchase; the promotion eVar lasts the visit. The link name and link region eVars also last the visit, so an order can be credited to the last named link clicked. Those are the only variables where persistence is the point.
 - **Every value is English**, whatever the page language. Page language is its own variable.
 - **Expiry and allocation are part of the design.** They're report suite settings, not page code, so the SDR is where they're recorded ([Adobe: eVars](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/evar), [props](https://experienceleague.adobe.com/en/docs/analytics/components/dimensions/prop)).
 

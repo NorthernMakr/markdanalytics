@@ -11,7 +11,7 @@ order: 6
 | Property | Value |
 |---|---|
 | **Document** | Data layer specification, markdanalytics.ca |
-| **Version** | 1.3, 2 November 2026 |
+| **Version** | 1.4, 24 November 2026 |
 | **Status** | Live |
 | **Owner** | Mark Dykeman, analytics lead |
 | **Audience** | Developers building pages; analysts mapping tags |
@@ -176,10 +176,13 @@ The full list of allowed events. Payloads, triggers and timing for the product p
 | Video | `video_start`, `video_progress`, `video_pause`, `video_seek`, `video_complete` | `media start`, `media milestone`, `media pause`, `media seek`, `media complete` | Media |
 | Reading | `scroll_depth` | `content scrolled` | Media |
 | Teaser clicks | `content_click` | `content clicked` | Media |
+| Named links | `link_click` (`link_name`, `link_region`, `link_url`) | `link clicked` (`link.name`, `link.region`, `link.url`) | [Product page](/implementation/product-page-specification/) |
 | Contact form | `form_start`, `generate_lead`, `form_error` | `form started`, `form submitted`, `form error` | Contact page |
 | Language | `language_switch` | `language switched` | Every page |
 
 Before every `dataLayer` push that contains an `ecommerce` object, push `{ ecommerce: null }` to clear the previous one, as [Google recommends](https://developers.google.com/analytics/devguides/collection/ga4/ecommerce?client_type=gtm).
+
+Elements that already send their own event (add to cart, save to wishlist, related products, language switch) add `link_name` and `link_region` (GA4) or `link: { name, region }` (Adobe) to that event instead. The names are built by `src/scripts/link-names.ts`; see the [SDR for developers](/implementation/sdr-developers/).
 
 ## 9. How this spec is enforced
 
@@ -193,6 +196,7 @@ To add a value or event: add it to the allowed list first, then to this document
 
 | Version | Date | Change |
 |---|---|---|
+| 1.4 | 2026-11-24 | Added `link_click` / `link clicked` and the link name fields on existing events |
 | 1.3 | 2026-11-02 | Sections renamed (basics, process, implementation, data-quality, case-studies, about) |
 | 1.2 | 2026-11-02 | `page.path` is the real address in the page's language; French addresses introduced |
 | 1.1 | 2026-10-29 | Added `page.language`, `user.browserLanguage`, `user.languageMatch` and the language switch event |

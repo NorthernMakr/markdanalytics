@@ -8,6 +8,8 @@ platform: Both
 order: 3
 ---
 import SdrTable from '../../../../components/sdr/SdrTable.astro';
+import { Code } from 'astro:components';
+import linkScript from '../../../../scripts/link-names.ts?raw';
 
 **Les développeurs n’ont pas besoin de savoir ce qu’est une eVar.** Ils doivent savoir quoi exposer, quand, et pourquoi l’effort en vaut la peine. Cette vue de la [SDR](/fr/mise-en-oeuvre/sdr/) laisse de côté la configuration d’Adobe et de GA4 (la gestion des balises s’en charge) et limite chaque raison à une ligne, tirée du [besoin d’affaires](/fr/mise-en-oeuvre/besoins-d-affaires/) qu’elle sert.
 
@@ -24,3 +26,32 @@ import SdrTable from '../../../../components/sdr/SdrTable.astro';
 <SdrTable view="developers" />
 
 Les props ne sont pas listées à part : la gestion des balises les remplit à partir des mêmes clés de la couche de données.
+
+## Noms de liens : le script
+
+Chaque lien et bouton suivi reçoit un nom au format `région:élément:détail`, construit dans le navigateur par un seul script, `src/scripts/link-names.ts`. Les développeurs ne nomment pas les liens un par un. Ils balisent les **conteneurs** dans chaque gabarit, et chaque lien à l’intérieur hérite du contexte, y compris les liens ajoutés plus tard. Les règles de nommage sont dans la [spécification de la fiche produit](/fr/mise-en-oeuvre/specification-fiche-produit/) (section 4).
+
+### Attributs à ajouter dans les gabarits
+
+| Attribut | Où le mettre | Valeur | Exemple |
+|---|---|---|---|
+| `data-region` | La zone de la page | `header`, `pdp` ou `footer` | `<header data-region="header">` |
+| `data-module` | Un composant dans la zone; sur le lien lui-même pour un lien à usage unique (son texte est alors omis) | Nom du composant, en minuscules | `<ul data-module="nav">`, `<a data-module="logo">` |
+| `data-position` | Chaque élément d’une liste répétée | Position, en comptant à partir de 1 | `<article data-position="2">` |
+| `data-item-id` + `data-item-name` | Le conteneur de ce sur quoi le lien agit | SKU et nom anglais du produit | `<form data-item-id="TG-PK-101" data-item-name="Tidepool daypack">` |
+| `data-link-name` | Un lien dont le texte affiché est traduit ou change | Texte anglais | `<a data-link-name="Packs & bags">Sacs</a>` |
+| `data-link-event` | Un élément qui envoie déjà son propre événement | Aucune valeur | `<button data-link-event>` sur l’ajout au panier |
+
+### Ce qu’il envoie
+
+- **Liens sans événement propre :** `link_click` dans `dataLayer` et `link clicked` dans `adobeDataLayer`, avec le nom, la zone et l’adresse.
+- **Éléments qui ont leur propre événement** (ajout au panier, ajout aux favoris, produits suggérés, changement de langue) : `link_name` et `link_region` sont ajoutés à cet événement, et aucun deuxième événement n’est envoyé. Le gestionnaire de l’élément appelle `linkFields()`.
+- **Éléments hors d’un `data-region` :** rien n’est envoyé; une page s’inscrit donc zone par zone.
+
+Le test `npm run test:links` clique sur chaque élément de la page produit dans les deux langues et vérifie que les noms sont identiques, mot pour mot.
+
+### Code source
+
+Voici le script tel qu’il s’exécute sur le site, lu dans le dépôt au moment de la construction de la page. Les commentaires du code sont en anglais.
+
+<Code code={linkScript} lang="ts" />

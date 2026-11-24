@@ -12,7 +12,7 @@ import SdrTable from '../../../../components/sdr/SdrTable.astro';
 | Propriété | Valeur |
 |---|---|
 | **Document** | Référence de conception de la solution, sites démo de markdanalytics.ca |
-| **Version** | 1.1, 2 novembre 2026 (eVar1 est le nom de page; les autres eVars de contexte avancent d’un rang) |
+| **Version** | 1.2, 24 novembre 2026 (nom et zone du lien : eVar9, eVar10, prop5, event5) |
 | **Statut** | En production, avec 5 variables proposées |
 | **Responsable** | Mark Dykeman, responsable de l’analytique |
 | **Téléchargement** | [Classeur Excel (français)](/downloads/markdanalytics-sdr-fr.xlsx) · [Excel (English)](/downloads/markdanalytics-sdr-en.xlsx) |
@@ -23,7 +23,7 @@ import SdrTable from '../../../../components/sdr/SdrTable.astro';
 ## Règles de conception
 
 - **Les eVars décrivent le contexte; les props comptent des choses.** Les valeurs descriptives (type de page, section, langue) sont des eVars envoyées sur chaque hit, avec expiration au hit : aucun rapport ne dépend de la persistance. Les props comptent les actions sur leur propre hit : nom de page, interaction, nom de la vidéo, nom du lien.
-- **Le marchandisage et les promotions persistent exprès.** L’eVar proposée de liste de produits garde le crédit avec chaque produit jusqu’à l’achat; l’eVar de promotion dure la visite. Ce sont les seules variables où la persistance est le but.
+- **Le marchandisage et les promotions persistent exprès.** L’eVar proposée de liste de produits garde le crédit avec chaque produit jusqu’à l’achat; l’eVar de promotion dure la visite. Les eVars de nom et de zone du lien durent aussi la visite : une commande peut ainsi être créditée au dernier lien nommé cliqué. Ce sont les seules variables où la persistance est le but.
 - **Chaque valeur est en anglais**, quelle que soit la langue de la page. La langue de la page a sa propre variable.
 - **L’expiration et l’attribution font partie de la conception.** Ce sont des réglages de la suite de rapports, pas du code de page; la SDR est donc l’endroit où on les consigne ([Adobe : eVars](https://experienceleague.adobe.com/fr/docs/analytics/components/dimensions/evar), [props](https://experienceleague.adobe.com/fr/docs/analytics/components/dimensions/prop)).
 

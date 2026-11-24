@@ -53,6 +53,7 @@ npx wrangler dev --port 8787 &       # then:
 npm run test:languages               # every page EN+FR, links, switch, twins
 npm run test:purchase                # GA4/Adobe purchase payloads
 npm run test:adobe                   # eVars/props on every Web SDK hit (uses lab.test)
+npm run test:links                   # product page link names, EN = FR, Adobe link vars
 ```
 (Playwright: `npm install --no-save playwright && npx playwright install chromium`.)
 Commit as Mark Dykeman <mark.toronto@gmail.com>.
@@ -76,7 +77,10 @@ Case studies, Store, Media site, About.
   engagement model, data monitoring, data alerts.
 - Implementation artifacts: DONE (requirements, SDR + Excel, developer/business views,
   product-page spec with wireframe + link naming convention, data layer spec). Link names
-  (`link_click` / `link clicked`, region:element:{variables}) are SPECIFIED but not built.
+  (`link_click` / `link clicked`, region:element:detail) are BUILT on the product page by
+  `src/scripts/link-names.ts` (templates mark containers: data-region/-module/-position/-item-id;
+  prop4+eVar9 name, prop5+eVar10 region, event5). The dev SDR page renders the script's source;
+  `npm run test:links` checks EN = FR. Other store pages and the media site aren't named yet.
 - Data quality: TODO: why QA matters; QA docs = spec tables + checked/date/method columns,
   quarterly cadence, automated checks listed, illustrative history; spider design page
   (build later, downloadable for visitors, possibly a Claude agent).

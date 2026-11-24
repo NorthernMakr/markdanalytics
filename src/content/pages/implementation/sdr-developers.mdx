@@ -8,6 +8,8 @@ platform: Both
 order: 3
 ---
 import SdrTable from '../../../components/sdr/SdrTable.astro';
+import { Code } from 'astro:components';
+import linkScript from '../../../scripts/link-names.ts?raw';
 
 **Developers don't need to know what an eVar is.** They need to know what to expose, when, and why it's worth the effort. This view of the [SDR](/implementation/sdr/) leaves out the Adobe and GA4 configuration (tag management handles that) and keeps each reason to one line, taken from the [business requirement](/implementation/business-requirements/) it serves.
 
@@ -24,3 +26,32 @@ import SdrTable from '../../../components/sdr/SdrTable.astro';
 <SdrTable view="developers" />
 
 Props aren't listed separately: they're filled from the same data layer keys by tag management.
+
+## Link names: the script
+
+Every tracked link and button gets a name in the format `region:element:detail`, built in the browser by one script, `src/scripts/link-names.ts`. Developers don't name links one by one. They mark the **containers** in each template, and every link inside inherits the context, including links added later. The naming rules are in the [product page specification](/implementation/product-page-specification/) (section 4).
+
+### Attributes to add in templates
+
+| Attribute | Put it on | Value | Example |
+|---|---|---|---|
+| `data-region` | The page area | One of `header`, `pdp`, `footer` | `<header data-region="header">` |
+| `data-module` | A component inside the area; on the link itself for a single-purpose link (its text is then left out) | Lowercase component name | `<ul data-module="nav">`, `<a data-module="logo">` |
+| `data-position` | Each item in a repeating list | Position, counting from 1 | `<article data-position="2">` |
+| `data-item-id` + `data-item-name` | The container of what the link acts on | SKU and English product name | `<form data-item-id="TG-PK-101" data-item-name="Tidepool daypack">` |
+| `data-link-name` | A link whose visible text is translated or changes | English text | `<a data-link-name="Packs & bags">Sacs</a>` |
+| `data-link-event` | An element that already sends its own event | No value | `<button data-link-event>` on add to cart |
+
+### What it sends
+
+- **Links with no event of their own:** `link_click` in `dataLayer` and `link clicked` in `adobeDataLayer`, with the name, region and URL.
+- **Elements with their own event** (add to cart, save to wishlist, related products, language switch): `link_name` and `link_region` are added to that event, and no second event is sent. The element's handler calls `linkFields()`.
+- **Elements outside a `data-region`** send nothing, so a page opts in area by area.
+
+The test `npm run test:links` clicks every element on the product page in both languages and checks the names match, word for word.
+
+### Source
+
+This is the script as it runs on the site, read from the repository when the page is built.
+
+<Code code={linkScript} lang="ts" />

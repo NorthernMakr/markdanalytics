@@ -172,7 +172,8 @@ These are collected on every property from day one. The two language variables a
 **How the Adobe variables are laid out.** eVars *describe* the context; props *count* things.
 
 - **eVars** hold the descriptive values above and are sent on **every hit from the page**: the page view and every interaction (product, cart, video and click events). They're set to expire on the hit, so each hit carries its own context and no report depends on how long a value persists. eVar expiration and allocation are report suite settings, not page code, so they're part of the spec: here, Hit expiry and Most recent allocation.
-- **Props** count things on the hit where they happen, and never persist: `prop1` page name (page views), `prop2` interaction (every other hit, such as `cart add`, `purchase` or `media start`), `prop3` video name, `prop4` link name.
+- **Props** count things on the hit where they happen, and never persist: `prop1` page name (page views), `prop2` interaction (every other hit, such as `cart add`, `purchase` or `media start`), `prop3` video name, `prop4` link name, `prop5` link region.
+- **Link clicks** follow the habit of pairing a prop with an eVar and a counter event: the link name and region also go in `eVar9` and `eVar10` (Visit expiry, so an order can be credited to the last link clicked), with `event5` counting the clicks. See the [SDR](/implementation/sdr/).
 
 GA4 needs no equivalent rule: the Google tag's shared parameters go on every event it sends.
 

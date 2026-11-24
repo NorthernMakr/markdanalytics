@@ -1,6 +1,6 @@
 ---
 import Base from './Base.astro';
-import { categories, categoryLabel } from '../data/products';
+import { categories, categoryLabel, categoryName } from '../data/products';
 import { langFromPath, localize, tr } from '../i18n';
 import '../styles/shop.css';
 
@@ -24,17 +24,17 @@ const steps = tr(lang, ['Cart', 'Shipping', 'Payment', 'Done'], ['Panier', 'Livr
   demoBanner={tr(lang,
     'Demo store for analytics testing. Nothing is for sale and no details are collected.',
     'Boutique démo pour tester l’analytique. Rien n’est à vendre et aucune donnée n’est recueillie.')}>
-  <header class="shop-head">
+  <header class="shop-head" data-region="header">
     <div class="shop-wrap shop-head-row">
-      <a class="shop-logo" href={l('/shop/')}>
+      <a class="shop-logo" href={l('/shop/')} data-module="logo">
         <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M2 16 q9-12 18 0 t18 0" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></svg>
         Taiga <span>Supply Co.</span>
       </a>
       {checkoutStep === undefined ? (
         <nav aria-label={tr(lang, 'Shop', 'Boutique')}>
-          <ul class="shop-nav">
-            <li><a href={l('/shop/catalog/')}>{tr(lang, 'Shop all', 'Tout voir')}</a></li>
-            {categories.map((c) => <li><a href={l(`/shop/catalog/?category=${c.slug}`)}>{categoryLabel(c.slug, lang)}</a></li>)}
+          <ul class="shop-nav" data-module="nav">
+            <li><a href={l('/shop/catalog/')} data-link-name="Shop all">{tr(lang, 'Shop all', 'Tout voir')}</a></li>
+            {categories.map((c) => <li><a href={l(`/shop/catalog/?category=${c.slug}`)} data-link-name={categoryName(c.slug)}>{categoryLabel(c.slug, lang)}</a></li>)}
           </ul>
         </nav>
       ) : (
@@ -42,7 +42,7 @@ const steps = tr(lang, ['Cart', 'Shipping', 'Payment', 'Done'], ['Panier', 'Livr
           {steps.map((s, i) => <li aria-current={i === checkoutStep ? 'step' : undefined} class={i < checkoutStep ? 'done' : ''}>{s}</li>)}
         </ol>
       )}
-      <a class="shop-cart" href={l('/shop/cart/')}>{tr(lang, 'Cart', 'Panier')} <span class="cart-count" aria-label={tr(lang, 'items in cart', 'articles dans le panier')}>0</span></a>
+      <a class="shop-cart" href={l('/shop/cart/')} data-module="cart">{tr(lang, 'Cart', 'Panier')} <span class="cart-count" aria-label={tr(lang, 'items in cart', 'articles dans le panier')}>0</span></a>
     </div>
   </header>
 
@@ -50,12 +50,12 @@ const steps = tr(lang, ['Cart', 'Shipping', 'Payment', 'Done'], ['Panier', 'Livr
     <slot />
   </main>
 
-  <footer class="shop-foot">
+  <footer class="shop-foot" data-region="footer">
     <div class="shop-wrap">
       <p>{tr(lang,
         'Taiga Supply Co. is a fictional store. Prices in CAD. Built for testing analytics tags.',
         'Taiga Supply Co. est une boutique fictive. Prix en dollars canadiens. Conçue pour tester des balises analytiques.')}
-        <a href={l('/site-notes/')}>{tr(lang, 'How this site was built', 'Comment ce site a été construit')}</a> · <a href={l('/sitemap/')}>{tr(lang, 'Sitemap', 'Plan du site')}</a></p>
+        <a href={l('/site-notes/')} data-link-name="How this site was built">{tr(lang, 'How this site was built', 'Comment ce site a été construit')}</a> · <a href={l('/sitemap/')} data-link-name="Sitemap">{tr(lang, 'Sitemap', 'Plan du site')}</a></p>
     </div>
   </footer>
 

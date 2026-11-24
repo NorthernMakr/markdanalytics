@@ -8,13 +8,13 @@ const { class: cls = '' } = Astro.props;
 const current = langFromPath(Astro.url.pathname);
 const base = basePath(Astro.url.pathname);
 ---
-<nav class={`lang-switch ${cls}`} aria-label={current === 'fr' ? 'Langue' : 'Language'}>
+<nav class={`lang-switch ${cls}`} data-region="header" data-module="language" aria-label={current === 'fr' ? 'Langue' : 'Language'}>
   {LANGS.map((l, i) => (
     <>
       {i > 0 && <span class="lang-sep" aria-hidden="true">|</span>}
       {l === current
         ? <span class="lang-current" aria-current="true" lang={l} title={LANG_LABEL[l].long}>{LANG_LABEL[l].short}</span>
-        : <a href={localize(base, l)} hreflang={l} lang={l} title={LANG_LABEL[l].long} data-lang-to={l}>
+        : <a href={localize(base, l)} hreflang={l} lang={l} title={LANG_LABEL[l].long} data-lang-to={l} data-link-name={l} data-link-event>
             {LANG_LABEL[l].short}<span class="visually-hidden"> ({LANG_LABEL[l].long})</span>
           </a>}
     </>
@@ -23,12 +23,14 @@ const base = basePath(Astro.url.pathname);
 
 <script>
   import { ga4, adobe } from '../scripts/lab';
+  import { linkFields } from '../scripts/link-names';
   document.querySelectorAll<HTMLAnchorElement>('.lang-switch a[data-lang-to]').forEach((a) => {
     a.addEventListener('click', () => {
       const from = (window.labPage?.page?.language as string) ?? '';
       const to = a.dataset.langTo === 'fr' ? 'fr-CA' : 'en-CA';
-      ga4({ event: 'language_switch', language_from: from, language_to: to });
-      adobe({ event: 'language switched', language: { from, to } });
+      const link = linkFields(a); // header:language:fr
+      ga4({ event: 'language_switch', language_from: from, language_to: to, ...link.ga4 });
+      adobe({ event: 'language switched', language: { from, to }, ...link.adobe });
     });
   });
 </script>

@@ -1,6 +1,6 @@
 {
   "exportFormatVersion": 2,
-  "exportTime": "2026-10-29 15:49:25",
+  "exportTime": "2026-11-24 20:23:11",
   "containerVersion": {
     "path": "accounts/0/containers/0/versions/0",
     "accountId": "0",
@@ -260,7 +260,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "tagId": "19",
+        "tagId": "21",
         "name": "GA4 - Event - Ecommerce",
         "type": "gaawe",
         "parameter": [
@@ -302,6 +302,36 @@
                     "value": "{{DLV - cart_source}}"
                   }
                 ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "link_name"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - link_name}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "link_region"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - link_region}}"
+                  }
+                ]
               }
             ]
           }
@@ -320,7 +350,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "tagId": "27",
+        "tagId": "29",
         "name": "GA4 - Event - Video",
         "type": "gaawe",
         "parameter": [
@@ -437,7 +467,7 @@
           }
         ],
         "firingTriggerId": [
-          "20"
+          "22"
         ],
         "tagFiringOption": "ONCE_PER_EVENT",
         "monitoringMetadata": {
@@ -450,7 +480,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "tagId": "30",
+        "tagId": "32",
         "name": "GA4 - Event - Scroll depth",
         "type": "gaawe",
         "parameter": [
@@ -492,7 +522,7 @@
           }
         ],
         "firingTriggerId": [
-          "28"
+          "30"
         ],
         "tagFiringOption": "ONCE_PER_EVENT",
         "monitoringMetadata": {
@@ -505,7 +535,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "tagId": "36",
+        "tagId": "38",
         "name": "GA4 - Event - Content click",
         "type": "gaawe",
         "parameter": [
@@ -592,7 +622,7 @@
           }
         ],
         "firingTriggerId": [
-          "31"
+          "33"
         ],
         "tagFiringOption": "ONCE_PER_EVENT",
         "monitoringMetadata": {
@@ -606,6 +636,91 @@
         "accountId": "0",
         "containerId": "0",
         "tagId": "40",
+        "name": "GA4 - Event - Link click",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "{{Event}}"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 - Measurement ID}}"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "link_name"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - link_name}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "link_region"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - link_region}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "link_url"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - link_url}}"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "firingTriggerId": [
+          "39"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "tagId": "44",
         "name": "GA4 - Event - Filter applied",
         "type": "gaawe",
         "parameter": [
@@ -662,7 +777,7 @@
           }
         ],
         "firingTriggerId": [
-          "37"
+          "41"
         ],
         "tagFiringOption": "ONCE_PER_EVENT",
         "monitoringMetadata": {
@@ -675,7 +790,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "tagId": "45",
+        "tagId": "49",
         "name": "GA4 - Event - Forms",
         "type": "gaawe",
         "parameter": [
@@ -747,7 +862,7 @@
           }
         ],
         "firingTriggerId": [
-          "41"
+          "45"
         ],
         "tagFiringOption": "ONCE_PER_EVENT",
         "monitoringMetadata": {
@@ -760,7 +875,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "tagId": "49",
+        "tagId": "53",
         "name": "GA4 - Event - Language switch",
         "type": "gaawe",
         "parameter": [
@@ -812,12 +927,42 @@
                     "value": "{{DLV - language_to}}"
                   }
                 ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "link_name"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - link_name}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "link_region"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - link_region}}"
+                  }
+                ]
               }
             ]
           }
         ],
         "firingTriggerId": [
-          "46"
+          "50"
         ],
         "tagFiringOption": "ONCE_PER_EVENT",
         "monitoringMetadata": {
@@ -856,7 +1001,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "triggerId": "20",
+        "triggerId": "22",
         "name": "CE - Video events",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
@@ -880,7 +1025,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "triggerId": "28",
+        "triggerId": "30",
         "name": "CE - scroll_depth",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
@@ -904,7 +1049,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "triggerId": "31",
+        "triggerId": "33",
         "name": "CE - content_click",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
@@ -928,7 +1073,31 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "triggerId": "37",
+        "triggerId": "39",
+        "name": "CE - link_click",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "^link_click$"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "triggerId": "41",
         "name": "CE - filter_applied",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
@@ -952,7 +1121,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "triggerId": "41",
+        "triggerId": "45",
         "name": "CE - Form events",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
@@ -976,7 +1145,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "triggerId": "46",
+        "triggerId": "50",
         "name": "CE - language_switch",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
@@ -1412,7 +1581,55 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "21",
+        "variableId": "19",
+        "name": "DLV - link_name",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "link_name"
+          }
+        ]
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "20",
+        "name": "DLV - link_region",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "link_region"
+          }
+        ]
+      },
+      {
+        "accountId": "0",
+        "containerId": "0",
+        "variableId": "23",
         "name": "DLV - video_title",
         "type": "v",
         "parameter": [
@@ -1436,7 +1653,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "22",
+        "variableId": "24",
         "name": "DLV - video_url",
         "type": "v",
         "parameter": [
@@ -1460,7 +1677,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "23",
+        "variableId": "25",
         "name": "DLV - video_provider",
         "type": "v",
         "parameter": [
@@ -1484,7 +1701,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "24",
+        "variableId": "26",
         "name": "DLV - video_percent",
         "type": "v",
         "parameter": [
@@ -1508,7 +1725,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "25",
+        "variableId": "27",
         "name": "DLV - video_current_time",
         "type": "v",
         "parameter": [
@@ -1532,7 +1749,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "26",
+        "variableId": "28",
         "name": "DLV - video_duration",
         "type": "v",
         "parameter": [
@@ -1556,7 +1773,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "29",
+        "variableId": "31",
         "name": "DLV - percent_scrolled",
         "type": "v",
         "parameter": [
@@ -1580,7 +1797,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "32",
+        "variableId": "34",
         "name": "DLV - link_module",
         "type": "v",
         "parameter": [
@@ -1604,7 +1821,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "33",
+        "variableId": "35",
         "name": "DLV - link_position",
         "type": "v",
         "parameter": [
@@ -1628,7 +1845,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "34",
+        "variableId": "36",
         "name": "DLV - link_text",
         "type": "v",
         "parameter": [
@@ -1652,7 +1869,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "35",
+        "variableId": "37",
         "name": "DLV - link_url",
         "type": "v",
         "parameter": [
@@ -1676,7 +1893,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "38",
+        "variableId": "42",
         "name": "DLV - filter_type",
         "type": "v",
         "parameter": [
@@ -1700,7 +1917,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "39",
+        "variableId": "43",
         "name": "DLV - filter_value",
         "type": "v",
         "parameter": [
@@ -1724,7 +1941,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "42",
+        "variableId": "46",
         "name": "DLV - form_name",
         "type": "v",
         "parameter": [
@@ -1748,7 +1965,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "43",
+        "variableId": "47",
         "name": "DLV - form_topic",
         "type": "v",
         "parameter": [
@@ -1772,7 +1989,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "44",
+        "variableId": "48",
         "name": "DLV - error_field",
         "type": "v",
         "parameter": [
@@ -1796,7 +2013,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "47",
+        "variableId": "51",
         "name": "DLV - language_from",
         "type": "v",
         "parameter": [
@@ -1820,7 +2037,7 @@
       {
         "accountId": "0",
         "containerId": "0",
-        "variableId": "48",
+        "variableId": "52",
         "name": "DLV - language_to",
         "type": "v",
         "parameter": [

@@ -94,7 +94,14 @@
   // Props COUNT things, on the hit where they happen (props never persist):
   //   prop1 page name (page views), prop2 interaction (every non-page-view hit,
   //   e.g. "cart add", "purchase", "content clicked"), prop3 video name (media
-  //   events), prop4 link name (teaser and section clicks)
+  //   events), prop4 link name, prop5 link region
+  //
+  // Named links (src/scripts/link-names.ts, region:element:detail) also set
+  // matching eVars and a click event, on the hit where the click happens:
+  //   eVar9 link name, eVar10 link region (intended: Visit expiry, Most recent,
+  //   so an order later in the visit is credited to the last named link)
+  //   event5 named link click (counter)
+  // Media teasers still send link.text (the English headline) to prop4 only.
   function contextVars() {
     var p = page();
     var u = (window.labPage && window.labPage.user) || {};
@@ -110,7 +117,10 @@
   function countVars(e) {
     var c = { prop2: e.event };
     if (e.media && e.media.name) c.prop3 = e.media.name;
-    if (e.link && e.link.text) c.prop4 = e.link.text;
+    var l = e.link || {};
+    if (l.name || l.text) c.prop4 = l.name || l.text;
+    if (l.name) { c.eVar9 = l.name; c.events = 'event5'; }
+    if (l.region) { c.prop5 = l.region; c.eVar10 = l.region; }
     return c;
   }
   var assign = function (a, b) { for (var k in b) if (b[k] !== undefined) a[k] = b[k]; return a; };
