@@ -99,7 +99,7 @@
     var p = page();
     var u = (window.labPage && window.labPage.user) || {};
     return {
-      eVar1: p.name,                             // e.g. shop:product:tidepool-daypack
+      eVar1: p.name,                             // e.g. mda:shop:product:tidepool-daypack
       eVar2: p.type,
       eVar3: p.section,
       eVar4: p.language,                         // e.g. fr-CA

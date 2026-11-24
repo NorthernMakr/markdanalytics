@@ -17,7 +17,7 @@ Au moment de la construction du site, chaque page reçoit un petit objet qui la 
 ```json
 {
   "page": {
-    "name": "implementation:how-this-sites-data-layer-works",
+    "name": "mda:implementation:how-this-sites-data-layer-works",
     "type": "article",
     "section": "implementation",
     "siteName": "Mark D. Analytics",

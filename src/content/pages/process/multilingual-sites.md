@@ -21,7 +21,7 @@ Everything an analyst might see as a dimension value:
 
 | Value | English page | French page |
 |---|---|---|
-| Page name | `shop:product:tidepool-daypack` | `shop:product:tidepool-daypack` |
+| Page name | `mda:shop:product:tidepool-daypack` | `mda:shop:product:tidepool-daypack` |
 | Content title | How this site's data layer works | How this site's data layer works |
 | Product, colour | Tidepool daypack, Buoy | Tidepool daypack, Buoy (shown as "Bouée") |
 | List and promotion names | Home: featured | Home: featured |
@@ -75,7 +75,7 @@ The fix is to choose what GA4's page title means. This site's Google tag sends t
 | `eVar4` page language | `page_language` | `en-CA`, `fr-CA` |
 | `eVar5` browser language | `browser_language` | as the browser reports it |
 
-The tab title visitors see is still French; only the value sent to GA4 changes. The trade-off is that GA4's "Page title" no longer shows the human-written title, which is why the page names on this site are readable (`shop:product:tidepool-daypack`) rather than codes.
+The tab title visitors see is still French; only the value sent to GA4 changes. The trade-off is that GA4's "Page title" no longer shows the human-written title, which is why the page names on this site are readable (`mda:shop:product:tidepool-daypack`) rather than codes.
 
 ## Values the platforms collect by themselves
 

@@ -53,7 +53,7 @@ Envoyé une fois par page, avant le chargement des gestionnaires de balises.
 
 | Clé | Type | Oblig. | Valeurs permises / format | Exemple | Source |
 |---|---|---|---|---|---|
-| `page.name` | chaîne | Oui | Minuscules, séparées par des deux-points, commence par la section | `shop:product:tidepool-daypack` | Gabarit + slug |
+| `page.name` | chaîne | Oui | Minuscules, séparées par des deux-points, en fil d’Ariane : le préfixe du site `mda`, puis la section, puis la page | `mda:shop:product:tidepool-daypack` | Gabarit + slug |
 | `page.type` | chaîne | Oui | `home`, `article list`, `article`, `section front`, `contact`, `error`, `product listing`, `product detail`, `cart`, `checkout`, `order confirmation` | `product detail` | Gabarit |
 | `page.section` | chaîne | Oui | `home`, `basics`, `process`, `implementation`, `data-quality`, `case-studies`, `about`, `contact`, `error`, `shop`, `media`, `site` | `shop` | Gabarit |
 | `page.siteName` | chaîne | Oui | Une valeur par site | `Taiga Supply Co. (demo)` | Configuration du site |
@@ -71,7 +71,7 @@ Exemple, fiche produit française :
 ```json
 {
   "event": "page_data_ready",
-  "page": { "name": "shop:product:tidepool-daypack", "type": "product detail", "section": "shop",
+  "page": { "name": "mda:shop:product:tidepool-daypack", "type": "product detail", "section": "shop",
             "siteName": "Taiga Supply Co. (demo)", "path": "/fr/boutique/produit/sac-de-jour-tidepool/",
             "language": "fr-CA", "environment": "production" },
   "user": { "loginStatus": "guest", "browserLanguage": "en-US", "languageMatch": false },
@@ -98,7 +98,7 @@ Ajoutés à l’objet de page sur les types de pages indiqués. Les valeurs sont
 | `content.author` | chaîne | Oui | Nom public de l’auteur | `Mark Dykeman` |
 | `content.wordCount` | nombre | Oui | Mots dans cette version | `564` |
 
-### 6.2 `content` sur les articles de nouvelles (`page.name` = `media:article:*`)
+### 6.2 `content` sur les articles de nouvelles (`page.name` = `mda:media:article:*`)
 
 | Clé | Type | Oblig. | Format | Exemple |
 |---|---|---|---|---|

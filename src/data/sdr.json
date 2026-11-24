@@ -227,7 +227,7 @@
         "fr": "Nom de page"
       },
       "dl": "page.name",
-      "example": "shop:product:tidepool-daypack",
+      "example": "mda:shop:product:tidepool-daypack",
       "expiry": "Hit",
       "allocation": "—",
       "setOn": {
@@ -235,8 +235,8 @@
         "fr": "Pages vues"
       },
       "meaning": {
-        "en": "Which page was viewed. Lowercase, colon-separated, English on every language version.",
-        "fr": "La page vue. En minuscules, séparée par des deux-points, en anglais dans chaque version linguistique."
+        "en": "Which page was viewed. The name is a breadcrumb: the site prefix (mda, for markdanalytics), then the section, then the page, for example mda:implementation:sdr-business-users, so you always know which site and which part of it you are looking at. Lowercase, colon-separated, English on every language version.",
+        "fr": "La page vue. Le nom est un fil d’Ariane : le préfixe du site (mda, pour markdanalytics), puis la section, puis la page, par exemple mda:implementation:sdr-business-users; on sait donc toujours quel site et quelle partie du site on regarde. En minuscules, séparé par des deux-points, en anglais dans chaque version linguistique."
       },
       "metrics": {
         "en": "Page views, visits, entries, exits, bounce rate",
@@ -265,7 +265,7 @@
         "fr": "Nom de page"
       },
       "dl": "page.name",
-      "example": "shop:product:tidepool-daypack",
+      "example": "mda:shop:product:tidepool-daypack",
       "expiry": "Hit",
       "allocation": "Most recent",
       "setOn": {
@@ -554,7 +554,7 @@
         "fr": "Nom de page (compte)"
       },
       "dl": "page.name",
-      "example": "shop:cart",
+      "example": "mda:shop:cart",
       "expiry": "Hit",
       "allocation": "—",
       "setOn": {

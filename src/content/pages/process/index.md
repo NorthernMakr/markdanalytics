@@ -76,7 +76,7 @@ Agree these once and enforce them in review:
 
 - **Data layer keys:** camelCase, grouped by object (`page.type`, `product.sku`, `user.loginStatus`).
 - **GA4 events and parameters:** snake_case, Google's recommended names first (`add_to_cart`, `item_list_name`), your own only when no recommended one fits.
-- **Adobe classifications and values:** lowercase, colon-separated hierarchies for page names (`shop:product:tidepool-daypack`).
+- **Adobe classifications and values:** lowercase, colon-separated hierarchies for page names (`mda:shop:product:tidepool-daypack`).
 - **Display names:** sentence case, no abbreviations a new hire wouldn't know.
 
 On a multilingual site, everything sent to analytics is in one language (English here), whatever language the page is in: page names and paths, titles, products, lists, promotions, videos, link text. Analysts usually work in one language, and the data in Workspace or GA4 has to make sense to them; it also keeps each page as one row in a top-pages report. To split by language, segment on `page.language` and `user.browserLanguage`. [Measuring a multilingual site](/process/multilingual-sites/) covers this in full.
@@ -128,7 +128,7 @@ One page object, built server-side and pushed before any tag manager loads:
 
 ```json
 {
-  "page": { "name": "shop:product:tidepool-daypack", "type": "product detail",
+  "page": { "name": "mda:shop:product:tidepool-daypack", "type": "product detail",
             "section": "shop", "siteName": "Taiga Supply Co.",
             "path": "/shop/product/tidepool-daypack/", "language": "en-CA",
             "environment": "production" },

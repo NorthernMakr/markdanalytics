@@ -7,7 +7,7 @@ import '../styles/shop.css';
 interface Props {
   title: string;
   pageType: string;          // e.g. "product detail", "checkout"
-  pageName: string;          // e.g. "shop:product:tidepool-daypack" (same in both languages)
+  pageName: string;          // e.g. "shop:product:tidepool-daypack" (same in both languages; Base.astro adds the "mda:" site prefix)
   extra?: Record<string, unknown>;
   checkoutStep?: number;     // hides the main nav during checkout, like real stores
 }

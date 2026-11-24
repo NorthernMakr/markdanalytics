@@ -22,7 +22,7 @@ window.dataLayer = window.dataLayer || [];
 // Describe the page
 window.dataLayer.push({
   event: 'page_data_ready',
-  page: { name: 'shop:cart', type: 'cart', section: 'shop', language: 'en-CA' }
+  page: { name: 'mda:shop:cart', type: 'cart', section: 'shop', language: 'en-CA' }
 });
 ```
 
@@ -42,7 +42,7 @@ The older approach is one object that describes the page, which tags read when t
 
 ```js
 window.digitalData = {
-  page: { pageInfo: { pageName: 'shop:cart' }, category: { primaryCategory: 'shop' } },
+  page: { pageInfo: { pageName: 'mda:shop:cart' }, category: { primaryCategory: 'shop' } },
   cart: { price: { basePrice: 129, currency: 'CAD' } }
 };
 ```
@@ -87,7 +87,7 @@ window.adobeDataLayer.push({
 });
 
 // Once the library has loaded: read the merged state of everything pushed so far
-window.adobeDataLayer.getState('page.name');   // "shop:cart"
+window.adobeDataLayer.getState('page.name');   // "mda:shop:cart"
 
 // Listen for an event, including ones pushed before this code ran
 window.adobeDataLayer.push(function (dl) {
@@ -110,7 +110,7 @@ window.adobeDataLayer = window.adobeDataLayer || [];
 
 // 2. The page's own description, written in at build time
 var pageData = {
-  page: { name: 'shop:cart', type: 'cart', section: 'shop',
+  page: { name: 'mda:shop:cart', type: 'cart', section: 'shop',
           siteName: 'Taiga Supply Co. (demo)', path: '/shop/cart/',
           language: 'en-CA', environment: 'production' },
   user: { loginStatus: 'guest' }

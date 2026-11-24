@@ -21,7 +21,7 @@ Tout ce qu’un analyste pourrait voir comme valeur de dimension :
 
 | Valeur | Page anglaise | Page française |
 |---|---|---|
-| Nom de page | `shop:product:tidepool-daypack` | `shop:product:tidepool-daypack` |
+| Nom de page | `mda:shop:product:tidepool-daypack` | `mda:shop:product:tidepool-daypack` |
 | Titre du contenu | How this site's data layer works | How this site's data layer works |
 | Produit, couleur | Tidepool daypack, Buoy | Tidepool daypack, Buoy (affiché « Bouée ») |
 | Noms de listes et de promotions | Home: featured | Home: featured |
@@ -75,7 +75,7 @@ La solution consiste à choisir ce que signifie le titre de page dans GA4. La ba
 | `eVar4` langue de la page | `page_language` | `en-CA`, `fr-CA` |
 | `eVar5` langue du navigateur | `browser_language` | telle que le navigateur la donne |
 
-Le titre d’onglet que voient les visiteurs reste en français; seule la valeur envoyée à GA4 change. En contrepartie, le « titre de page » de GA4 n’affiche plus le titre rédigé, d’où des noms de page lisibles sur ce site (`shop:product:tidepool-daypack`) plutôt que des codes.
+Le titre d’onglet que voient les visiteurs reste en français; seule la valeur envoyée à GA4 change. En contrepartie, le « titre de page » de GA4 n’affiche plus le titre rédigé, d’où des noms de page lisibles sur ce site (`mda:shop:product:tidepool-daypack`) plutôt que des codes.
 
 ## Les valeurs que les plateformes recueillent d’elles-mêmes
 

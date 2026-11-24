@@ -17,7 +17,7 @@ When the site is built, each page gets a small object describing it:
 ```json
 {
   "page": {
-    "name": "implementation:how-this-sites-data-layer-works",
+    "name": "mda:implementation:how-this-sites-data-layer-works",
     "type": "article",
     "section": "implementation",
     "siteName": "Mark D. Analytics",

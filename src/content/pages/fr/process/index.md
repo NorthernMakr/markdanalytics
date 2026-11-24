@@ -76,7 +76,7 @@ Une documentation introuvable n’existe pas. Trois habitudes aident :
 
 - **Clés de la couche de données :** camelCase, regroupées par objet (`page.type`, `product.sku`, `user.loginStatus`).
 - **Événements et paramètres GA4 :** snake_case, les noms recommandés par Google d’abord (`add_to_cart`, `item_list_name`), les vôtres seulement quand aucun nom recommandé ne convient.
-- **Classifications et valeurs Adobe :** minuscules, hiérarchies séparées par des deux-points pour les noms de page (`shop:product:tidepool-daypack`).
+- **Classifications et valeurs Adobe :** minuscules, hiérarchies séparées par des deux-points pour les noms de page (`mda:shop:product:tidepool-daypack`).
 - **Noms affichés :** majuscule initiale seulement, aucune abréviation qu’une nouvelle recrue ne connaîtrait pas.
 
 Sur ce site bilingue, tout ce qui part vers l’analytique est en anglais, quelle que soit la langue de la page : noms et chemins de page, titres, produits, listes, promotions, vidéos, texte des liens. Les analystes travaillent habituellement dans une seule langue, et les données de Workspace ou de GA4 doivent leur rester compréhensibles; une page forme aussi une seule ligne dans le palmarès des pages. Pour séparer les langues, on segmente sur `page.language` et `user.browserLanguage`. [Mesurer un site multilingue](/fr/processus/sites-multilingues/) traite du sujet en détail.
@@ -128,7 +128,7 @@ Un objet de page, construit côté serveur et envoyé avant tout gestionnaire de
 
 ```json
 {
-  "page": { "name": "shop:product:tidepool-daypack", "type": "product detail",
+  "page": { "name": "mda:shop:product:tidepool-daypack", "type": "product detail",
             "section": "shop", "siteName": "Taiga Supply Co.",
             "path": "/fr/boutique/produit/sac-de-jour-tidepool/", "language": "fr-CA",
             "environment": "production" },

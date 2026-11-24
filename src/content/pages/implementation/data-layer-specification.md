@@ -53,7 +53,7 @@ Pushed once per page, before tag managers load.
 
 | Key | Type | Req. | Allowed values / format | Example | Source |
 |---|---|---|---|---|---|
-| `page.name` | string | Yes | Lowercase, colon-separated, starts with the section | `shop:product:tidepool-daypack` | Template + slug |
+| `page.name` | string | Yes | Lowercase, colon-separated breadcrumb: the site prefix `mda`, then the section, then the page | `mda:shop:product:tidepool-daypack` | Template + slug |
 | `page.type` | string | Yes | `home`, `article list`, `article`, `section front`, `contact`, `error`, `product listing`, `product detail`, `cart`, `checkout`, `order confirmation` | `product detail` | Template |
 | `page.section` | string | Yes | `home`, `basics`, `process`, `implementation`, `data-quality`, `case-studies`, `about`, `contact`, `error`, `shop`, `media`, `site` | `shop` | Template |
 | `page.siteName` | string | Yes | One per site | `Taiga Supply Co. (demo)` | Site config |
@@ -71,7 +71,7 @@ Example, French product page:
 ```json
 {
   "event": "page_data_ready",
-  "page": { "name": "shop:product:tidepool-daypack", "type": "product detail", "section": "shop",
+  "page": { "name": "mda:shop:product:tidepool-daypack", "type": "product detail", "section": "shop",
             "siteName": "Taiga Supply Co. (demo)", "path": "/fr/boutique/produit/sac-de-jour-tidepool/",
             "language": "fr-CA", "environment": "production" },
   "user": { "loginStatus": "guest", "browserLanguage": "en-US", "languageMatch": false },
@@ -98,7 +98,7 @@ Added to the page object on the page types listed. Values are English on both la
 | `content.author` | string | Yes | Author's public name | `Mark Dykeman` |
 | `content.wordCount` | number | Yes | Words in this version | `564` |
 
-### 6.2 `content` on news stories (`page.name` = `media:article:*`)
+### 6.2 `content` on news stories (`page.name` = `mda:media:article:*`)
 
 | Key | Type | Req. | Format | Example |
 |---|---|---|---|---|

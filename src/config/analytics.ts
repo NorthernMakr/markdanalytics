@@ -33,7 +33,17 @@ export const SECTIONS = [
   'site', // pages about the site itself (development notes, sitemap)
 ];
 
-/** page.name: lowercase, colon-separated hierarchy, e.g. "shop:product:tidepool-daypack". */
+/**
+ * Site prefix: the first part of every page.name. "mda" = markdanalytics. It tells anyone
+ * reading a report which site a page belongs to; the rest of the name is the breadcrumb
+ * to the page. Base.astro adds it, so pages pass the name without it ("shop:cart").
+ */
+export const SITE_PREFIX = 'mda';
+
+/** The page.name that is sent: site prefix + breadcrumb, e.g. "mda:shop:product:tidepool-daypack". */
+export const fullPageName = (name: string) => `${SITE_PREFIX}:${name}`;
+
+/** page.name: lowercase, colon-separated breadcrumb, e.g. "mda:shop:product:tidepool-daypack". */
 export const PAGE_NAME_PATTERN = /^[a-z0-9-]+(:[a-z0-9-]+)*$/;
 
 /** GA4 events pushed to dataLayer. snake_case; Google's recommended names first. */
@@ -83,8 +93,12 @@ export function checkPage(page: Record<string, unknown>, where: string) {
   if (!(PAGE_TYPES as readonly string[]).includes(t)) problems.push(`page.type "${t}" isn't in PAGE_TYPES`);
   if (!(SECTIONS as readonly string[]).includes(s)) problems.push(`page.section "${s}" isn't in SECTIONS`);
   if (!PAGE_NAME_PATTERN.test(n)) problems.push(`page.name "${n}" must be lowercase and colon-separated`);
-  if (n && s && n !== s && !n.startsWith(s + ':') && !(s === 'home' && n === 'home')) {
-    problems.push(`page.name "${n}" must start with its section "${s}:"`);
+  // After the site prefix comes the section: "mda:shop:cart", or just "mda:contact".
+  const pre = SITE_PREFIX + ':';
+  const rest = n.startsWith(pre) ? n.slice(pre.length) : '';
+  if (!rest) problems.push(`page.name "${n}" must start with the site prefix "${pre}"`);
+  else if (s && rest !== s && !rest.startsWith(s + ':')) {
+    problems.push(`page.name "${n}" must be "${pre}${s}" or start with "${pre}${s}:"`);
   }
   if (!page.siteName) problems.push('page.siteName is missing');
   if (!(PAGE_LANGUAGES as readonly string[]).includes(String(page.language ?? ''))) {

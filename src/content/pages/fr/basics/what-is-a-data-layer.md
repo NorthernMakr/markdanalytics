@@ -22,7 +22,7 @@ window.dataLayer = window.dataLayer || [];
 // Décrire la page
 window.dataLayer.push({
   event: 'page_data_ready',
-  page: { name: 'shop:cart', type: 'cart', section: 'shop', language: 'fr-CA' }
+  page: { name: 'mda:shop:cart', type: 'cart', section: 'shop', language: 'fr-CA' }
 });
 ```
 
@@ -42,7 +42,7 @@ L’approche plus ancienne est un seul objet qui décrit la page, que les balise
 
 ```js
 window.digitalData = {
-  page: { pageInfo: { pageName: 'shop:cart' }, category: { primaryCategory: 'shop' } },
+  page: { pageInfo: { pageName: 'mda:shop:cart' }, category: { primaryCategory: 'shop' } },
   cart: { price: { basePrice: 129, currency: 'CAD' } }
 };
 ```
@@ -87,7 +87,7 @@ window.adobeDataLayer.push({
 });
 
 // Une fois la bibliothèque chargée : lire l’état fusionné de tout ce qui a été envoyé
-window.adobeDataLayer.getState('page.name');   // "shop:cart"
+window.adobeDataLayer.getState('page.name');   // "mda:shop:cart"
 
 // Écouter un événement, y compris ceux envoyés avant que ce code s’exécute
 window.adobeDataLayer.push(function (dl) {
@@ -110,7 +110,7 @@ window.adobeDataLayer = window.adobeDataLayer || [];
 
 // 2. La description de la page, écrite à la construction
 var pageData = {
-  page: { name: 'shop:cart', type: 'cart', section: 'shop',
+  page: { name: 'mda:shop:cart', type: 'cart', section: 'shop',
           siteName: 'Taiga Supply Co. (demo)', path: '/fr/boutique/panier/',
           language: 'fr-CA', environment: 'production' },
   user: { loginStatus: 'guest' }

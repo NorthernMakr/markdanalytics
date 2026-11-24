@@ -7,7 +7,7 @@
 //   3. Google Tag Manager / gtag.js, if configured
 // That way both tag managers find page data already waiting when they start.
 import { tags, siteMeta } from '../config/tags';
-import { checkPage, GA4_EVENTS, ADOBE_EVENTS, FORBIDDEN_KEYS } from '../config/analytics';
+import { checkPage, fullPageName, GA4_EVENTS, ADOBE_EVENTS, FORBIDDEN_KEYS } from '../config/analytics';
 import { DEFAULT_IMAGE } from '../lib/seo';
 import { LOCALE, OG_LOCALE, langFromPath, basePath, localize, otherLang, tr } from '../i18n';
 import EventLog from '../components/EventLog.astro';
@@ -62,6 +62,8 @@ const fullData = {
   ...pageData,
   page: {
     ...pageData.page,
+    // Site prefix + breadcrumb: "shop:cart" is sent as "mda:shop:cart".
+    name: fullPageName(pageData.page.name),
     // The real address, in the page's language (/fr/boutique/ on French pages).
     // page.name is the English key that combines both versions in reports.
     path: Astro.url.pathname,

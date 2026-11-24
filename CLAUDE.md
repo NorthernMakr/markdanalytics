@@ -34,6 +34,9 @@ sitemap, RSS and llms.txt update themselves. Template: `src/content/pages/_page-
 - **Every analytics value is English**, whatever the page language (page names, titles,
   products, link names, video titles). Only the address is in the page's language.
   `page.language` / `user.browserLanguage` let analysts split languages.
+- **Page names are a breadcrumb with a site prefix:** `mda:<section>:<page>` (`mda:implementation:sdr-business-users`,
+  `mda:shop:cart`, `mda:home`). `mda` = markdanalytics. Pages pass the name without the prefix; `Base.astro` adds it
+  (`SITE_PREFIX` in `src/config/analytics.ts`) and the build checks it. Docs show the full name.
 - **Adobe:** eVars describe context and go on EVERY hit (eVar1 page name, eVar2 type, eVar3 section, eVar4 page
   language, eVar5 browser language, eVar6 match; Hit expiry). Props count things on their own
   hit (prop1 page name, prop2 interaction, prop3 video name, prop4 link name).

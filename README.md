@@ -138,7 +138,7 @@ So both tag managers start with page data already waiting. See
 
 ```json
 {
-  "page": { "name": "shop:product:tidepool-daypack", "type": "product detail", "section": "shop",
+  "page": { "name": "mda:shop:product:tidepool-daypack", "type": "product detail", "section": "shop",
             "siteName": "Taiga Supply Co. (demo)", "path": "/shop/product/tidepool-daypack/",
             "language": "en-CA", "environment": "production" },
   "user": { "loginStatus": "guest", "browserLanguage": "fr-CA", "languageMatch": false }
