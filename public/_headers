@@ -1,0 +1,5 @@
+# Draft site: keep every response out of search results, including files that
+# can't carry a robots meta tag (Excel downloads, RSS, images).
+# Delete this file when siteMeta.hideFromSearch (src/config/tags.ts) is set to false.
+/*
+  X-Robots-Tag: noindex, nofollow

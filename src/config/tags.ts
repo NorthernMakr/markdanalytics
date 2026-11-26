@@ -52,4 +52,10 @@ export const siteMeta = {
   blogTaglineFr: 'Notes sur la mesure numérique, l’implémentation et l’analyse.',
   language: 'en-CA',
   currency: 'CAD',
+  /**
+   * While true, every page tells search engines "noindex, nofollow", so the
+   * site stays out of search results while it's a draft. Set to false to go
+   * public, and delete public/_headers (it does the same for non-HTML files).
+   */
+  hideFromSearch: true,
 };

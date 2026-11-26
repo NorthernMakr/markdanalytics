@@ -54,7 +54,10 @@ const lang = langFromPath(Astro.url.pathname);
 const description = descProp ?? (lang === 'fr' ? siteMeta.blogTaglineFr : siteMeta.blogTagline);
 const enPath = basePath(Astro.url.pathname);
 const frPath = localize(enPath, 'fr');
-const robotsContent = robots ?? (noindex ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-image-preview:large');
+// siteMeta.hideFromSearch (draft site) overrides everything: no page is indexed or followed.
+const robotsContent = siteMeta.hideFromSearch
+  ? 'noindex, nofollow'
+  : robots ?? (noindex ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-image-preview:large');
 const ogImage = new URL(DEFAULT_IMAGE.url, Astro.site).toString();
 const ldJson = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : '';
 

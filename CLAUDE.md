@@ -66,6 +66,10 @@ Case studies, Store, Media site, About.
   updated. Basics and Process are `hidden: true` in `sections.ts`: out of the menu and home page, pages still live
   (Process pages are reached from the map). A site-wide "Draft" notice sits above the header in `BlogLayout.astro`;
   remove it when Mark says the site is ready.
+- Hidden from search while a draft (Mark's request, Nov 25): `siteMeta.hideFromSearch = true` in `src/config/tags.ts`
+  makes every page `noindex, nofollow`; `public/_headers` adds the same `X-Robots-Tag` to all files. robots.txt still
+  allows crawling on purpose (a crawler must fetch a page to see noindex). To go public: set the flag to false and
+  delete `public/_headers`.
 - Process: the implementation map (`/process/implementation-map/`) is the high-level page: requirements → SDR →
   four streams (platform setup, page and tag setup, procedure/documentation, maintenance). Every box links to its
   content and carries a status (live / partial or simulated / planned); keep the statuses honest when content lands.
