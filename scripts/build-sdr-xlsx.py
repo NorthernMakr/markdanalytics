@@ -31,7 +31,7 @@ L = {
     h_sdr=["Variable","Name","Requirements","Data layer source","Example","Expiry","Allocation","Set on","GA4","GA4 scope","Status"],
     h_dev=["Expose in the data layer","Why (brief)","Example","Send on","Status"],
     h_biz=["Name","What it means","Pair it with","Why this kind of variable","Adobe","GA4","Status"],
-    site={"both":"Both","store":"Store","media":"Media"}, prio={"High":"High","Medium":"Medium"}, all="All variables",
+    site={"all":"All","store-media":"Store & Media","store":"Store","media":"Media"}, prio={"High":"High","Medium":"Medium"}, all="All variables",
     links="Link names", h_links=["Attribute","Put it on","Value","Example"],
     links_intro="Links are named region:element:detail by src/scripts/link-names.ts. Templates mark containers; every link inside inherits the context. Format rules: product page specification, section 4.",
     links_rows=[
@@ -60,7 +60,7 @@ L = {
     h_sdr=["Variable","Nom","Besoins","Source (couche de données)","Exemple","Expiration","Attribution","Fixée sur","GA4","Portée GA4","Statut"],
     h_dev=["À exposer dans la couche de données","Pourquoi (en bref)","Exemple","Envoyer sur","Statut"],
     h_biz=["Nom","Ce que ça signifie","À associer à","Pourquoi ce type de variable","Adobe","GA4","Statut"],
-    site={"both":"Les deux","store":"Boutique","media":"Médias"}, prio={"High":"Haute","Medium":"Moyenne"}, all="Toutes les variables",
+    site={"all":"Tous","store-media":"Boutique et médias","store":"Boutique","media":"Médias"}, prio={"High":"Haute","Medium":"Moyenne"}, all="Toutes les variables",
     links="Noms de liens", h_links=["Attribut","Où le mettre","Valeur","Exemple"],
     links_intro="Les liens sont nommés région:élément:détail par src/scripts/link-names.ts. Les gabarits balisent les conteneurs; chaque lien à l’intérieur hérite du contexte. Règles de format : spécification de la fiche produit, section 4.",
     links_rows=[

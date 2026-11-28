@@ -12,7 +12,7 @@ import SdrTable from '../../../components/sdr/SdrTable.astro';
 | Property | Value |
 |---|---|
 | **Document** | Business requirements: Taiga Supply Co. (store) and Balsam Daily (news) |
-| **Version** | 1.0, 2 November 2026 |
+| **Version** | 1.1, 28 November 2026 |
 | **Status** | Approved (illustrative: both organisations are fictional) |
 | **Owner** | Mark Dykeman, analytics lead |
 | **Next step** | [Solution design reference](/implementation/sdr/) |
@@ -40,11 +40,12 @@ The last column is filled in from the [solution design reference](/implementatio
 ## Out of scope
 
 - Logged-in behaviour (neither site has accounts).
-- Marketing channel attribution (campaign parameters are collected by default; attribution models are an analysis question, not an implementation one).
+- Attribution models (campaign codes are captured for BR-11; which model gives credit is an analysis question, not an implementation one).
 - Personal information of any kind (BR-10).
 
 ## Change history
 
 | Version | Date | Change |
 |---|---|---|
+| 1.1 | 2026-11-28 | Added BR-11 to BR-21 (campaigns, on-site ads, video, subjects, content discovery, search, article and video metadata); sites are now All, Store & Media, Store or Media |
 | 1.0 | 2026-11-02 | First approved version |

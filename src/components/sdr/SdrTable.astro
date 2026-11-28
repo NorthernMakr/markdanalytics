@@ -17,7 +17,7 @@ const status = (s: string) => (s === 'live' ? tr(lang, 'Live', 'En production') 
 const reqById = Object.fromEntries(sdr.requirements.map((r) => [r.id, r]));
 const varsFor = (id: string) => sdr.variables.filter((v) => v.reqs.includes(id)).map((v) => v.adobe);
 const purpose = (v: (typeof sdr.variables)[number]) => t(reqById[v.reqs[0]].question).replace(/^Constraint: |^Contrainte : /, '');
-const site = (s: string) => ({ both: tr(lang, 'Both', 'Les deux'), store: tr(lang, 'Store', 'Boutique'), media: tr(lang, 'Media', 'Médias') }[s] ?? s);
+const site = (s: string) => ({ all: tr(lang, 'All', 'Tous'), 'store-media': tr(lang, 'Store & Media', 'Boutique et médias'), store: tr(lang, 'Store', 'Boutique'), media: tr(lang, 'Media', 'Médias') }[s] ?? s);
 ---
 <div class="table-wrap" tabindex="0" role="region" aria-label={tr(lang, 'Scrollable table', 'Tableau défilant')}>
 {view === 'requirements' && (

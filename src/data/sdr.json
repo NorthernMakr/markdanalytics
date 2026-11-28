@@ -1,11 +1,11 @@
 {
   "_about": "Single source for the business requirements and the solution design reference (SDR). Rendered by src/components/sdr/*.astro on the Implementation pages and exported to Excel by scripts/build-sdr-xlsx.py (public/downloads/). Edit here, then run: python3 scripts/build-sdr-xlsx.py",
-  "version": "1.2",
-  "updated": "2026-11-24",
+  "version": "1.3",
+  "updated": "2026-11-28",
   "requirements": [
     {
       "id": "BR-01",
-      "site": "both",
+      "site": "all",
       "priority": "High",
       "owner": {
         "en": "Digital lead",
@@ -89,7 +89,7 @@
     },
     {
       "id": "BR-05",
-      "site": "both",
+      "site": "all",
       "priority": "High",
       "owner": {
         "en": "Digital lead",
@@ -152,11 +152,11 @@
     },
     {
       "id": "BR-08",
-      "site": "both",
+      "site": "all",
       "priority": "Medium",
       "owner": {
-        "en": "UX designer",
-        "fr": "Conceptrice UX"
+        "en": "UX designer / site owner",
+        "fr": "Conceptrice UX / propriétaire du site"
       },
       "question": {
         "en": "Which links, buttons and modules do visitors use?",
@@ -173,7 +173,7 @@
     },
     {
       "id": "BR-09",
-      "site": "both",
+      "site": "all",
       "priority": "Medium",
       "owner": {
         "en": "Site owner",
@@ -194,7 +194,7 @@
     },
     {
       "id": "BR-10",
-      "site": "both",
+      "site": "all",
       "priority": "High",
       "owner": {
         "en": "Privacy officer",
@@ -211,6 +211,237 @@
       "kpis": {
         "en": "Zero personal-data keys found in automated checks",
         "fr": "Aucune clé de données personnelles trouvée par les vérifications automatisées"
+      }
+    },
+    {
+      "id": "BR-11",
+      "site": "store-media",
+      "priority": "High",
+      "owner": {
+        "en": "CMO",
+        "fr": "Chef du marketing"
+      },
+      "question": {
+        "en": "Which marketing campaigns are most effective at driving sales and engagement?",
+        "fr": "Quelles campagnes marketing sont les plus efficaces pour générer des ventes et de l’engagement?"
+      },
+      "decision": {
+        "en": "Continue, discontinue, augment or change a campaign.",
+        "fr": "Poursuivre, arrêter, renforcer ou modifier une campagne."
+      },
+      "kpis": {
+        "en": "Visits, video starts, purchases, exit rate",
+        "fr": "Visites, démarrages de vidéo, achats, taux de sortie"
+      }
+    },
+    {
+      "id": "BR-12",
+      "site": "store-media",
+      "priority": "Medium",
+      "owner": {
+        "en": "CMO",
+        "fr": "Chef du marketing"
+      },
+      "question": {
+        "en": "Which on-site ads help drive conversion?",
+        "fr": "Quelles publicités sur le site aident à générer des conversions?"
+      },
+      "decision": {
+        "en": "Continue, discontinue, augment or change the on-site ad.",
+        "fr": "Poursuivre, arrêter, renforcer ou modifier la publicité sur le site."
+      },
+      "kpis": {
+        "en": "Ad views, ad clicks, click-through rate, orders and revenue after a click",
+        "fr": "Vues et clics des publicités, taux de clics, commandes et revenus après un clic"
+      }
+    },
+    {
+      "id": "BR-13",
+      "site": "media",
+      "priority": "High",
+      "owner": {
+        "en": "Editor-in-chief",
+        "fr": "Rédacteur en chef"
+      },
+      "question": {
+        "en": "Which videos are being watched?",
+        "fr": "Quelles vidéos sont regardées?"
+      },
+      "decision": {
+        "en": "Which video should be pushed to the top?",
+        "fr": "Quelle vidéo mettre en tête?"
+      },
+      "kpis": {
+        "en": "Video starts, completes, completion rate, milestones reached",
+        "fr": "Démarrages, visionnements complets, taux de complétion, jalons atteints"
+      }
+    },
+    {
+      "id": "BR-14",
+      "site": "media",
+      "priority": "High",
+      "owner": {
+        "en": "Video producer",
+        "fr": "Réalisateur vidéo"
+      },
+      "question": {
+        "en": "How long do visitors watch the videos? Does the length of a visit correlate with return behaviour?",
+        "fr": "Combien de temps les visiteurs regardent-ils les vidéos? La durée d’une visite est-elle liée au retour des visiteurs?"
+      },
+      "decision": {
+        "en": "Do videos increase conversion?",
+        "fr": "Les vidéos augmentent-elles la conversion?"
+      },
+      "kpis": {
+        "en": "Video time spent, in seconds",
+        "fr": "Temps passé sur les vidéos, en secondes"
+      }
+    },
+    {
+      "id": "BR-15",
+      "site": "media",
+      "priority": "Medium",
+      "owner": {
+        "en": "Video producer",
+        "fr": "Réalisateur vidéo"
+      },
+      "question": {
+        "en": "What type of videos are most popular: long or short?",
+        "fr": "Quel type de vidéo est le plus populaire : longue ou courte?"
+      },
+      "decision": {
+        "en": "Make more or less of which type?",
+        "fr": "Produire plus ou moins de quel type?"
+      },
+      "kpis": {
+        "en": "Video starts, completes, completion rate, milestones reached",
+        "fr": "Démarrages, visionnements complets, taux de complétion, jalons atteints"
+      }
+    },
+    {
+      "id": "BR-16",
+      "site": "media",
+      "priority": "Medium",
+      "owner": {
+        "en": "Editor-in-chief",
+        "fr": "Rédacteur en chef"
+      },
+      "question": {
+        "en": "Which subjects do visitors prefer (articles and videos)?",
+        "fr": "Quels sujets les visiteurs préfèrent-ils (articles et vidéos)?"
+      },
+      "decision": {
+        "en": "Which subject should I have more of?",
+        "fr": "De quel sujet faut-il en offrir davantage?"
+      },
+      "kpis": {
+        "en": "Article views, articles read (75% scroll), read rate by subject",
+        "fr": "Vues d’articles, articles lus (défilement de 75 %), taux de lecture par sujet"
+      }
+    },
+    {
+      "id": "BR-17",
+      "site": "media",
+      "priority": "High",
+      "owner": {
+        "en": "UX designer / site owner",
+        "fr": "Conceptrice UX / propriétaire du site"
+      },
+      "question": {
+        "en": "How do visitors find content or products?",
+        "fr": "Comment les visiteurs trouvent-ils le contenu ou les produits?"
+      },
+      "decision": {
+        "en": "What do readers find interesting?",
+        "fr": "Qu’est-ce qui intéresse les lecteurs?"
+      },
+      "kpis": {
+        "en": "Article title, by location (home page, section, full article page)",
+        "fr": "Titre de l’article, par emplacement (page d’accueil, section, page de l’article)"
+      }
+    },
+    {
+      "id": "BR-18",
+      "site": "store-media",
+      "priority": "High",
+      "owner": {
+        "en": "All",
+        "fr": "Tous"
+      },
+      "question": {
+        "en": "What are people searching for?",
+        "fr": "Que cherchent les gens?"
+      },
+      "decision": {
+        "en": "Content or products needed or wanted; how well the search results work.",
+        "fr": "Le contenu ou les produits recherchés ou souhaités; l’efficacité des résultats de recherche."
+      },
+      "kpis": {
+        "en": "What terms are people using?",
+        "fr": "Quels termes les gens utilisent-ils?"
+      }
+    },
+    {
+      "id": "BR-19",
+      "site": "store-media",
+      "priority": "Medium",
+      "owner": {
+        "en": "All",
+        "fr": "Tous"
+      },
+      "question": {
+        "en": "Which search results do visitors click?",
+        "fr": "Sur quels résultats de recherche les visiteurs cliquent-ils?"
+      },
+      "decision": {
+        "en": "Which listing is being selected.",
+        "fr": "Quel résultat est choisi."
+      },
+      "kpis": {
+        "en": "Search listing clicks",
+        "fr": "Clics sur les résultats de recherche"
+      }
+    },
+    {
+      "id": "BR-20",
+      "site": "media",
+      "priority": "High",
+      "owner": {
+        "en": "Editor-in-chief",
+        "fr": "Rédacteur en chef"
+      },
+      "question": {
+        "en": "Article metadata: title, title character count, author or journalist, subject, character count, published date, unique article ID.",
+        "fr": "Métadonnées des articles : titre, nombre de caractères du titre, auteur ou journaliste, sujet, nombre de caractères, date de publication, identifiant unique de l’article."
+      },
+      "decision": {
+        "en": "Breaks down article performance (BR-06, BR-16, BR-17) by each attribute.",
+        "fr": "Ventile la performance des articles (BR-06, BR-16, BR-17) selon chaque attribut."
+      },
+      "kpis": {
+        "en": "Article views, articles read (75% scroll), read rate by section",
+        "fr": "Vues d’articles, articles lus (défilement de 75 %), taux de lecture par rubrique"
+      }
+    },
+    {
+      "id": "BR-21",
+      "site": "media",
+      "priority": "High",
+      "owner": {
+        "en": "Editor-in-chief",
+        "fr": "Rédacteur en chef"
+      },
+      "question": {
+        "en": "Video metadata: title, title character count, author or journalist, subject, length of video, published date, unique video ID.",
+        "fr": "Métadonnées des vidéos : titre, nombre de caractères du titre, auteur ou journaliste, sujet, durée de la vidéo, date de publication, identifiant unique de la vidéo."
+      },
+      "decision": {
+        "en": "Breaks down video performance (BR-07, BR-13 to BR-15) by each attribute.",
+        "fr": "Ventile la performance des vidéos (BR-07, BR-13 à BR-15) selon chaque attribut."
+      },
+      "kpis": {
+        "en": "Video starts, completes, completion rate, milestones reached",
+        "fr": "Démarrages, visionnements complets, taux de complétion, jalons atteints"
       }
     }
   ],
@@ -475,7 +706,8 @@
       "type": "eVar",
       "status": "proposed",
       "reqs": [
-        "BR-04"
+        "BR-04",
+        "BR-17"
       ],
       "name": {
         "en": "Product list (merchandising)",
@@ -511,7 +743,8 @@
       "type": "eVar",
       "status": "proposed",
       "reqs": [
-        "BR-04"
+        "BR-04",
+        "BR-12"
       ],
       "name": {
         "en": "Internal promotion",
@@ -548,7 +781,9 @@
       "status": "live",
       "reqs": [
         "BR-08",
-        "BR-02"
+        "BR-02",
+        "BR-17",
+        "BR-19"
       ],
       "name": {
         "en": "Link name",
@@ -584,11 +819,13 @@
       "type": "eVar",
       "status": "live",
       "reqs": [
-        "BR-08"
+        "BR-08",
+        "BR-17",
+        "BR-19"
       ],
       "name": {
-        "en": "Link region",
-        "fr": "Zone du lien"
+        "en": "Link location",
+        "fr": "Emplacement du lien"
       },
       "dl": "link.region",
       "example": "pdp",
@@ -599,8 +836,8 @@
         "fr": "Clics sur des liens nommés"
       },
       "meaning": {
-        "en": "Where on the page the last named link was: header, pdp (product page body) or footer. Same value as prop5.",
-        "fr": "L’endroit de la page où se trouvait le dernier lien nommé : header, pdp (corps de la page produit) ou footer. Même valeur que prop5."
+        "en": "Where on the page the last named link was (its region): header, pdp (product page body) or footer. Same value as prop5.",
+        "fr": "L’endroit de la page où se trouvait le dernier lien nommé (sa zone) : header, pdp (corps de la fiche produit) ou footer. Même valeur que prop5."
       },
       "metrics": {
         "en": "Named link clicks (event5), orders, revenue",
@@ -613,6 +850,603 @@
       "ga4": {
         "name": "link_region",
         "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar11",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-17",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article title",
+        "fr": "Titre de l’article"
+      },
+      "dl": "content.title",
+      "example": "Island ferry schedule shakeup adds early sailings, drops late-night run",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit on a news story",
+        "fr": "Chaque hit sur un article de nouvelles"
+      },
+      "meaning": {
+        "en": "The English headline of the story. Same value as prop8.",
+        "fr": "Le titre anglais de l’article. Même valeur que prop8."
+      },
+      "metrics": {
+        "en": "Article views, articles read (event3), time spent",
+        "fr": "Vues d’articles, articles lus (event3), temps passé"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down article views, reads and conversions on any hit from the story. Sent on every hit, like the other context eVars.",
+        "fr": "eVar, expiration au hit : ventile les vues, les lectures et les conversions sur tout hit de l’article. Envoyée sur chaque hit, comme les autres eVars de contexte."
+      },
+      "ga4": {
+        "name": "content_title",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar12",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-17",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article ID",
+        "fr": "Identifiant de l’article"
+      },
+      "dl": "content.id",
+      "example": "ferry-schedule-shakeup",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit on a news story",
+        "fr": "Chaque hit sur un article de nouvelles"
+      },
+      "meaning": {
+        "en": "The story’s unique ID (English slug); stays the same if the headline changes. Same value as prop9.",
+        "fr": "L’identifiant unique de l’article (slug anglais); il ne change pas si le titre change. Même valeur que prop9."
+      },
+      "metrics": {
+        "en": "Article views, articles read (event3), time spent",
+        "fr": "Vues d’articles, articles lus (event3), temps passé"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down article views, reads and conversions on any hit from the story. Sent on every hit, like the other context eVars.",
+        "fr": "eVar, expiration au hit : ventile les vues, les lectures et les conversions sur tout hit de l’article. Envoyée sur chaque hit, comme les autres eVars de contexte."
+      },
+      "ga4": {
+        "name": "content_id",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar13",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article author",
+        "fr": "Auteur de l’article"
+      },
+      "dl": "content.author",
+      "example": "Dana Layer",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit on a news story",
+        "fr": "Chaque hit sur un article de nouvelles"
+      },
+      "meaning": {
+        "en": "The byline: the journalist’s public name. Same value as prop10.",
+        "fr": "La signature : le nom public du journaliste. Même valeur que prop10."
+      },
+      "metrics": {
+        "en": "Article views, articles read (event3), time spent",
+        "fr": "Vues d’articles, articles lus (event3), temps passé"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down article views, reads and conversions on any hit from the story. Sent on every hit, like the other context eVars.",
+        "fr": "eVar, expiration au hit : ventile les vues, les lectures et les conversions sur tout hit de l’article. Envoyée sur chaque hit, comme les autres eVars de contexte."
+      },
+      "ga4": {
+        "name": "content_author",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar14",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-16",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article subject",
+        "fr": "Sujet de l’article"
+      },
+      "dl": "content.section",
+      "example": "Transportation",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit on a news story",
+        "fr": "Chaque hit sur un article de nouvelles"
+      },
+      "meaning": {
+        "en": "The story’s subject (news section), in English. Same value as prop11.",
+        "fr": "Le sujet de l’article (rubrique), en anglais. Même valeur que prop11."
+      },
+      "metrics": {
+        "en": "Article views, articles read (event3), time spent",
+        "fr": "Vues d’articles, articles lus (event3), temps passé"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down article views, reads and conversions on any hit from the story. Sent on every hit, like the other context eVars.",
+        "fr": "eVar, expiration au hit : ventile les vues, les lectures et les conversions sur tout hit de l’article. Envoyée sur chaque hit, comme les autres eVars de contexte."
+      },
+      "ga4": {
+        "name": "content_section",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar15",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article published date",
+        "fr": "Date de publication de l’article"
+      },
+      "dl": "content.publishDate",
+      "example": "2026-10-28",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit on a news story",
+        "fr": "Chaque hit sur un article de nouvelles"
+      },
+      "meaning": {
+        "en": "First publication date, ISO format. Same value as prop12.",
+        "fr": "Date de première publication, format ISO. Même valeur que prop12."
+      },
+      "metrics": {
+        "en": "Article views, articles read (event3), time spent",
+        "fr": "Vues d’articles, articles lus (event3), temps passé"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down article views, reads and conversions on any hit from the story. Sent on every hit, like the other context eVars.",
+        "fr": "eVar, expiration au hit : ventile les vues, les lectures et les conversions sur tout hit de l’article. Envoyée sur chaque hit, comme les autres eVars de contexte."
+      },
+      "ga4": {
+        "name": "content_publish_date",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar16",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article title length",
+        "fr": "Longueur du titre de l’article"
+      },
+      "dl": "content.title (characters, counted in tag management)",
+      "example": "71",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit on a news story",
+        "fr": "Chaque hit sur un article de nouvelles"
+      },
+      "meaning": {
+        "en": "Characters in the English headline. Same value as prop13.",
+        "fr": "Nombre de caractères du titre anglais. Même valeur que prop13."
+      },
+      "metrics": {
+        "en": "Article views, articles read (event3), time spent",
+        "fr": "Vues d’articles, articles lus (event3), temps passé"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down article views, reads and conversions on any hit from the story. Sent on every hit, like the other context eVars.",
+        "fr": "eVar, expiration au hit : ventile les vues, les lectures et les conversions sur tout hit de l’article. Envoyée sur chaque hit, comme les autres eVars de contexte."
+      },
+      "ga4": {
+        "name": "content_title_length",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar17",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article length",
+        "fr": "Longueur de l’article"
+      },
+      "dl": "content.characterCount (new key)",
+      "example": "771",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Every hit on a news story",
+        "fr": "Chaque hit sur un article de nouvelles"
+      },
+      "meaning": {
+        "en": "Characters in the English story body. Same value as prop14.",
+        "fr": "Nombre de caractères du texte anglais de l’article. Même valeur que prop14."
+      },
+      "metrics": {
+        "en": "Article views, articles read (event3), time spent",
+        "fr": "Vues d’articles, articles lus (event3), temps passé"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down article views, reads and conversions on any hit from the story. Sent on every hit, like the other context eVars.",
+        "fr": "eVar, expiration au hit : ventile les vues, les lectures et les conversions sur tout hit de l’article. Envoyée sur chaque hit, comme les autres eVars de contexte."
+      },
+      "ga4": {
+        "name": "content_character_count",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar18",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-13",
+        "BR-07"
+      ],
+      "name": {
+        "en": "Video title",
+        "fr": "Titre de la vidéo"
+      },
+      "dl": "media.name",
+      "example": "What the new ferry schedule means for commuters",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "The English video title. Same value as prop3.",
+        "fr": "Le titre anglais de la vidéo. Même valeur que prop3."
+      },
+      "metrics": {
+        "en": "Video starts and completes (event1, event2), seconds watched (event8)",
+        "fr": "Démarrages et visionnements complets (event1, event2), secondes regardées (event8)"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: gives video events and seconds watched a title breakdown. Sent with every video event.",
+        "fr": "eVar, expiration au hit : ventile les événements vidéo et les secondes regardées par titre. Envoyée avec chaque événement vidéo."
+      },
+      "ga4": {
+        "name": "video_title",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar19",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video ID",
+        "fr": "Identifiant de la vidéo"
+      },
+      "dl": "media.id",
+      "example": "vid-ferry-001",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "The video’s unique ID; stays the same if the title changes. Same value as prop15.",
+        "fr": "L’identifiant unique de la vidéo; il ne change pas si le titre change. Même valeur que prop15."
+      },
+      "metrics": {
+        "en": "Video starts and completes (event1, event2), seconds watched (event8)",
+        "fr": "Démarrages et visionnements complets (event1, event2), secondes regardées (event8)"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down video starts, completes and seconds watched. Sent with every video event.",
+        "fr": "eVar, expiration au hit : ventile les démarrages, les visionnements complets et les secondes regardées. Envoyée avec chaque événement vidéo."
+      },
+      "ga4": {
+        "name": "video_id",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar20",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video author",
+        "fr": "Auteur de la vidéo"
+      },
+      "dl": "media.author (new key)",
+      "example": "Dana Layer",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "The journalist or producer credited for the video. Same value as prop16.",
+        "fr": "Le journaliste ou le réalisateur crédité pour la vidéo. Même valeur que prop16."
+      },
+      "metrics": {
+        "en": "Video starts and completes (event1, event2), seconds watched (event8)",
+        "fr": "Démarrages et visionnements complets (event1, event2), secondes regardées (event8)"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down video starts, completes and seconds watched. Sent with every video event.",
+        "fr": "eVar, expiration au hit : ventile les démarrages, les visionnements complets et les secondes regardées. Envoyée avec chaque événement vidéo."
+      },
+      "ga4": {
+        "name": "video_author",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar21",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-16",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video subject",
+        "fr": "Sujet de la vidéo"
+      },
+      "dl": "media.subject (new key)",
+      "example": "Transportation",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "The video’s subject, from the same list as article subjects. Same value as prop17.",
+        "fr": "Le sujet de la vidéo, tiré de la même liste que les sujets d’articles. Même valeur que prop17."
+      },
+      "metrics": {
+        "en": "Video starts and completes (event1, event2), seconds watched (event8)",
+        "fr": "Démarrages et visionnements complets (event1, event2), secondes regardées (event8)"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down video starts, completes and seconds watched. Sent with every video event.",
+        "fr": "eVar, expiration au hit : ventile les démarrages, les visionnements complets et les secondes regardées. Envoyée avec chaque événement vidéo."
+      },
+      "ga4": {
+        "name": "video_subject",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar22",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video published date",
+        "fr": "Date de publication de la vidéo"
+      },
+      "dl": "media.publishDate (new key)",
+      "example": "2026-10-28",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "First publication date, ISO format. Same value as prop18.",
+        "fr": "Date de première publication, format ISO. Même valeur que prop18."
+      },
+      "metrics": {
+        "en": "Video starts and completes (event1, event2), seconds watched (event8)",
+        "fr": "Démarrages et visionnements complets (event1, event2), secondes regardées (event8)"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down video starts, completes and seconds watched. Sent with every video event.",
+        "fr": "eVar, expiration au hit : ventile les démarrages, les visionnements complets et les secondes regardées. Envoyée avec chaque événement vidéo."
+      },
+      "ga4": {
+        "name": "video_publish_date",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar23",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video title length",
+        "fr": "Longueur du titre de la vidéo"
+      },
+      "dl": "media.name (characters, counted in tag management)",
+      "example": "47",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "Characters in the English video title. Same value as prop19.",
+        "fr": "Nombre de caractères du titre anglais de la vidéo. Même valeur que prop19."
+      },
+      "metrics": {
+        "en": "Video starts and completes (event1, event2), seconds watched (event8)",
+        "fr": "Démarrages et visionnements complets (event1, event2), secondes regardées (event8)"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down video starts, completes and seconds watched. Sent with every video event.",
+        "fr": "eVar, expiration au hit : ventile les démarrages, les visionnements complets et les secondes regardées. Envoyée avec chaque événement vidéo."
+      },
+      "ga4": {
+        "name": "video_title_length",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar24",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-15",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video length",
+        "fr": "Durée de la vidéo"
+      },
+      "dl": "media.length",
+      "example": "30",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "Video duration in seconds. Classify into long and short in Adobe for BR-15. Same value as prop20.",
+        "fr": "Durée de la vidéo en secondes. À classer en longues et courtes dans Adobe pour BR-15. Même valeur que prop20."
+      },
+      "metrics": {
+        "en": "Video starts and completes (event1, event2), seconds watched (event8)",
+        "fr": "Démarrages et visionnements complets (event1, event2), secondes regardées (event8)"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down video starts, completes and seconds watched. Sent with every video event.",
+        "fr": "eVar, expiration au hit : ventile les démarrages, les visionnements complets et les secondes regardées. Envoyée avec chaque événement vidéo."
+      },
+      "ga4": {
+        "name": "video_duration",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "eVar25",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-18",
+        "BR-19"
+      ],
+      "name": {
+        "en": "Internal search term",
+        "fr": "Terme de recherche interne"
+      },
+      "dl": "search.term (new key)",
+      "example": "rain shell",
+      "expiry": "Visit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Search results pages",
+        "fr": "Pages de résultats de recherche"
+      },
+      "meaning": {
+        "en": "What the visitor typed in site search, lowercased. Persists so later result clicks and orders are credited to the term. Same value as prop21.",
+        "fr": "Ce que le visiteur a tapé dans la recherche du site, en minuscules. Persiste pour que les clics sur les résultats et les commandes qui suivent soient crédités au terme. Même valeur que prop21."
+      },
+      "metrics": {
+        "en": "Searches (event9), null searches (event10), result clicks (event5), orders, revenue",
+        "fr": "Recherches (event9), recherches sans résultat (event10), clics sur les résultats (event5), commandes, revenus"
+      },
+      "why": {
+        "en": "eVar with visit expiry: a search term gets credit for the clicks and orders that follow it.",
+        "fr": "eVar à expiration à la visite : un terme de recherche est crédité des clics et des commandes qui le suivent."
+      },
+      "ga4": {
+        "name": "search_term",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "campaign",
+      "type": "campaign",
+      "status": "proposed",
+      "reqs": [
+        "BR-11"
+      ],
+      "name": {
+        "en": "Tracking code (campaign)",
+        "fr": "Code de suivi (campagne)"
+      },
+      "dl": "URL parameter cid (and utm_* for GA4)",
+      "example": "em-2026-fall-sale",
+      "expiry": "Visit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Landing page views with a campaign parameter",
+        "fr": "Pages d’arrivée avec un paramètre de campagne"
+      },
+      "meaning": {
+        "en": "The marketing campaign that brought the visit. Classify the code into channel, campaign name and creative in Adobe.",
+        "fr": "La campagne marketing qui a amené la visite. Classer le code par canal, nom de campagne et création dans Adobe."
+      },
+      "metrics": {
+        "en": "Visits, video starts (event1), orders, revenue, exit rate",
+        "fr": "Visites, démarrages de vidéo (event1), commandes, revenus, taux de sortie"
+      },
+      "why": {
+        "en": "Adobe’s built-in campaign variable; expiry and allocation are report suite settings.",
+        "fr": "La variable de campagne native d’Adobe; l’expiration et l’attribution sont des réglages de la suite de rapports."
+      },
+      "ga4": {
+        "name": "session_campaign (automatic from utm_* parameters)",
+        "scope": "Session"
       }
     },
     {
@@ -693,7 +1527,9 @@
       "type": "prop",
       "status": "live",
       "reqs": [
-        "BR-07"
+        "BR-07",
+        "BR-13",
+        "BR-21"
       ],
       "name": {
         "en": "Video name",
@@ -716,8 +1552,8 @@
         "fr": "Occurrences, démarrages, visionnements complets"
       },
       "why": {
-        "en": "Prop: counts video actions where they happen.",
-        "fr": "Prop : compte les actions vidéo là où elles surviennent."
+        "en": "Prop: counts video events by title on the hit. eVar18 holds the same title for conversion metrics.",
+        "fr": "Prop : compte les événements vidéo par titre sur le hit. eVar18 contient le même titre pour les mesures de conversion."
       },
       "ga4": {
         "name": "video_title",
@@ -729,7 +1565,9 @@
       "type": "prop",
       "status": "live",
       "reqs": [
-        "BR-08"
+        "BR-08",
+        "BR-17",
+        "BR-19"
       ],
       "name": {
         "en": "Link name",
@@ -765,11 +1603,13 @@
       "type": "prop",
       "status": "live",
       "reqs": [
-        "BR-08"
+        "BR-08",
+        "BR-17",
+        "BR-19"
       ],
       "name": {
-        "en": "Link region",
-        "fr": "Zone du lien"
+        "en": "Link location",
+        "fr": "Emplacement du lien"
       },
       "dl": "link.region",
       "example": "header",
@@ -780,8 +1620,8 @@
         "fr": "Clics sur des liens nommés"
       },
       "meaning": {
-        "en": "Where on the page the clicked link was: header, pdp or footer.",
-        "fr": "L’endroit de la page où se trouvait le lien cliqué : header, pdp ou footer."
+        "en": "Where on the page the clicked link was (its region): header, pdp or footer.",
+        "fr": "L’endroit de la page où se trouvait le lien cliqué (sa zone) : header, pdp ou footer."
       },
       "metrics": {
         "en": "Occurrences, named link clicks (event5)",
@@ -793,6 +1633,600 @@
       },
       "ga4": {
         "name": "link_region",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop6",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-01"
+      ],
+      "name": {
+        "en": "Page type",
+        "fr": "Type de page"
+      },
+      "dl": "page.type",
+      "example": "product detail",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Page views",
+        "fr": "Pages vues"
+      },
+      "meaning": {
+        "en": "The page template. Same value as eVar2.",
+        "fr": "Le gabarit de la page. Même valeur qu’eVar2."
+      },
+      "metrics": {
+        "en": "Page views, visits, path reports",
+        "fr": "Pages vues, visites, rapports de cheminement"
+      },
+      "why": {
+        "en": "Prop: counts page views by type and supports pathing between page types; eVar2 carries it for conversion metrics.",
+        "fr": "Prop : compte les pages vues par type et permet le cheminement entre types de pages; eVar2 la porte pour les mesures de conversion."
+      },
+      "ga4": {
+        "name": "page_type",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop7",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-01"
+      ],
+      "name": {
+        "en": "Site section",
+        "fr": "Section du site"
+      },
+      "dl": "page.section",
+      "example": "shop",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Page views",
+        "fr": "Pages vues"
+      },
+      "meaning": {
+        "en": "The top-level area of the site. Same value as eVar3.",
+        "fr": "La zone principale du site. Même valeur qu’eVar3."
+      },
+      "metrics": {
+        "en": "Page views, visits, path reports",
+        "fr": "Pages vues, visites, rapports de cheminement"
+      },
+      "why": {
+        "en": "Prop: counts page views by section and supports pathing between sections; eVar3 carries it for conversion metrics.",
+        "fr": "Prop : compte les pages vues par section et permet le cheminement entre sections; eVar3 la porte pour les mesures de conversion."
+      },
+      "ga4": {
+        "name": "site_section",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop8",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-17",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article title",
+        "fr": "Titre de l’article"
+      },
+      "dl": "content.title",
+      "example": "Island ferry schedule shakeup adds early sailings, drops late-night run",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "News story page views",
+        "fr": "Pages vues des articles de nouvelles"
+      },
+      "meaning": {
+        "en": "The English headline of the story. Same value as eVar11.",
+        "fr": "Le titre anglais de l’article. Même valeur qu’eVar11."
+      },
+      "metrics": {
+        "en": "Article views, path reports",
+        "fr": "Vues d’articles, rapports de cheminement"
+      },
+      "why": {
+        "en": "Prop: counts article views by this value on the page view hit.",
+        "fr": "Prop : compte les vues d’articles selon cette valeur sur le hit de page vue."
+      },
+      "ga4": {
+        "name": "content_title",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop9",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-17",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article ID",
+        "fr": "Identifiant de l’article"
+      },
+      "dl": "content.id",
+      "example": "ferry-schedule-shakeup",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "News story page views",
+        "fr": "Pages vues des articles de nouvelles"
+      },
+      "meaning": {
+        "en": "The story’s unique ID (English slug); stays the same if the headline changes. Same value as eVar12.",
+        "fr": "L’identifiant unique de l’article (slug anglais); il ne change pas si le titre change. Même valeur qu’eVar12."
+      },
+      "metrics": {
+        "en": "Article views, path reports",
+        "fr": "Vues d’articles, rapports de cheminement"
+      },
+      "why": {
+        "en": "Prop: counts article views by this value on the page view hit.",
+        "fr": "Prop : compte les vues d’articles selon cette valeur sur le hit de page vue."
+      },
+      "ga4": {
+        "name": "content_id",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop10",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article author",
+        "fr": "Auteur de l’article"
+      },
+      "dl": "content.author",
+      "example": "Dana Layer",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "News story page views",
+        "fr": "Pages vues des articles de nouvelles"
+      },
+      "meaning": {
+        "en": "The byline: the journalist’s public name. Same value as eVar13.",
+        "fr": "La signature : le nom public du journaliste. Même valeur qu’eVar13."
+      },
+      "metrics": {
+        "en": "Article views, path reports",
+        "fr": "Vues d’articles, rapports de cheminement"
+      },
+      "why": {
+        "en": "Prop: counts article views by this value on the page view hit.",
+        "fr": "Prop : compte les vues d’articles selon cette valeur sur le hit de page vue."
+      },
+      "ga4": {
+        "name": "content_author",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop11",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-16",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article subject",
+        "fr": "Sujet de l’article"
+      },
+      "dl": "content.section",
+      "example": "Transportation",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "News story page views",
+        "fr": "Pages vues des articles de nouvelles"
+      },
+      "meaning": {
+        "en": "The story’s subject (news section), in English. Same value as eVar14.",
+        "fr": "Le sujet de l’article (rubrique), en anglais. Même valeur qu’eVar14."
+      },
+      "metrics": {
+        "en": "Article views, path reports",
+        "fr": "Vues d’articles, rapports de cheminement"
+      },
+      "why": {
+        "en": "Prop: counts article views by this value on the page view hit.",
+        "fr": "Prop : compte les vues d’articles selon cette valeur sur le hit de page vue."
+      },
+      "ga4": {
+        "name": "content_section",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop12",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article published date",
+        "fr": "Date de publication de l’article"
+      },
+      "dl": "content.publishDate",
+      "example": "2026-10-28",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "News story page views",
+        "fr": "Pages vues des articles de nouvelles"
+      },
+      "meaning": {
+        "en": "First publication date, ISO format. Same value as eVar15.",
+        "fr": "Date de première publication, format ISO. Même valeur qu’eVar15."
+      },
+      "metrics": {
+        "en": "Article views, path reports",
+        "fr": "Vues d’articles, rapports de cheminement"
+      },
+      "why": {
+        "en": "Prop: counts article views by this value on the page view hit.",
+        "fr": "Prop : compte les vues d’articles selon cette valeur sur le hit de page vue."
+      },
+      "ga4": {
+        "name": "content_publish_date",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop13",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article title length",
+        "fr": "Longueur du titre de l’article"
+      },
+      "dl": "content.title (characters, counted in tag management)",
+      "example": "71",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "News story page views",
+        "fr": "Pages vues des articles de nouvelles"
+      },
+      "meaning": {
+        "en": "Characters in the English headline. Same value as eVar16.",
+        "fr": "Nombre de caractères du titre anglais. Même valeur qu’eVar16."
+      },
+      "metrics": {
+        "en": "Article views, path reports",
+        "fr": "Vues d’articles, rapports de cheminement"
+      },
+      "why": {
+        "en": "Prop: counts article views by this value on the page view hit.",
+        "fr": "Prop : compte les vues d’articles selon cette valeur sur le hit de page vue."
+      },
+      "ga4": {
+        "name": "content_title_length",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop14",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-20",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Article length",
+        "fr": "Longueur de l’article"
+      },
+      "dl": "content.characterCount (new key)",
+      "example": "771",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "News story page views",
+        "fr": "Pages vues des articles de nouvelles"
+      },
+      "meaning": {
+        "en": "Characters in the English story body. Same value as eVar17.",
+        "fr": "Nombre de caractères du texte anglais de l’article. Même valeur qu’eVar17."
+      },
+      "metrics": {
+        "en": "Article views, path reports",
+        "fr": "Vues d’articles, rapports de cheminement"
+      },
+      "why": {
+        "en": "Prop: counts article views by this value on the page view hit.",
+        "fr": "Prop : compte les vues d’articles selon cette valeur sur le hit de page vue."
+      },
+      "ga4": {
+        "name": "content_character_count",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop15",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video ID",
+        "fr": "Identifiant de la vidéo"
+      },
+      "dl": "media.id",
+      "example": "vid-ferry-001",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "The video’s unique ID; stays the same if the title changes. Same value as eVar19.",
+        "fr": "L’identifiant unique de la vidéo; il ne change pas si le titre change. Même valeur qu’eVar19."
+      },
+      "metrics": {
+        "en": "Occurrences of video events",
+        "fr": "Occurrences des événements vidéo"
+      },
+      "why": {
+        "en": "Prop: counts video events by this value on the hit.",
+        "fr": "Prop : compte les événements vidéo selon cette valeur sur le hit."
+      },
+      "ga4": {
+        "name": "video_id",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop16",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video author",
+        "fr": "Auteur de la vidéo"
+      },
+      "dl": "media.author (new key)",
+      "example": "Dana Layer",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "The journalist or producer credited for the video. Same value as eVar20.",
+        "fr": "Le journaliste ou le réalisateur crédité pour la vidéo. Même valeur qu’eVar20."
+      },
+      "metrics": {
+        "en": "Occurrences of video events",
+        "fr": "Occurrences des événements vidéo"
+      },
+      "why": {
+        "en": "Prop: counts video events by this value on the hit.",
+        "fr": "Prop : compte les événements vidéo selon cette valeur sur le hit."
+      },
+      "ga4": {
+        "name": "video_author",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop17",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-16",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video subject",
+        "fr": "Sujet de la vidéo"
+      },
+      "dl": "media.subject (new key)",
+      "example": "Transportation",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "The video’s subject, from the same list as article subjects. Same value as eVar21.",
+        "fr": "Le sujet de la vidéo, tiré de la même liste que les sujets d’articles. Même valeur qu’eVar21."
+      },
+      "metrics": {
+        "en": "Occurrences of video events",
+        "fr": "Occurrences des événements vidéo"
+      },
+      "why": {
+        "en": "Prop: counts video events by this value on the hit.",
+        "fr": "Prop : compte les événements vidéo selon cette valeur sur le hit."
+      },
+      "ga4": {
+        "name": "video_subject",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop18",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video published date",
+        "fr": "Date de publication de la vidéo"
+      },
+      "dl": "media.publishDate (new key)",
+      "example": "2026-10-28",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "First publication date, ISO format. Same value as eVar22.",
+        "fr": "Date de première publication, format ISO. Même valeur qu’eVar22."
+      },
+      "metrics": {
+        "en": "Occurrences of video events",
+        "fr": "Occurrences des événements vidéo"
+      },
+      "why": {
+        "en": "Prop: counts video events by this value on the hit.",
+        "fr": "Prop : compte les événements vidéo selon cette valeur sur le hit."
+      },
+      "ga4": {
+        "name": "video_publish_date",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop19",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video title length",
+        "fr": "Longueur du titre de la vidéo"
+      },
+      "dl": "media.name (characters, counted in tag management)",
+      "example": "47",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "Characters in the English video title. Same value as eVar23.",
+        "fr": "Nombre de caractères du titre anglais de la vidéo. Même valeur qu’eVar23."
+      },
+      "metrics": {
+        "en": "Occurrences of video events",
+        "fr": "Occurrences des événements vidéo"
+      },
+      "why": {
+        "en": "Prop: counts video events by this value on the hit.",
+        "fr": "Prop : compte les événements vidéo selon cette valeur sur le hit."
+      },
+      "ga4": {
+        "name": "video_title_length",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop20",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-21",
+        "BR-15",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video length",
+        "fr": "Durée de la vidéo"
+      },
+      "dl": "media.length",
+      "example": "30",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "Video duration in seconds. Classify into long and short in Adobe for BR-15. Same value as eVar24.",
+        "fr": "Durée de la vidéo en secondes. À classer en longues et courtes dans Adobe pour BR-15. Même valeur qu’eVar24."
+      },
+      "metrics": {
+        "en": "Occurrences of video events",
+        "fr": "Occurrences des événements vidéo"
+      },
+      "why": {
+        "en": "Prop: counts video events by this value on the hit.",
+        "fr": "Prop : compte les événements vidéo selon cette valeur sur le hit."
+      },
+      "ga4": {
+        "name": "video_duration",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop21",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-18"
+      ],
+      "name": {
+        "en": "Internal search term",
+        "fr": "Terme de recherche interne"
+      },
+      "dl": "search.term (new key)",
+      "example": "rain shell",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Search results pages",
+        "fr": "Pages de résultats de recherche"
+      },
+      "meaning": {
+        "en": "What the visitor typed in site search, lowercased. Same value as eVar25.",
+        "fr": "Ce que le visiteur a tapé dans la recherche du site, en minuscules. Même valeur qu’eVar25."
+      },
+      "metrics": {
+        "en": "Searches, path reports",
+        "fr": "Recherches, rapports de cheminement"
+      },
+      "why": {
+        "en": "Prop: counts each search on its own hit.",
+        "fr": "Prop : compte chaque recherche sur son propre hit."
+      },
+      "ga4": {
+        "name": "search_term",
         "scope": "Event"
       }
     },
@@ -874,7 +2308,10 @@
       "type": "event",
       "status": "proposed",
       "reqs": [
-        "BR-07"
+        "BR-07",
+        "BR-13",
+        "BR-14",
+        "BR-15"
       ],
       "name": {
         "en": "Video start, video complete",
@@ -910,7 +2347,9 @@
       "type": "event",
       "status": "proposed",
       "reqs": [
-        "BR-06"
+        "BR-06",
+        "BR-16",
+        "BR-20"
       ],
       "name": {
         "en": "Article read (75% scroll)",
@@ -982,7 +2421,9 @@
       "type": "event",
       "status": "live",
       "reqs": [
-        "BR-08"
+        "BR-08",
+        "BR-17",
+        "BR-19"
       ],
       "name": {
         "en": "Named link click",
@@ -1001,8 +2442,8 @@
         "fr": "Un lien ou un bouton nommé a été cliqué, y compris les clics qui envoient aussi leur propre événement (ajout au panier)."
       },
       "metrics": {
-        "en": "Use with Link name and Link region (eVar9, eVar10, prop4, prop5)",
-        "fr": "À utiliser avec Nom du lien et Zone du lien (eVar9, eVar10, prop4, prop5)"
+        "en": "Use with Link name and Link location (eVar9, eVar10, prop4, prop5)",
+        "fr": "À utiliser avec Nom du lien et Emplacement du lien (eVar9, eVar10, prop4, prop5)"
       },
       "why": {
         "en": "Counter event: gives the link eVars and props a click metric of their own.",
@@ -1010,6 +2451,151 @@
       },
       "ga4": {
         "name": "link_click (plus link_name on the element's own event)",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "event6, event7",
+      "type": "event",
+      "status": "proposed",
+      "reqs": [
+        "BR-12",
+        "BR-04"
+      ],
+      "name": {
+        "en": "Promotion views and clicks",
+        "fr": "Vues et clics des promotions"
+      },
+      "dl": "promotion viewed, promotion clicked",
+      "example": "event6",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "An on-site ad or internal promotion is shown, then clicked",
+        "fr": "Une publicité sur le site ou une promotion interne est affichée, puis cliquée"
+      },
+      "meaning": {
+        "en": "On-site ad impressions and clicks; pair with Internal promotion (eVar8).",
+        "fr": "Affichages et clics des publicités sur le site; à associer à Promotion interne (eVar8)."
+      },
+      "metrics": {
+        "en": "Use with Internal promotion (eVar8); click-through rate = event7 ÷ event6",
+        "fr": "À utiliser avec Promotion interne (eVar8); taux de clics = event7 ÷ event6"
+      },
+      "why": {
+        "en": "Counter events: give each ad a view and click metric for click-through rate.",
+        "fr": "Événements compteurs : donnent à chaque publicité une mesure de vues et de clics pour le taux de clics."
+      },
+      "ga4": {
+        "name": "view_promotion, select_promotion",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "event8",
+      "type": "event",
+      "status": "proposed",
+      "reqs": [
+        "BR-14"
+      ],
+      "name": {
+        "en": "Video seconds watched",
+        "fr": "Secondes de vidéo regardées"
+      },
+      "dl": "media.playhead (seconds since the last video event)",
+      "example": "12",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "Video events (start, milestones, pause, complete)",
+        "fr": "Événements vidéo (démarrage, jalons, pause, fin)"
+      },
+      "meaning": {
+        "en": "Seconds of video watched, added up on each video event.",
+        "fr": "Secondes de vidéo regardées, additionnées à chaque événement vidéo."
+      },
+      "metrics": {
+        "en": "Use with Video title (eVar18), Video length (eVar24); compare with built-in Return visits",
+        "fr": "À utiliser avec Titre de la vidéo (eVar18) et Durée de la vidéo (eVar24); à comparer aux visites de retour natives"
+      },
+      "why": {
+        "en": "Numeric event: totals time watched, not just plays.",
+        "fr": "Événement numérique : additionne le temps regardé, pas seulement les lectures."
+      },
+      "ga4": {
+        "name": "video_progress (video_current_time)",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "event9",
+      "type": "event",
+      "status": "proposed",
+      "reqs": [
+        "BR-18"
+      ],
+      "name": {
+        "en": "Internal searches",
+        "fr": "Recherches internes"
+      },
+      "dl": "search performed (new event)",
+      "example": "event9",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "Every site search",
+        "fr": "Chaque recherche sur le site"
+      },
+      "meaning": {
+        "en": "A visitor searched the site.",
+        "fr": "Un visiteur a fait une recherche sur le site."
+      },
+      "metrics": {
+        "en": "Use with Internal search term (eVar25, prop21)",
+        "fr": "À utiliser avec Terme de recherche interne (eVar25, prop21)"
+      },
+      "why": {
+        "en": "Counter event: searches per term and per visit.",
+        "fr": "Événement compteur : recherches par terme et par visite."
+      },
+      "ga4": {
+        "name": "search (search_term)",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "event10",
+      "type": "event",
+      "status": "proposed",
+      "reqs": [
+        "BR-18"
+      ],
+      "name": {
+        "en": "Searches with no results",
+        "fr": "Recherches sans résultat"
+      },
+      "dl": "search performed with results = 0",
+      "example": "event10",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "Searches that return nothing",
+        "fr": "Recherches qui ne donnent rien"
+      },
+      "meaning": {
+        "en": "A search found nothing: content or products visitors want but can’t find.",
+        "fr": "Une recherche n’a rien trouvé : du contenu ou des produits voulus mais introuvables."
+      },
+      "metrics": {
+        "en": "Use with Internal search term (eVar25); null rate = event10 ÷ event9",
+        "fr": "À utiliser avec Terme de recherche interne (eVar25); taux sans résultat = event10 ÷ event9"
+      },
+      "why": {
+        "en": "Counter event: shows how well search results work.",
+        "fr": "Événement compteur : montre l’efficacité des résultats de recherche."
+      },
+      "ga4": {
+        "name": "search (search_results = 0)",
         "scope": "Event"
       }
     }

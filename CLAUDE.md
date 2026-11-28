@@ -81,6 +81,10 @@ Case studies, Store, Media site, About.
   `src/scripts/link-names.ts` (templates mark containers: data-region/-module/-position/-item-id;
   prop4+eVar9 name, prop5+eVar10 region, event5). The dev SDR page renders the script's source;
   `npm run test:links` checks EN = FR. Other store pages and the media site aren't named yet.
+- SDR 1.3 (Nov 28): Mark's requirements BR-11..BR-21 imported from his Excel; new variables (article/video
+  metadata as eVar11-24 + prop8-20, prop6/7 page type/section, campaign, eVar25/prop21 search, event6-10) are all
+  PROPOSED: designed, not sent. Building them needs data layer keys (media.author/subject/publishDate,
+  content.characterCount, search.*) + bridge + GTM + tests. Sites are all / store-media / store / media.
 - Data quality: TODO: why QA matters; QA docs = spec tables + checked/date/method columns,
   quarterly cadence, automated checks listed, illustrative history; spider design page
   (build later, downloadable for visitors, possibly a Claude agent).
