@@ -1344,7 +1344,6 @@
       "status": "proposed",
       "reqs": [
         "BR-21",
-        "BR-15",
         "BR-13"
       ],
       "name": {
@@ -1360,8 +1359,8 @@
         "fr": "Événements vidéo"
       },
       "meaning": {
-        "en": "Video duration in seconds. Classify into long and short in Adobe for BR-15. Same value as prop20.",
-        "fr": "Durée de la vidéo en secondes. À classer en longues et courtes dans Adobe pour BR-15. Même valeur que prop20."
+        "en": "Video duration in seconds. Same value as prop20.",
+        "fr": "Durée de la vidéo en secondes. Même valeur que prop20."
       },
       "metrics": {
         "en": "Video starts and completes (event1, event2), seconds watched (event8)",
@@ -1414,6 +1413,44 @@
       }
     },
     {
+      "adobe": "eVar26",
+      "type": "eVar",
+      "status": "proposed",
+      "reqs": [
+        "BR-15",
+        "BR-21",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video length type",
+        "fr": "Type de durée de la vidéo"
+      },
+      "dl": "media.length → 'short' under 60 seconds, otherwise 'long' (set in tag management)",
+      "example": "short",
+      "expiry": "Hit",
+      "allocation": "Most recent",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "Short or long, worked out from the video length when the hit is sent, so no Adobe classification is needed. The 60-second line is an editorial choice. Same value as prop22.",
+        "fr": "Courte ou longue, calculée à partir de la durée de la vidéo à l’envoi du hit : aucune classification Adobe n’est nécessaire. La limite de 60 secondes est un choix éditorial. Même valeur que prop22."
+      },
+      "metrics": {
+        "en": "Video starts and completes (event1, event2), seconds watched (event8)",
+        "fr": "Démarrages et visionnements complets (event1, event2), secondes regardées (event8)"
+      },
+      "why": {
+        "en": "eVar, Hit expiry: breaks down video starts, completes and seconds watched. Sent with every video event.",
+        "fr": "eVar, expiration au hit : ventile les démarrages, les visionnements complets et les secondes regardées. Envoyée avec chaque événement vidéo."
+      },
+      "ga4": {
+        "name": "video_length_type",
+        "scope": "Event"
+      }
+    },
+    {
       "adobe": "campaign",
       "type": "campaign",
       "status": "proposed",
@@ -1433,8 +1470,8 @@
         "fr": "Pages d’arrivée avec un paramètre de campagne"
       },
       "meaning": {
-        "en": "The marketing campaign that brought the visit. Classify the code into channel, campaign name and creative in Adobe.",
-        "fr": "La campagne marketing qui a amené la visite. Classer le code par canal, nom de campagne et création dans Adobe."
+        "en": "The marketing campaign that brought the visit. The code itself carries channel, campaign and date (em-2026-fall-sale), so it reads without an Adobe classification.",
+        "fr": "La campagne marketing qui a amené la visite. Le code contient lui-même le canal, la campagne et la date (em-2026-fall-sale) : il se lit sans classification Adobe."
       },
       "metrics": {
         "en": "Visits, video starts (event1), orders, revenue, exit rate",
@@ -2162,7 +2199,6 @@
       "status": "proposed",
       "reqs": [
         "BR-21",
-        "BR-15",
         "BR-13"
       ],
       "name": {
@@ -2178,8 +2214,8 @@
         "fr": "Événements vidéo"
       },
       "meaning": {
-        "en": "Video duration in seconds. Classify into long and short in Adobe for BR-15. Same value as eVar24.",
-        "fr": "Durée de la vidéo en secondes. À classer en longues et courtes dans Adobe pour BR-15. Même valeur qu’eVar24."
+        "en": "Video duration in seconds. Same value as eVar24.",
+        "fr": "Durée de la vidéo en secondes. Même valeur qu’eVar24."
       },
       "metrics": {
         "en": "Occurrences of video events",
@@ -2227,6 +2263,44 @@
       },
       "ga4": {
         "name": "search_term",
+        "scope": "Event"
+      }
+    },
+    {
+      "adobe": "prop22",
+      "type": "prop",
+      "status": "proposed",
+      "reqs": [
+        "BR-15",
+        "BR-21",
+        "BR-13"
+      ],
+      "name": {
+        "en": "Video length type",
+        "fr": "Type de durée de la vidéo"
+      },
+      "dl": "media.length → 'short' under 60 seconds, otherwise 'long' (set in tag management)",
+      "example": "short",
+      "expiry": "Hit",
+      "allocation": "—",
+      "setOn": {
+        "en": "Video events",
+        "fr": "Événements vidéo"
+      },
+      "meaning": {
+        "en": "Short or long, worked out from the video length when the hit is sent, so no Adobe classification is needed. The 60-second line is an editorial choice. Same value as eVar26.",
+        "fr": "Courte ou longue, calculée à partir de la durée de la vidéo à l’envoi du hit : aucune classification Adobe n’est nécessaire. La limite de 60 secondes est un choix éditorial. Même valeur qu’eVar26."
+      },
+      "metrics": {
+        "en": "Occurrences of video events",
+        "fr": "Occurrences des événements vidéo"
+      },
+      "why": {
+        "en": "Prop: counts video events by this value on the hit.",
+        "fr": "Prop : compte les événements vidéo selon cette valeur sur le hit."
+      },
+      "ga4": {
+        "name": "video_length_type",
         "scope": "Event"
       }
     },
