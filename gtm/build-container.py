@@ -186,6 +186,12 @@ ga4_event("GA4 - Event - Scroll depth", scroll_trigger, params=[
     ("percent_scrolled", dlv("percent_scrolled")),
 ])
 
+# --- Page scroll reach, every page: 25/50/75/100% of the whole page --------------------
+page_scroll_trigger = event_trigger("CE - page_scroll", "^page_scroll$")
+ga4_event("GA4 - Event - Page scroll", page_scroll_trigger, params=[
+    ("percent_scrolled", dlv("percent_scrolled")),
+])
+
 # --- Teaser / internal link clicks on the media site ---------------------------------------
 click_trigger = event_trigger("CE - content_click", "^content_click$")
 ga4_event("GA4 - Event - Content click", click_trigger, params=[

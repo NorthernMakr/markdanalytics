@@ -11,7 +11,7 @@ order: 6
 | Property | Value |
 |---|---|
 | **Document** | Data layer specification, markdanalytics.ca |
-| **Version** | 1.4, 24 November 2026 |
+| **Version** | 1.5, 28 November 2026 |
 | **Status** | Live |
 | **Owner** | Mark Dykeman, analytics lead |
 | **Audience** | Developers building pages; analysts mapping tags |
@@ -175,6 +175,7 @@ The full list of allowed events. Payloads, triggers and timing for the product p
 | Catalog filter | `filter_applied` | `search filtered` | Store |
 | Video | `video_start`, `video_progress`, `video_pause`, `video_seek`, `video_complete` | `media start`, `media milestone`, `media pause`, `media seek`, `media complete` | Media |
 | Reading | `scroll_depth` | `content scrolled` | Media |
+| Page scroll reach (25/50/75/100%) | `page_scroll` (`percent_scrolled`) | `page scrolled` (`scroll.depth`) | Every page |
 | Teaser clicks | `content_click` | `content clicked` | Media |
 | Named links | `link_click` (`link_name`, `link_region`, `link_url`) | `link clicked` (`link.name`, `link.region`, `link.url`) | [Product page](/implementation/product-page-specification/) |
 | Contact form | `form_start`, `generate_lead`, `form_error` | `form started`, `form submitted`, `form error` | Contact page |
@@ -196,6 +197,7 @@ To add a value or event: add it to the allowed list first, then to this document
 
 | Version | Date | Change |
 |---|---|---|
+| 1.5 | 2026-11-28 | Added `page_scroll` / `page scrolled` on every page |
 | 1.4 | 2026-11-24 | Added `link_click` / `link clicked` and the link name fields on existing events |
 | 1.3 | 2026-11-02 | Sections renamed (basics, process, implementation, data-quality, case-studies, about) |
 | 1.2 | 2026-11-02 | `page.path` is the real address in the page's language; French addresses introduced |

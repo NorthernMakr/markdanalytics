@@ -102,6 +102,9 @@
   //   so an order later in the visit is credited to the last named link)
   //   event5 named link click (counter)
   // Media teasers still send link.text (the English headline) to prop4 only.
+  //
+  // Page scroll reach (page scrolled, every page): one counter event per
+  // milestone, 25/50/75/100% → event11/event12/event13/event14.
   function contextVars() {
     var p = page();
     var u = (window.labPage && window.labPage.user) || {};
@@ -119,8 +122,14 @@
     if (e.media && e.media.name) c.prop3 = e.media.name;
     var l = e.link || {};
     if (l.name || l.text) c.prop4 = l.name || l.text;
-    if (l.name) { c.eVar9 = l.name; c.events = 'event5'; }
+    var events = [];
+    if (l.name) { c.eVar9 = l.name; events.push('event5'); }
     if (l.region) { c.prop5 = l.region; c.eVar10 = l.region; }
+    if (e.event === 'page scrolled' && e.scroll) {
+      var scrollEvent = { 25: 'event11', 50: 'event12', 75: 'event13', 100: 'event14' }[e.scroll.depth];
+      if (scrollEvent) events.push(scrollEvent);
+    }
+    if (events.length) c.events = events.join(',');
     return c;
   }
   var assign = function (a, b) { for (var k in b) if (b[k] !== undefined) a[k] = b[k]; return a; };

@@ -2672,6 +2672,43 @@
         "name": "search (search_results = 0)",
         "scope": "Event"
       }
+    },
+    {
+      "adobe": "event11, event12, event13, event14",
+      "type": "event",
+      "status": "live",
+      "reqs": [
+        "BR-01",
+        "BR-06"
+      ],
+      "name": {
+        "en": "Page scroll reach (25, 50, 75, 100%)",
+        "fr": "Défilement de la page atteint (25, 50, 75, 100 %)"
+      },
+      "dl": "page scrolled (scroll.depth = 25, 50, 75, 100)",
+      "example": "event12",
+      "expiry": "—",
+      "allocation": "—",
+      "setOn": {
+        "en": "First time the visitor scrolls through 25, 50, 75 and 100% of the page, on every page",
+        "fr": "La première fois que le visiteur fait défiler 25, 50, 75 et 100 % de la page, sur chaque page"
+      },
+      "meaning": {
+        "en": "How far down the whole page visitors get. Measured on the scrollable length, so nothing is sent on load or on a page that fits on screen. Article reading (event3) is measured on the story body instead.",
+        "fr": "Jusqu’où les visiteurs descendent dans la page entière. Mesuré sur la longueur qui défile : rien n’est envoyé au chargement ni sur une page qui tient à l’écran. La lecture d’un article (event3) est plutôt mesurée sur le corps du texte."
+      },
+      "metrics": {
+        "en": "Scroll reach rate = event14 ÷ page views; use with Page name, Page type, Site section",
+        "fr": "Taux de défilement complet = event14 ÷ pages vues; à utiliser avec Nom de page, Type de page, Section du site"
+      },
+      "why": {
+        "en": "Counter events, one per milestone, so each can be divided by page views. Each milestone is its own hit, up to four per page view.",
+        "fr": "Événements compteurs, un par jalon, pour pouvoir diviser chacun par les pages vues. Chaque jalon est un hit distinct, jusqu’à quatre par page vue."
+      },
+      "ga4": {
+        "name": "page_scroll (percent_scrolled)",
+        "scope": "Event"
+      }
     }
   ]
 }

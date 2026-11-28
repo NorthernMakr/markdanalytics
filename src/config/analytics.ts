@@ -47,6 +47,7 @@ export const GA4_EVENTS = [
   'video_start', 'video_progress', 'video_complete', 'video_pause', 'video_seek',
   // content and navigation
   'scroll_depth', 'content_click', 'filter_applied',
+  'page_scroll', // 25/50/75/100% of the whole page, every page (src/scripts/scroll.ts)
   'link_click', // named link or button with no event of its own (src/scripts/link-names.ts)
   // forms (generate_lead is Google recommended)
   'form_start', 'generate_lead', 'form_error',
@@ -62,6 +63,7 @@ export const ADOBE_EVENTS = [
   'promotion viewed', 'promotion clicked', 'search filtered',
   'media start', 'media milestone', 'media complete', 'media pause', 'media seek',
   'content scrolled', 'content clicked',
+  'page scrolled', // 25/50/75/100% of the whole page, every page (src/scripts/scroll.ts)
   'link clicked', // named link or button with no event of its own (src/scripts/link-names.ts)
   'form started', 'form submitted', 'form error',
   'language switched',

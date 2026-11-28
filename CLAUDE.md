@@ -54,6 +54,7 @@ npm run test:languages               # every page EN+FR, links, switch, twins
 npm run test:purchase                # GA4/Adobe purchase payloads
 npm run test:adobe                   # eVars/props on every Web SDK hit (uses lab.test)
 npm run test:links                   # product page link names, EN = FR, Adobe link vars
+npm run test:scroll                  # page scroll reach 25/50/75/100 → event11-14
 ```
 (Playwright: `npm install --no-save playwright && npx playwright install chromium`.)
 Commit as Mark Dykeman <mark.toronto@gmail.com>.
@@ -85,6 +86,9 @@ Case studies, Store, Media site, About.
   metadata as eVar11-24 + prop8-20, prop6/7 page type/section, campaign, eVar25/prop21 search, event6-10) are all
   PROPOSED: designed, not sent. Building them needs data layer keys (media.author/subject/publishDate,
   content.characterCount, search.*) + bridge + GTM + tests. Sites are all / store-media / store / media.
+- Page scroll reach is LIVE on every page (`trackPageScroll` in `src/scripts/scroll.ts`, loaded from Base.astro):
+  page_scroll / page scrolled at 25/50/75/100% of the scrollable page → event11-14. Article body reading
+  (`trackScrollDepth`, content scrolled, event3 proposed) is separate.
 - Data quality: TODO: why QA matters; QA docs = spec tables + checked/date/method columns,
   quarterly cadence, automated checks listed, illustrative history; spider design page
   (build later, downloadable for visitors, possibly a Claude agent).

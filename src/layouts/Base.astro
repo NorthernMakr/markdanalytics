@@ -202,5 +202,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <slot />
 
     {tags.showEventLog && <EventLog lang={lang} />}
+
+    <script>
+      // Scroll reach (25/50/75/100% of the page) on every page
+      import { trackPageScroll } from '../scripts/scroll';
+      trackPageScroll();
+    </script>
   </body>
 </html>

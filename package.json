@@ -10,7 +10,8 @@
     "test:languages": "node tests/check-languages.cjs",
     "test:purchase": "node tests/check-purchase.cjs",
     "test:adobe": "node tests/check-adobe-context.cjs",
-    "test:links": "node tests/check-link-names.cjs"
+    "test:links": "node tests/check-link-names.cjs",
+    "test:scroll": "node tests/check-scroll.cjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.5",
